@@ -6,17 +6,17 @@ import AccessDenied from "../../components/access-denied"
 export default function ProductsPage() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
-  const [content, setContent] = useState()
+  const [products, setProducts] = useState()
 
-  // Fetch content from protected route
+  // Fetch products from protected route
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("/api/products")
-      const json = await res.json()
-      if (json.data) {
-        setContent(json.data)
+      if (res.status === 200) {
+        const json = await res.json()
+        setProducts(json.data)
       } else {
-        setContent(json.message)
+        console.log("An unknown error occurred")
       }
     }
     fetchData()
@@ -30,8 +30,10 @@ export default function ProductsPage() {
       },
     })
     if (res.status === 200) {
-      const newContent = content.filter((product) => product.uuid !== uuid)
-      setContent(newContent)
+      const newContent = products.filter((product) => product.uuid !== uuid)
+      setProducts(newContent)
+    } else {
+      console.log("An unknown error occurred")
     }
   }
 
@@ -47,26 +49,36 @@ export default function ProductsPage() {
     )
   }
 
-  // If session exists, display content
+  // If session exists, display products
   return (
     <Layout>
       <h1>Products</h1>
       <a href="products/create">Create</a>
-      <ul>
-        {content &&
-          content.map((product) => (
-            <li key={product.uuid}>
-              <p>
-                {product.name} <br />
-                {product.barcode} <br />
-                {product.price} €
-              </p>
-              <button onClick={() => handleDelete(product.uuid)}>
-                Delete
-              </button>
-            </li>
-          ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Barcode</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products &&
+            products.map((product) => (
+              <tr key={product.uuid}>
+                <td>{product.barcode}</td>
+                <td>{product.name}</td>
+                <td>{product.price} €</td>
+                <td>
+                  <button onClick={() => handleDelete(product.uuid)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </Layout>
   )
 }

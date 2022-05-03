@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../prisma_client'
+import prisma from '../../prisma_client'
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const productUuid = req.query.id
+  const productBarcode = req.query.barcode as string
 
   if (req.method === 'GET') {
-    await handleGET(productUuid, res)
+    await handleGET(productBarcode, res)
   } else if (req.method === 'DELETE') {
-    await handleDELETE(productUuid, res)
+    await handleDELETE(productBarcode, res)
   } else {
     res.status(405).end()
   }
@@ -17,7 +17,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 async function handleGET(productUuid, res) {
   try {
     const product = await prisma.product.findUnique({
-      where: { uuid: productUuid },
+      where: { barcode: productUuid },
     })
     if (!product) {
       res.status(404).end()
@@ -33,7 +33,7 @@ async function handleGET(productUuid, res) {
 async function handleDELETE(productUuid, res) {
   try {
     await prisma.product.delete({
-      where: { uuid: productUuid },
+      where: { barcode: productUuid },
     })
     res.status(200).json({ message: 'Product deleted' })
   } catch (error) {

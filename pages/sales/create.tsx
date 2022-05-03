@@ -1,28 +1,49 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import Layout from '../../components/layout'
 import Router from 'next/router'
-import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
-import Html5QrcodePlugin from "../../src/Html5QrcodePlugin";
+import AccessDenied from "../../components/access-denied";
+import Html5QrcodePlugin from '../../src/Html5QrcodePlugin.jsx'
 
-const createProduct: React.FC = () => {
+const createSale: React.FC = () => {
   const { data: session, status } = useSession()
   const loading = status === "loading"
-  const [barcode, setBarcode] = useState('')
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState('')
+  const [itemsSold, setItemsSold] = useState([])
+  const [newBarCode, setNewBarCode] = useState('')
+  const [newQuantity, setNewQuantity] = useState('')
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     try {
-      const body = { barcode: barcode, name: name, price: price }
-      const res = await fetch(`/api/products/create`, {
+      const body = { sellerEmail: session.user.email, itemsSold: itemsSold }
+      const res = await fetch(`/api/sales/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
+
       if (res.status === 200) {
-        Router.push('/products')
+        Router.push('/sales')
+      } else {
+        const json = await res.json()
+        console.log(json.error)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const addToItemsSold = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+
+    try {
+      const res = await fetch(`/api/products/barcode/${newBarCode}`)
+      if (res.status === 200) {
+        const json = await res.json()
+        const newItemsSold = itemsSold.concat([{ barcode: newBarCode, name: json.data.name, quantity: newQuantity }])
+        setItemsSold(newItemsSold)
+      } else if (res.status === 404) {
+        console.log("No product with that barcode")
       } else {
         console.log("An unknown error occurred")
       }
@@ -32,9 +53,9 @@ const createProduct: React.FC = () => {
   }
 
   const onNewScanResult = async (decodedText, decodedResult) => {
-    setBarcode(decodedText)
+    setNewBarCode(decodedText)
   }
-
+  
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
@@ -55,36 +76,41 @@ const createProduct: React.FC = () => {
           qrbox={250}
           disableFlip={false}
           qrCodeSuccessCallback={onNewScanResult}/>
-        <form onSubmit={submitData}>
-          <h1>Create Product</h1>
+        <form onSubmit={addToItemsSold}>
           <input
             autoFocus
-            onChange={e => setBarcode(e.target.value)}
+            onChange={e => setNewBarCode(e.target.value)}
             placeholder="Bar Code"
             type="text"
-            value={barcode}
+            value={newBarCode}
+            required
           />
           <input
-            onChange={e => setName(e.target.value)}
-            placeholder="Name"
-            minLength="5"
-            maxLength="255"
-            type="text"
-            value={name}
-          />
-          <input
-            onChange={e => setPrice(e.target.value)}
-            placeholder="Price (in euro)"
+            autoFocus
+            onChange={e => setNewQuantity(e.target.value)}
+            placeholder="Quantity"
             type="number"
-            step="0.01"
-            value={price}
+            step="1"
+            value={newQuantity}
+            required
           />
+          <button type="submit">Add Item</button>
+        </form>
+        <ul>
+          {itemsSold.map((item, index) => (
+            <li key={index}>
+              {item.barcode} x {item.quantity}
+            </li>
+          ))}
+        </ul>
+        <form onSubmit={submitData}>
+          <h1>Create Sale</h1>
           <input
-            disabled={!name || !barcode || !price}
+            disabled={!session.user?.email || !itemsSold || itemsSold.length === 0}
             type="submit"
             value="Create"
           />
-          <a className="back" href="#" onClick={() => Router.push('/products')}>
+          <a className="back" href="#" onClick={() => Router.push('/sales')}>
             or Cancel
           </a>
         </form>
@@ -118,4 +144,4 @@ const createProduct: React.FC = () => {
   )
 }
 
-export default createProduct;
+export default createSale;

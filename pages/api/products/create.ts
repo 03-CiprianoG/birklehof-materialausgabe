@@ -18,15 +18,20 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     return
   }
 
-  const product = await prisma.product.create({
-    data: {
-      barcode: barcode,
-      name: name,
-      price: +price
-    },
-  })
-  res.json({
-    message: 'Product created',
-    result: product
-  })
+  try {
+    await prisma.product.create({
+      data: {
+        barcode: barcode,
+        name: name,
+        price: +price
+      },
+    })
+    res.json({
+      message: 'Product created'
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    })
+  }
 }
