@@ -6,5 +6,10 @@ const secret = process.env.NEXTAUTH_SECRET
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req, secret })
-  res.send(JSON.stringify(token, null, 2))
+  if (!token) {
+    res.send(JSON.stringify("guest", null, 2))
+  } else
+  {
+    res.send(JSON.stringify(token.userRole, null, 2))
+  }
 }

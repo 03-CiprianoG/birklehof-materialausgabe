@@ -60,6 +60,7 @@ export default function ProductsPage() {
             <th>Barcode</th>
             <th>Name</th>
             <th>Price</th>
+            <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
@@ -70,6 +71,7 @@ export default function ProductsPage() {
                 <td>{product.barcode}</td>
                 <td>{product.name}</td>
                 <td>{product.price} €</td>
+                <td><a href={'products/' + product.uuid}>Edit</a></td>
                 <td>
                   <button onClick={() => handleDelete(product.uuid)}>
                     Delete

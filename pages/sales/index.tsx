@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
 
-export default function SalesPage() {
+export default function IndexSalesPage() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const [sales, setSales] = useState()
@@ -11,7 +11,7 @@ export default function SalesPage() {
     weekday: "long", year: "numeric", month: "short",
     day: "numeric", hour: "2-digit", minute: "2-digit"
   };
-
+  
   // Fetch sales from protected route
   useEffect(() => {
     const fetchData = async () => {
@@ -62,6 +62,7 @@ export default function SalesPage() {
         <thead>
           <tr>
             <th>Seller</th>
+            <th>Buyer</th>
             <th>Items sold</th>
             <th>Total price</th>
             <th>Sold at</th>
@@ -72,7 +73,8 @@ export default function SalesPage() {
           {sales &&
             sales.map((sale) => (
               <tr key={sale.uuid}>
-                <td>{sale.sellerEmail}</td>
+                <td>{sale.seller.email}</td>
+                <td>{sale.buyerName}</td>
                 <td>
                   <details>
                     <summary>{sale.itemsSold.length} items</summary>
@@ -87,12 +89,12 @@ export default function SalesPage() {
                 </td>
                 <td>
                   <details>
-                    <summary>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(sale.itemsSold.reduce((acc, item) => acc + +item.quantity * +item.product.price, 0))}</summary>
+                    <summary>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(sale.itemsSold.reduce((acc, item) => acc + +item.quantity * +item.pricePerUnit, 0))}</summary>
                     {sale.itemsSold.map((item) => (
                       <div key={item.uuid}>
                         <div>
-                          {new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'EUR'}).format(item.product.price)}
-                          x {item.quantity} = {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(+item.quantity * +item.product.price)}
+                          {new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'EUR'}).format(item.pricePerUnit)}
+                          x {item.quantity} = {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(+item.quantity * +item.pricePerUnit)}
                         </div>
                       </div>
                     ))}

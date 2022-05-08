@@ -1,9 +1,10 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import FacebookProvider from "next-auth/providers/facebook"
-import GithubProvider from "next-auth/providers/github"
-import TwitterProvider from "next-auth/providers/twitter"
-import Auth0Provider from "next-auth/providers/auth0"
+import prisma from "../prisma_client";
+// import FacebookProvider from "next-auth/providers/facebook"
+// import GithubProvider from "next-auth/providers/github"
+// import TwitterProvider from "next-auth/providers/twitter"
+// import Auth0Provider from "next-auth/providers/auth0"
 // import AppleProvider from "next-auth/providers/apple"
 // import EmailProvider from "next-auth/providers/email"
 
@@ -56,8 +57,18 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token }) {
-      token.userRole = "admin"
-      return token
+      const user = await prisma.user.findUnique({
+        where: {
+          email: token.email,
+        }
+      })
+      if (!user) {
+        token.userRole = 'guest'
+        return token
+      } else {
+        token.userRole = user.role
+        return token
+      }
     },
   },
 })

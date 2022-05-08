@@ -10,12 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//model User {
-//  uuid  String @id @default(uuid())
-//  name  String @unique
-//  email String @unique
-//  sales Sale[]
-//}
+model User {
+  uuid  String @id @default(uuid())
+  name  String @unique
+  email String @unique
+  role  String
+  sales Sale[]
+}
 
 model Product {
   uuid    String @id @default(uuid())
@@ -32,13 +33,15 @@ model Item {
   quantity    Int     @default(1)
   sale        Sale    @relation(fields: [saleUuid], references: [uuid])
   saleUuid    String
+  pricePerUnit Float
+  totalPrice  Float
 }
 
 model Sale {
   uuid        String   @id @default(uuid())
-  sellerEmail String
-  // seller     User     @relation(fields: [sellerUuid], references: [uuid])
-  // sellerUuid String
+  seller      User     @relation(fields: [sellerUuid], references: [uuid])
+  sellerUuid  String
+  buyerName   String
   itemsSold   Item[]
   soldAt      DateTime @default(now())
 }

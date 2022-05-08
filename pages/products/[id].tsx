@@ -1,23 +1,44 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import Layout from '../../components/layout'
 import Router from 'next/router'
 import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
 import Html5QrcodePlugin from "../../src/Html5QrcodePlugin";
+import { useRouter } from 'next/router'
 
 export default function createProductPage() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
+  const router = useRouter();
+  const {id} = router.query;
   const [barcode, setBarcode] = useState('')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
+
+  // fetch the product with the id
+  useEffect(() => {
+    if (id) {
+      const fetchData = async () => {
+        const res = await fetch(`/api/products/${id}`)
+        if (res.status === 200) {
+          const json = await res.json()
+          setBarcode(json.data.barcode)
+          setName(json.data.name)
+          setPrice(json.data.price)
+        } else {
+          Router.push('/products')
+        }
+      }
+      fetchData()
+    }
+  }, [id])
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     try {
       const body = { barcode: barcode, name: name, price: price }
-      const res = await fetch(`/api/products/create`, {
-        method: 'POST',
+      const res = await fetch(`/api/products/${id}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
@@ -31,7 +52,7 @@ export default function createProductPage() {
     }
   }
 
-  const onNewScanResult = async (decodedText, _decodedResult) => {
+  const onNewScanResult = async (decodedText, decodedResult) => {
     setBarcode(decodedText)
   }
 
@@ -82,7 +103,7 @@ export default function createProductPage() {
           <input
             disabled={!name || !barcode || !price}
             type="submit"
-            value="Create"
+            value="Update"
           />
           <a className="back" href="#" onClick={() => Router.push('/products')}>
             or Cancel

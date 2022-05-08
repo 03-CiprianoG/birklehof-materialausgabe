@@ -4,6 +4,7 @@ export default async function handle(req, res) {
   try {
     const sales = await prisma.sale.findMany({
       include: {
+        seller: true,
         itemsSold: {
           include: {
             product: true

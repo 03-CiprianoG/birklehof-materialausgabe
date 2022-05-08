@@ -4,14 +4,14 @@ import prisma from '../prisma_client'
 // POST /api/products/create
 // Required fields in body: barcode, name, price
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const { sellerEmail, itemsSold } = req.body
+  const { sellerEmail, buyerName, itemsSold } = req.body
 
-  if (!sellerEmail || !itemsSold || itemsSold.length === 0) {
+  if (!sellerEmail || !buyerName || !itemsSold || itemsSold.length === 0) {
    res.status(400).json({
       error: 'Missing required fields'
     })
     return
-  } else if (typeof sellerEmail !== 'string' || typeof itemsSold !== 'object') {
+  } else if (typeof sellerEmail !== 'string' || typeof buyerName !== 'string' || typeof itemsSold !== 'object') {
     res.status(400).json({
       error: 'Invalid type for required fields'
     })
@@ -21,7 +21,12 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   try {
     await prisma.sale.create({
       data: {
-        sellerEmail: sellerEmail,
+        buyerName: buyerName,
+        seller: {
+          connect: {
+            email: sellerEmail
+          }
+        },
         itemsSold: {
           create: itemsSold.map(item => ({
             product : {
@@ -29,7 +34,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
                 barcode: item.barcode
               }
             },
-            quantity: +item.quantity
+            quantity: +item.quantity,
+            pricePerUnit: +item.price,
+            totalPrice: +item.quantity * +item.price
           }))
         }
       },

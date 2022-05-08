@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
 import styles from "./header.module.css"
+import {useEffect, useState} from "react";
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
@@ -8,6 +9,22 @@ import styles from "./header.module.css"
 export default function Header() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
+  const [role, setRole] = useState('guest');
+
+  useEffect(() => {
+    const fetchRole = async () => {
+      const res = await fetch("/api/auth/role");
+      if (res.status === 200) {
+        const json = await res.json()
+        setRole(json)
+      } else {
+        console.log("An unknown error occurred")
+      }
+    }
+    fetchRole()
+  }, [session])
+
+  // Get the user role from /api/auth/role
 
   return (
     <header>
@@ -71,26 +88,19 @@ export default function Header() {
               <a>Home</a>
             </Link>
           </li>
-          <li className={styles.navItem}>
-            <Link href="/protected">
-              <a>Protected</a>
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/products">
-              <a>Products</a>
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/sales">
-              <a>Sales</a>
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/me">
-              <a>Me</a>
-            </Link>
-          </li>
+          {role == 'admin' && (
+            <li className={styles.navItem}>
+              <Link href="/sales">
+                <a>Sales</a>
+              </Link>
+            </li>)}
+          {role == 'seller' || role == 'admin' && (
+            <li className={styles.navItem}>
+              <Link href="/products">
+                <a>Products</a>
+              </Link>
+            </li>)}
+          Role: {role}
         </ul>
       </nav>
     </header>

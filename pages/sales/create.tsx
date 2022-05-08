@@ -1,21 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import Layout from '../../components/layout'
 import Router from 'next/router'
 import {useSession} from "next-auth/react";
 import AccessDenied from "../../components/access-denied";
-import Html5QrcodePlugin from '../../src/Html5QrcodePlugin.jsx'
+import Html5QrcodePlugin from "../../src/Html5QrcodePlugin.jsx";
 
-const createSale: React.FC = () => {
+export default function createSalePage() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const [itemsSold, setItemsSold] = useState([])
   const [newBarCode, setNewBarCode] = useState('')
   const [newQuantity, setNewQuantity] = useState('')
+  const [buyerName, setBuyerName] = useState('')
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     try {
-      const body = { sellerEmail: session.user.email, itemsSold: itemsSold }
+      const body = { sellerEmail: session?.user?.email, buyerName: buyerName, itemsSold: itemsSold }
       const res = await fetch(`/api/sales/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,23 +37,31 @@ const createSale: React.FC = () => {
   const addToItemsSold = async (e: React.SyntheticEvent) => {
     e.preventDefault()
 
-    try {
-      const res = await fetch(`/api/products/barcode/${newBarCode}`)
-      if (res.status === 200) {
-        const json = await res.json()
-        const newItemsSold = itemsSold.concat([{ barcode: newBarCode, name: json.data.name, quantity: newQuantity }])
-        setItemsSold(newItemsSold)
-      } else if (res.status === 404) {
-        console.log("No product with that barcode")
-      } else {
-        console.log("An unknown error occurred")
+    // If the item is already in the list, increase the quantity else add it to the list
+    const itemIndex = itemsSold.findIndex(item => item.barcode === newBarCode)
+    if (itemIndex !== -1) {
+      const newItemsSold = [...itemsSold]
+      newItemsSold[itemIndex].quantity = +newItemsSold[itemIndex].quantity + +newQuantity
+      setItemsSold(newItemsSold)
+    } else {
+      try {
+        const res = await fetch(`/api/products/barcode/${newBarCode}`)
+        if (res.status === 200) {
+          const json = await res.json()
+
+          setItemsSold([...itemsSold, { barcode: newBarCode, name: json.data.name, quantity: newQuantity, price: json.data.price }])
+        } else if (res.status === 404) {
+          console.log("No product with that barcode")
+        } else {
+          console.log("An unknown error occurred")
+        }
+      } catch (error) {
+        console.error(error)
       }
-    } catch (error) {
-      console.error(error)
     }
   }
 
-  const onNewScanResult = async (decodedText, decodedResult) => {
+  const onNewScanResult = async (decodedText, _decodedResult) => {
     setNewBarCode(decodedText)
   }
   
@@ -71,6 +80,7 @@ const createSale: React.FC = () => {
   return (
     <Layout>
       <div>
+        <h1>Create Sale</h1>
         <Html5QrcodePlugin
           fps={10}
           qrbox={250}
@@ -91,22 +101,57 @@ const createSale: React.FC = () => {
             placeholder="Quantity"
             type="number"
             step="1"
+            min="1"
             value={newQuantity}
             required
           />
           <button type="submit">Add Item</button>
         </form>
-        <ul>
-          {itemsSold.map((item, index) => (
-            <li key={index}>
-              {item.barcode} x {item.quantity}
-            </li>
-          ))}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Barcode</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {itemsSold.map((item, index) => (
+              <tr key={index}>
+                <td>{item.barcode}</td>
+                <td>{item.name}</td>
+                <td>
+                  <input
+                    onChange={e => setItemsSold([...itemsSold.slice(0, index), { ...item, quantity: e.target.value }, ...itemsSold.slice(index + 1)])}
+                    type="number"
+                    step="1"
+                    min="1"
+                    value={item.quantity}
+                    required
+                  />
+                </td>
+                <td>{new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'EUR'}).format(item.price)}</td>
+                <td>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(+item.quantity * +item.price)}</td>
+                <td><button onClick={() => setItemsSold(itemsSold.filter((_, i) => i !== index))}>Remove</button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p>Total</p>
+        <p>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(itemsSold.reduce((acc, item) => acc + item.quantity * item.price, 0))}</p>
         <form onSubmit={submitData}>
-          <h1>Create Sale</h1>
           <input
-            disabled={!session.user?.email || !itemsSold || itemsSold.length === 0}
+            onChange={e => setBuyerName(e.target.value)}
+            placeholder="Buyer Name"
+            type="text"
+            value={buyerName}
+            required
+          />
+          <input
+            disabled={!session.user?.email || !buyerName || !itemsSold || itemsSold.length === 0}
             type="submit"
             value="Create"
           />
@@ -115,33 +160,6 @@ const createSale: React.FC = () => {
           </a>
         </form>
       </div>
-      <style jsx>{`
-        .page {
-          background: white;
-          padding: 3rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        input[type='text'],
-        input[type='number'] {
-          width: 100%;
-          padding: 0.5rem;
-          margin: 0.5rem 0;
-          border-radius: 0.25rem;
-          border: 0.125rem solid rgba(0, 0, 0, 0.2);
-        }
-        input[type='submit'] {
-          background: #ececec;
-          border: 0;
-          padding: 1rem 2rem;
-        }
-        .back {
-          margin-left: 1rem;
-        }
-      `}</style>
     </Layout>
   )
 }
-
-export default createSale;
