@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 const secret = process.env.NEXTAUTH_SECRET
 
+// GET /api/auth/role
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req, secret })
   if (!token) {

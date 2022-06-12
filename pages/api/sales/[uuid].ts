@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../prisma_client'
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const saleUuid = req.query.id
+  const saleUuid: string = req.query.uuid.toString()
 
   if (req.method === 'GET') {
     await handleGET(saleUuid, res)
@@ -13,8 +13,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   }
 }
 
-// GET /api/products/:id
-async function handleGET(saleUuid, res) {
+// GET /api/sales/:uuid
+async function handleGET(saleUuid: string, res: NextApiResponse) {
   try {
     const sale = await prisma.sale.findUnique({
       where: { uuid: saleUuid },
@@ -24,14 +24,24 @@ async function handleGET(saleUuid, res) {
     } else {
       res.status(200).json({ data: sale })
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message })
+  } catch(e){
+    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
   }
 }
 
-// DELETE /api/products/:id
-async function handleDELETE(saleUuid, res) {
+// DELETE /api/sales/:uuid
+async function handleDELETE(saleUuid: string, res: NextApiResponse) {
   try {
+    const sale = await prisma.sale.findUnique({
+      where: { uuid: saleUuid },
+    });
+
+    if (!sale) {
+      res.status(404).end()
+    } else if (sale.archived) {
+      res.status(400).json({ message: 'Sale already archived' })
+    }
+
     await prisma.item.deleteMany({
       where: { saleUuid: saleUuid },
     })
@@ -39,7 +49,7 @@ async function handleDELETE(saleUuid, res) {
       where: { uuid: saleUuid },
     })
     res.json({ message: 'Sale deleted' })
-  } catch (error) {
-    res.status(500).json({ error: error.message })
+  } catch(e){
+    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
   }
 }

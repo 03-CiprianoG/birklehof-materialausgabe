@@ -14,7 +14,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 }
 
 // GET /api/products/:id
-async function handleGET(productUuid, res) {
+async function handleGET(productUuid: string, res: NextApiResponse) {
   try {
     const product = await prisma.product.findUnique({
       where: { barcode: productUuid },
@@ -24,19 +24,19 @@ async function handleGET(productUuid, res) {
     } else {
       res.status(200).json({ data: product })
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message })
+  } catch(e){
+    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
   }
 }
 
 // DELETE /api/products/:id
-async function handleDELETE(productUuid, res) {
+async function handleDELETE(productUuid: string, res: NextApiResponse) {
   try {
     await prisma.product.delete({
       where: { barcode: productUuid },
     })
     res.status(200).json({ message: 'Product deleted' })
-  } catch (error) {
-    res.status(500).json({ message: error.message })
+  } catch(e){
+    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
   }
 }

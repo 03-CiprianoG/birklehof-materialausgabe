@@ -31,7 +31,7 @@ export default function createProductPage() {
     }
   }
 
-  const onNewScanResult = async (decodedText, _decodedResult) => {
+  const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
     setBarcode(decodedText)
   }
 
@@ -67,8 +67,8 @@ export default function createProductPage() {
           <input
             onChange={e => setName(e.target.value)}
             placeholder="Name"
-            minLength="5"
-            maxLength="255"
+            minLength={5}
+            maxLength={255}
             type="text"
             value={name}
           />

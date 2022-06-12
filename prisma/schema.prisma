@@ -14,8 +14,17 @@ model User {
   uuid  String @id @default(uuid())
   name  String @unique
   email String @unique
-  role  String
+  role  String @default("guest")
   sales Sale[]
+}
+
+model Student {
+  uuid  String @id @default(uuid())
+  firstName String
+  secondName String
+  lastName  String
+  grade     String
+  @@unique([firstName, secondName, lastName, grade])
 }
 
 model Product {
@@ -34,7 +43,6 @@ model Item {
   sale        Sale    @relation(fields: [saleUuid], references: [uuid])
   saleUuid    String
   pricePerUnit Float
-  totalPrice  Float
 }
 
 model Sale {
@@ -44,4 +52,6 @@ model Sale {
   buyerName   String
   itemsSold   Item[]
   soldAt      DateTime @default(now())
+  archived    Boolean  @default(false)
+  archivedAt  DateTime?
 }

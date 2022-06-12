@@ -2,16 +2,39 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
+import prisma from "../api/prisma_client";
+import type { Sale, User, Item, Product } from "@prisma/client"
 
-export default function IndexSalesPage() {
+interface SaleItem extends Item {
+  product: Product
+}
+
+interface SaleExtended extends Sale {
+  seller: User
+  itemsSold: SaleItem[]
+}
+
+export async function getServerSideProps(_context: any) {
+  let sales = await prisma.sale.findMany({
+    include: {
+      seller: true,
+      itemsSold: {
+        include: {
+          product: true
+        }
+      },
+    }
+  })
+  sales = JSON.parse(JSON.stringify(sales))
+  return { props: { sales } }
+}
+
+export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtended[] }) {
   const { data: session, status } = useSession()
   const loading = status === "loading"
-  const [sales, setSales] = useState()
-  const options = {
-    weekday: "long", year: "numeric", month: "short",
-    day: "numeric", hour: "2-digit", minute: "2-digit"
-  };
-  
+  const [showArchived, setShowArchived] = useState(false)
+  const [sales, setSales] = useState(init_sales)
+
   // Fetch sales from protected route
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +63,26 @@ export default function IndexSalesPage() {
       console.log("An unknown error occurred")
     }
   }
+  const handleArchive = async (uuid: string) => {
+    const res = await fetch(`/api/sales/archive/${uuid}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    if (res.status === 200) {
+      const newContent = sales.map((sale) => {
+        if (sale.uuid === uuid) {
+          sale.archived = true
+        }
+        return sale
+      });
+      console.log(newContent)
+      setSales(newContent)
+    } else {
+      console.log("An unknown error occurred")
+    }
+  }
 
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
@@ -57,21 +100,30 @@ export default function IndexSalesPage() {
   return (
     <Layout>
       <h1>Sales</h1>
-      <a href="sales/create">Sell</a>
+      
+      <a href="sales/create">Sell</a><a href="sales/export">Export Sales To CSV</a>
+      <br/>
+      <input
+        type="checkbox"
+        checked={showArchived}
+        onChange={() => setShowArchived(!showArchived)}
+      />
+      <label>Show archived sales</label>
       <table>
         <thead>
           <tr>
             <th>Seller</th>
             <th>Buyer</th>
-            <th>Items sold</th>
+            <th>Items</th>
             <th>Total price</th>
             <th>Sold at</th>
+            {showArchived ? <th>Archived at</th> : null}
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {sales &&
-            sales.map((sale) => (
+            sales.filter((sale) => showArchived || !sale.archived).map((sale) => (
               <tr key={sale.uuid}>
                 <td>{sale.seller.email}</td>
                 <td>{sale.buyerName}</td>
@@ -100,11 +152,19 @@ export default function IndexSalesPage() {
                     ))}
                   </details>
                 </td>
-                <td>{new Date(sale.soldAt).toLocaleTimeString('de-DE', options)}</td>
+                <td>{new Date(sale.soldAt).toLocaleTimeString('de-DE')}</td>
+                {showArchived ? (sale.archived ? (sale.archivedAt ? <td>{new Date(sale.archivedAt).toLocaleTimeString('de-DE')}</td> : <td>Not yet loaded</td>) : <td>Not archived</td>) : null}
                 <td>
-                  <button onClick={() => handleDelete(sale.uuid)}>
-                    Delete
-                  </button>
+                  {!sale.archived ? <div>
+                    {/* Delete button */}
+                    <button onClick={() => handleDelete(sale.uuid)}>
+                      Delete
+                    </button>
+                    {/* Archive button */}
+                    <button onClick={() => handleArchive(sale.uuid)}>
+                      Archive
+                    </button>
+                  </div> : null}
                 </td>
               </tr>
             ))}

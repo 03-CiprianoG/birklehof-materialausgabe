@@ -88,16 +88,28 @@ export default function Header() {
               <a>Home</a>
             </Link>
           </li>
-          {role == 'admin' && (
+          {(role == 'admin' || role == 'superadmin') && (
             <li className={styles.navItem}>
               <Link href="/sales">
                 <a>Sales</a>
               </Link>
             </li>)}
-          {role == 'seller' || role == 'admin' && (
+          {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
             <li className={styles.navItem}>
               <Link href="/products">
                 <a>Products</a>
+              </Link>
+            </li>)}
+          {(role == 'superadmin') && (
+            <li className={styles.navItem}>
+              <Link href="/students">
+                <a>Students</a>
+              </Link>
+            </li>)}
+          {(role == 'superadmin') && (
+            <li className={styles.navItem}>
+              <Link href="/users">
+                <a>Users</a>
               </Link>
             </li>)}
           Role: {role}

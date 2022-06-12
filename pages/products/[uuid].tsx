@@ -10,16 +10,16 @@ export default function createProductPage() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const router = useRouter();
-  const {id} = router.query;
+  const {uuid} = router.query;
   const [barcode, setBarcode] = useState('')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
 
   // fetch the product with the id
   useEffect(() => {
-    if (id) {
+    if (uuid) {
       const fetchData = async () => {
-        const res = await fetch(`/api/products/${id}`)
+        const res = await fetch(`/api/products/${uuid}`)
         if (res.status === 200) {
           const json = await res.json()
           setBarcode(json.data.barcode)
@@ -31,13 +31,13 @@ export default function createProductPage() {
       }
       fetchData()
     }
-  }, [id])
+  }, [uuid])
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     try {
       const body = { barcode: barcode, name: name, price: price }
-      const res = await fetch(`/api/products/${id}`, {
+      const res = await fetch(`/api/products/${uuid}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -52,7 +52,7 @@ export default function createProductPage() {
     }
   }
 
-  const onNewScanResult = async (decodedText, decodedResult) => {
+  const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
     setBarcode(decodedText)
   }
 
@@ -71,6 +71,7 @@ export default function createProductPage() {
   return (
     <Layout>
       <div>
+        <h1>Update product</h1>
         <Html5QrcodePlugin
           fps={10}
           qrbox={250}
@@ -88,8 +89,8 @@ export default function createProductPage() {
           <input
             onChange={e => setName(e.target.value)}
             placeholder="Name"
-            minLength="5"
-            maxLength="255"
+            minLength={5}
+            maxLength={255}
             type="text"
             value={name}
           />

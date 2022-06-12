@@ -2,11 +2,18 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
+import prisma from "../api/prisma_client";
+import type { Product } from '@prisma/client'
 
-export default function ProductsPage() {
+export async function getServerSideProps(context: any) {
+  const products = await prisma.product.findMany()
+  return { props: { products } }
+}
+
+export default function ProductsPage({ init_products }: { init_products: Product[] }) {
   const { data: session, status } = useSession()
   const loading = status === "loading"
-  const [products, setProducts] = useState()
+  const [products, setProducts] = useState(init_products)
 
   // Fetch products from protected route
   useEffect(() => {

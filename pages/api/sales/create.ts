@@ -1,8 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../prisma_client'
+import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 
-// POST /api/products/create
-// Required fields in body: barcode, name, price
+interface Item {
+  barcode: string
+  quantity: number
+  price: number
+}
+
+// POST /api/sales/create
+// Required fields in body: sellers email, buyers name, items sold
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     const { sellerEmail, buyerName, itemsSold } = req.body
@@ -29,15 +36,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
             }
           },
           itemsSold: {
-            create: itemsSold.map(item => ({
-              product : {
+            create: itemsSold.map((item: Item) => ({
+              product: {
                 connect: {
                   barcode: item.barcode
                 }
               },
               quantity: +item.quantity,
               pricePerUnit: +item.price,
-              totalPrice: +item.quantity * +item.price
             }))
           }
         },
@@ -45,10 +51,15 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       res.status(200).json({
         message: 'Sale created',
       })
-    } catch (error) {
-      res.status(500).json({
-        error: error.message
-      })
+    }  catch(e){
+      console.log(e)
+      if (e instanceof PrismaClientKnownRequestError) {
+        // The .code property can be accessed in a type-safe manner
+        if (e.code === 'P2002') {
+          res.status(500).json({ message: 'There is a unique constraint violation' });
+        }
+      }
+      res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
     }
   } else {
     res.status(405).end()

@@ -3,9 +3,20 @@ CREATE TABLE "User" (
     "uuid" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT E'guest',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("uuid")
+);
+
+-- CreateTable
+CREATE TABLE "Student" (
+    "uuid" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "secondName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
+    "grade" TEXT NOT NULL,
+
+    CONSTRAINT "Student_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateTable
@@ -45,6 +56,9 @@ CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Student_firstName_secondName_lastName_grade_key" ON "Student"("firstName", "secondName", "lastName", "grade");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Product_barcode_key" ON "Product"("barcode");

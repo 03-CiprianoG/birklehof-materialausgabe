@@ -4,11 +4,25 @@ import Router from 'next/router'
 import {useSession} from "next-auth/react";
 import AccessDenied from "../../components/access-denied";
 import Html5QrcodePlugin from "../../src/Html5QrcodePlugin.jsx";
+import prisma from "../api/prisma_client";
+import {Student} from "@prisma/client";
 
-export default function createSalePage() {
+interface Item {
+  barcode: string
+  name: string
+  quantity: number
+  price: number
+}
+
+export async function getServerSideProps(context: any) {
+  const students = await prisma.student.findMany()
+  return { props: { students } }
+}
+
+export default function createSalePage({ students }: { students: Student[] }) {
   const { data: session, status } = useSession()
   const loading = status === "loading"
-  const [itemsSold, setItemsSold] = useState([])
+  const [itemsSold, setItemsSold] = useState<Item[]>([])
   const [newBarCode, setNewBarCode] = useState('')
   const [newQuantity, setNewQuantity] = useState('')
   const [buyerName, setBuyerName] = useState('')
@@ -38,7 +52,9 @@ export default function createSalePage() {
     e.preventDefault()
 
     // If the item is already in the list, increase the quantity else add it to the list
-    const itemIndex = itemsSold.findIndex(item => item.barcode === newBarCode)
+    const itemIndex = itemsSold.findIndex(item => {
+      return item.barcode === newBarCode;
+    })
     if (itemIndex !== -1) {
       const newItemsSold = [...itemsSold]
       newItemsSold[itemIndex].quantity = +newItemsSold[itemIndex].quantity + +newQuantity
@@ -48,8 +64,13 @@ export default function createSalePage() {
         const res = await fetch(`/api/products/barcode/${newBarCode}`)
         if (res.status === 200) {
           const json = await res.json()
-
-          setItemsSold([...itemsSold, { barcode: newBarCode, name: json.data.name, quantity: newQuantity, price: json.data.price }])
+          const newItem: Item = {
+            barcode: newBarCode,
+            name: json.data.name,
+            quantity: +newQuantity,
+            price: json.data.price
+          }
+          setItemsSold([...itemsSold, newItem])
         } else if (res.status === 404) {
           console.log("No product with that barcode")
         } else {
@@ -61,7 +82,7 @@ export default function createSalePage() {
     }
   }
 
-  const onNewScanResult = async (decodedText, _decodedResult) => {
+  const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
     setNewBarCode(decodedText)
   }
   
@@ -96,7 +117,6 @@ export default function createSalePage() {
             required
           />
           <input
-            autoFocus
             onChange={e => setNewQuantity(e.target.value)}
             placeholder="Quantity"
             type="number"
@@ -125,7 +145,7 @@ export default function createSalePage() {
                 <td>{item.name}</td>
                 <td>
                   <input
-                    onChange={e => setItemsSold([...itemsSold.slice(0, index), { ...item, quantity: e.target.value }, ...itemsSold.slice(index + 1)])}
+                    onChange={e => setItemsSold([...itemsSold.slice(0, index), { ...item, quantity: +e.target.value }, ...itemsSold.slice(index + 1)])}
                     type="number"
                     step="1"
                     min="1"
@@ -149,7 +169,11 @@ export default function createSalePage() {
             type="text"
             value={buyerName}
             required
+            list="students"
           />
+          <datalist id="students">
+            {students.map(student => <option key={student.firstName + '-' + student.lastName + '-' + student.grade} value={student.firstName + ' ' + student.lastName + ', ' + student.grade} />)}
+          </datalist>
           <input
             disabled={!session.user?.email || !buyerName || !itemsSold || itemsSold.length === 0}
             type="submit"

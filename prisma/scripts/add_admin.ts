@@ -14,7 +14,7 @@ if (email && name) {
       data: {
         email: email,
         name: name,
-        role: "admin"
+        role: "superadmin"
       }
     }).then(() => {
       console.log("Admin added successfully");

@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../prisma_client'
+import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const productUuid = req.query.id
+  const productUuid: string = req.query.uuid.toString()
 
   if (req.method === 'GET') {
     await handleGET(productUuid, res)
@@ -15,8 +16,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   }
 }
 
-// GET /api/products/:id
-async function handleGET(productUuid, res) {
+// GET /api/products/:uuid
+async function handleGET(productUuid: string, res: NextApiResponse) {
   try {
     const product = await prisma.product.findUnique({
       where: { uuid: productUuid },
@@ -26,13 +27,13 @@ async function handleGET(productUuid, res) {
     } else {
       res.status(200).json({ data: product })
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message })
+  } catch(e){
+    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
   }
 }
 
-// PATCH /api/products/:id
-async function handlePATCH(productUuid, res, req) {
+// PATCH /api/products/:uuid
+async function handlePATCH(productUuid: string, res: NextApiResponse, req: NextApiRequest) {
   try {
     const product = await prisma.product.findUnique({
       where: { uuid: productUuid },
@@ -51,23 +52,28 @@ async function handlePATCH(productUuid, res, req) {
           }
         })
         res.status(200).json({ message: 'Product updated' })
-      } catch (error) {
-        res.status(500).json({ message: error.message })
+      } catch(e){
+        if (e instanceof PrismaClientKnownRequestError) {
+          if (e.code === 'P2002') {
+            res.status(500).json({ message: 'There is a unique constraint violation' });
+          }
+        }
+        res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
       }
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message })
+  } catch(e){
+    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
   }
 }
 
-// DELETE /api/products/:id
-async function handleDELETE(productUuid, res) {
+// DELETE /api/products/:uuid
+async function handleDELETE(productUuid: string, res: NextApiResponse) {
   try {
     await prisma.product.delete({
       where: { uuid: productUuid },
     })
     res.status(200).json({ message: 'Product deleted' })
-  } catch (error) {
-    res.status(500).json({ message: error.message })
+  } catch(e){
+    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
   }
 }
