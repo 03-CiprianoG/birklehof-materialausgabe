@@ -2,6 +2,8 @@ import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
 import styles from "./header.module.css"
 import {useEffect, useState} from "react";
+import logo from '../assets/birklehof-logo.png';
+import Image from "next/image";
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
@@ -27,7 +29,42 @@ export default function Header() {
   // Get the user role from /api/auth/role
 
   return (
-    <header>
+    <header className={styles.header}>
+      <img className={styles.logo} src="https://www.birklehof.de/wp-content/themes/birklehof-v2/img/birklehof-logo.png" alt="Birklehof Logo" />
+      <nav className={styles.nav}>
+        <ul className={styles.navItems}>
+          <li className={styles.navItem}>
+            <Link href="/">
+              <a className={styles.navLink}>Startseite</a>
+            </Link>
+          </li>
+          {(role == 'admin' || role == 'superadmin') && (
+            <li className={styles.navItem}>
+              <Link href="/sales">
+                <a className={styles.navLink}>Verkäufe</a>
+              </Link>
+            </li>)}
+          {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
+            <li className={styles.navItem}>
+              <Link href="/products">
+                <a className={styles.navLink}>Produkte</a>
+              </Link>
+            </li>)}
+          {(role == 'superadmin') && (
+            <li className={styles.navItem}>
+              <Link href="/students">
+                <a className={styles.navLink}>Schüler</a>
+              </Link>
+            </li>)}
+          {(role == 'superadmin') && (
+            <li className={styles.navItem}>
+              <Link href="/users">
+                <a className={styles.navLink}>Benutzer</a>
+              </Link>
+            </li>)}
+          Role: {role}
+        </ul>
+      </nav>
       <noscript>
         <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
       </noscript>
@@ -81,40 +118,6 @@ export default function Header() {
           )}
         </p>
       </div>
-      <nav>
-        <ul className={styles.navItems}>
-          <li className={styles.navItem}>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          {(role == 'admin' || role == 'superadmin') && (
-            <li className={styles.navItem}>
-              <Link href="/sales">
-                <a>Sales</a>
-              </Link>
-            </li>)}
-          {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
-            <li className={styles.navItem}>
-              <Link href="/products">
-                <a>Products</a>
-              </Link>
-            </li>)}
-          {(role == 'superadmin') && (
-            <li className={styles.navItem}>
-              <Link href="/students">
-                <a>Students</a>
-              </Link>
-            </li>)}
-          {(role == 'superadmin') && (
-            <li className={styles.navItem}>
-              <Link href="/users">
-                <a>Users</a>
-              </Link>
-            </li>)}
-          Role: {role}
-        </ul>
-      </nav>
     </header>
   )
 }
