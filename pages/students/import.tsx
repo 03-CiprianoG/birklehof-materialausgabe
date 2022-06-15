@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import Layout from "../../components/layout";
 import Router from 'next/router'
+import AccessDenied from "../../components/access-denied";
+import {useSession} from "next-auth/react";
 
 export default function ImportStudentsPage() {
+  const { data: session, status } = useSession()
   const [file, setFile] = useState();
   const [createObjectURL, setCreateObjectURL] = useState('');
 
@@ -35,8 +38,17 @@ export default function ImportStudentsPage() {
     }
   };
 
+  // If no session exists, display access denied message
+  if (!session) {
+    return (
+      <Layout title='Schüler'>
+        <AccessDenied />
+      </Layout>
+    )
+  }
+
   return (
-    <Layout>
+    <Layout title='Schüler'>
       <div>
         <h1>Import Students</h1>
         <div>

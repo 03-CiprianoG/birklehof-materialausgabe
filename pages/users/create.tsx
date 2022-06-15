@@ -39,14 +39,14 @@ export default function createSalePage() {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Benutzer'>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout>
+    <Layout title='Benutzer'>
       <div>
         <h1>Create User</h1>
         <form onSubmit={submitData}>

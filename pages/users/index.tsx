@@ -54,7 +54,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Benutzer'>
         <AccessDenied />
       </Layout>
     )
@@ -62,7 +62,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
 
   // If session exists, display users
   return (
-    <Layout>
+    <Layout title='Benutzer'>
       <h1>User</h1>
       <a href="users/create">Create a user</a>
       <table>

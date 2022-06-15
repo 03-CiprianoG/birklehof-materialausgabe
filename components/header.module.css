@@ -1,27 +1,72 @@
 .header {
-  height: 15vh;
+  height: 12vh;
 }
 
 .logo {
   position: fixed;
-  left: 5%;
-  height: 15vh;
+  height: 12vh;
+  width: 20%;
+  max-width: 200px;
+  object-fit: contain;
 }
 
 .nav {
   background-color: #e0f5dd;
   width: 100vw;
+  display: flex;
+  min-height: 4rem;
+}
+
+.navItemsContainer {
+  top: 0;
+  margin: 0 0 0 min(20%, 200px);
+  width: calc(100vw - min(20%, 200px) - min(30%, 450px));
+  display: flex;
 }
 
 .navItems {
-  margin: 0 0 0 calc(150px + 5%);
-  padding: 20px;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
 }
 
 .navItem {
   display: inline-block;
   margin-right: 1rem;
+  padding-bottom:13px;
+  position:relative;
+}
+
+.activeNavItem {
+  display: inline-block;
+  margin-right: 1rem;
+  padding-bottom:13px;
+  position:relative;
+}
+
+.activeNavItem:after {
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  right:0;
+  background: #004F49;
+  opacity: 50%;
+  height:6px;
+  width: 0;
+  animation-name: underline;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-duration: 1s;
+  border-radius: 10px;
+}
+
+@keyframes underline {
+  from {width: 6px;}
+  to {width: 100%;}
 }
 
 .navLink {
@@ -30,9 +75,21 @@
   text-transform: uppercase;
 }
 
+.navIcon {
+  color: #004F49;
+  display: none;
+  width: 23px;
+  height: 23px;
+  padding: 5px;
+}
+
+/* Set min-height to avoid page reflow while session loading */
 .signedInStatus {
-  display: block;
-  min-height: 4rem;
+  width: 30%;
+  max-width: 450px;
+  display: inline-block;
+  color: #004F49;
+  height: 64px;
 }
 
 .loading,
@@ -41,11 +98,10 @@
   top: 0;
   opacity: 1;
   overflow: hidden;
-  border-radius: 0 0 0.6rem 0.6rem;
   padding: 0.6rem 1rem;
   margin: 0;
-  background-color: red;
-  transition: all 0.2s ease-in;
+  background-color: #d8e5ed;
+  /*transition: all 0.2s ease-in;*/
 }
 
 .loading {
@@ -74,12 +130,15 @@
 
 .avatar {
   border-radius: 2rem;
+  margin: auto;
   float: left;
   height: 2.8rem;
   width: 2.8rem;
   background-color: white;
   background-size: cover;
   background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
 }
 
 .button,
@@ -87,7 +146,6 @@
   float: right;
   margin-right: -0.4rem;
   font-weight: 500;
-  border-radius: 0.3rem;
   cursor: pointer;
   font-size: 1rem;
   line-height: 1.4rem;
@@ -99,13 +157,45 @@
 }
 
 .buttonPrimary {
-  background-color: #346df1;
-  border-color: #346df1;
+  background-color: #004F49;
+  border-color: #004F49;
   color: #fff;
+  border-radius: 0.2rem;
   text-decoration: none;
   padding: 0.7rem 1.4rem;
 }
 
 .buttonPrimary:hover {
   box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.2);
+}
+
+.signOutIcon {
+  display: none;
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+@media (max-width: 900px) {
+  .signedInText,
+  .notSignedInText {
+    display: none;
+  }
+  .signedInStatus {
+    width: 145px;
+  }
+  .navItemsContainer {
+    width: calc(100vw - min(20%, 200px) - 145px);
+  }
+  .navIcon {
+    display: block;
+  }
+  .navLink {
+    display: none;
+  }
+  .signOutText {
+    display: none;
+  }
+  .signOutIcon {
+    display: block;
+  }
 }

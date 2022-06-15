@@ -1,9 +1,13 @@
 .footer {
-  margin-top: 2rem;
+  background-color: #e0f5dd;
+  color: #004F49;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
 }
 
 .navItems {
-  margin-bottom: 1rem;
+  margin: 1rem;
   padding: 0;
   list-style: none;
 }
@@ -11,4 +15,9 @@
 .navItem {
   display: inline-block;
   margin-right: 1rem;
+}
+
+.navItem:last-child {
+  position: fixed;
+  right: 0;
 }

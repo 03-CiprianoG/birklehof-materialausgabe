@@ -50,7 +50,7 @@ export default function ProductsPage({ init_products }: { init_products: Product
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Produkte'>
         <AccessDenied />
       </Layout>
     )
@@ -58,7 +58,7 @@ export default function ProductsPage({ init_products }: { init_products: Product
 
   // If session exists, display products
   return (
-    <Layout>
+    <Layout title='Produkte'>
       <h1>Products</h1>
       <a href="products/create">Create</a>
       <table>

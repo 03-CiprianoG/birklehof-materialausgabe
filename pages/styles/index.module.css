@@ -1,0 +1,33 @@
+.h1 {
+  position: fixed;
+  font-size: 50px;
+  top: 50%;
+  left: 35%;
+  width: 30%;
+  transform: translate(-50%, -50%);
+}
+
+.image {
+  position: fixed;
+  top: 50%;
+  left: 65%;
+  width: 35%;
+  transform: translate(-50%, -50%);
+  opacity: 40%;
+  z-index: -1;
+}
+
+@media (max-width: 1000px) {
+  .h1 {
+    position: fixed;
+    font-size: 40px;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+  }
+  .image {
+    top: 50%;
+    left: 50%;
+    width: 70%;
+  }
+}

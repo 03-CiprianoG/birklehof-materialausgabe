@@ -62,14 +62,14 @@ export default function createProductPage() {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Produkte'>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout>
+    <Layout title='Produkte'>
       <div>
         <h1>Update product</h1>
         <Html5QrcodePlugin

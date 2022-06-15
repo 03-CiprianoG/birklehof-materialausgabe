@@ -54,7 +54,7 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Schüler'>
         <AccessDenied />
       </Layout>
     )
@@ -62,7 +62,7 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
 
   // If session exists, display students
   return (
-    <Layout>
+    <Layout title='Schüler'>
       <h1>Students</h1>
       <a href="students/create">Create a student</a>
       <a href="students/import">Import students</a>

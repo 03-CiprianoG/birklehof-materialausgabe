@@ -92,14 +92,14 @@ export default function createSalePage({ students }: { students: Student[] }) {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Verkäufe'>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout>
+    <Layout title='Verkäufe'>
       <div>
         <h1>Create Sale</h1>
         <Html5QrcodePlugin

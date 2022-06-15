@@ -67,7 +67,7 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Verkäufe'>
         <AccessDenied />
       </Layout>
     )
@@ -75,7 +75,7 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
 
   // If session exists, display users
   return (
-    <Layout>
+    <Layout title='Verkäufe'>
       <h1>Export Sales</h1>
       <table>
         <thead>

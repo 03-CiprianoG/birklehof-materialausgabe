@@ -90,7 +90,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Verkäufe'>
         <AccessDenied />
       </Layout>
     )
@@ -98,7 +98,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
 
   // If session exists, display sales
   return (
-    <Layout>
+    <Layout title='Verkäufe'>
       <h1>Sales</h1>
       
       <a href="sales/create">Sell</a><a href="sales/export">Export Sales To CSV</a>

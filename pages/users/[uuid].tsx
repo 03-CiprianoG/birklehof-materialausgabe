@@ -58,14 +58,14 @@ export default function createProductPage() {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout>
+      <Layout title='Benutzer'>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout>
+    <Layout title='Benutzer'>
       <div>
         <form onSubmit={submitData}>
           <h1>Update User</h1>
