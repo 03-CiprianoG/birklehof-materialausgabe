@@ -14,7 +14,11 @@ export default function Layout({ children, title }: Props) {
       <div className={styles.sideLabelContainer}>
         <h1 className={styles.sideLabel}>{title != null ? title : 'Birklehof'}</h1>
       </div>
-      <main className={styles.main}>{children}</main>
+      <main className={styles.main}>
+        <div className={styles.mainBox}>
+          {children}
+        </div>
+      </main>
       <Footer />
     </>
   )

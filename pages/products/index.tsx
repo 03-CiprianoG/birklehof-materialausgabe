@@ -59,10 +59,15 @@ export default function ProductsPage({ init_products }: { init_products: Product
   // If session exists, display products
   return (
     <Layout title='Produkte'>
-      <h1>Products</h1>
-      <a href="products/create">Create</a>
-      <table>
-        <thead>
+      <div className={'tableToolbar'}>
+        <a className={'tableToolbarItem'} href="products/create">Produkt hinzufügen</a>
+        <a className={'tableToolbarItem'} href="students/import">
+          Tabelle leeren
+        </a>
+      </div>
+      <div className={'tableBox'}>
+        <table>
+          <thead>
           <tr>
             <th>Barcode</th>
             <th>Name</th>
@@ -70,8 +75,8 @@ export default function ProductsPage({ init_products }: { init_products: Product
             <th>Edit</th>
             <th>Delete</th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           {products &&
             products.map((product) => (
               <tr key={product.uuid}>
@@ -80,14 +85,15 @@ export default function ProductsPage({ init_products }: { init_products: Product
                 <td>{product.price} €</td>
                 <td><a href={'products/' + product.uuid}>Edit</a></td>
                 <td>
-                  <button onClick={() => handleDelete(product.uuid)}>
-                    Delete
+                  <button className={'deleteButton'} onClick={() => handleDelete(product.uuid)}>
+                    <IoTrashOutline/>
                   </button>
                 </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </Layout>
   )
 }

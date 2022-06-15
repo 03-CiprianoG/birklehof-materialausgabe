@@ -4,6 +4,7 @@ import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import type { Student } from '@prisma/client'
+import { IoTrashOutline } from "react-icons/io5";
 
 export async function getServerSideProps(context: any) {
   const students = await prisma.student.findMany()
@@ -33,15 +34,15 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
     fetchData()
   }, [session])
 
-  const handleDelete = async (uuid: string) => {
-    const res = await fetch(`/api/students/${uuid}`, {
+  const handleDelete = async (number: string) => {
+    const res = await fetch(`/api/students/${number}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     })
     if (res.status === 200) {
-      const newContent = students.filter((student) => student.uuid !== uuid)
+      const newContent = students.filter((student) => student.number !== number)
       setStudents(newContent)
     } else {
       console.log("An unknown error occurred")
@@ -63,36 +64,47 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
   // If session exists, display students
   return (
     <Layout title='Schüler'>
-      <h1>Students</h1>
-      <a href="students/create">Create a student</a>
-      <a href="students/import">Import students</a>
-      <table>
-        <thead>
+      <div className={'tableToolbar'}>
+        <a className={'tableToolbarItem'} href="students/import">
+          Schüler importieren
+        </a>
+        <a className={'tableToolbarItem'} href="students/import">
+          Tabelle leeren
+        </a>
+      </div>
+      <div className={'tableBox'}>
+        <table>
+          <thead>
           <tr>
-            <th>First name</th>
-            <th>Second name(s)</th>
-            <th>Last name</th>
-            <th>Grade</th>
-            <th>Delete</th>
+            <th>Schülernummer</th>
+            <th>Nachname</th>
+            <th>Vorname</th>
+            <th>Vorname 2</th>
+            <th>Namenszusatz</th>
+            <th>Klasse</th>
+            <th>Löschen</th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           {students &&
             students.map((student) => (
-              <tr key={student.uuid}>
+              <tr key={student.number}>
+                <td>{student.number}</td>
+                <td>{student.lastName}</td>
                 <td>{student.firstName}</td>
                 <td>{student.secondName}</td>
-                <td>{student.lastName}</td>
+                <td>{student.nameAlias}</td>
                 <td>{student.grade}</td>
                 <td>
-                  <button onClick={() => handleDelete(student.uuid)}>
-                    Delete
+                  <button className={'deleteButton'} onClick={() => handleDelete(student.number)}>
+                    <IoTrashOutline/>
                   </button>
                 </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </Layout>
   )
 }

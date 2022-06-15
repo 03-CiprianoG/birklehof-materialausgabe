@@ -1,9 +1,10 @@
-.header {
-  height: 12vh;
+.head {
+  height: 64px;
+  min-width: 500px;
 }
 
 .logo {
-  position: fixed;
+  position: absolute;
   height: 12vh;
   width: 20%;
   max-width: 200px;
@@ -15,6 +16,7 @@
   width: 100vw;
   display: flex;
   min-height: 4rem;
+  min-width: 500px;
 }
 
 .navItemsContainer {
@@ -153,7 +155,7 @@
   position: relative;
   z-index: 10;
   background-color: transparent;
-  color: #555;
+  color: #004F49;
 }
 
 .buttonPrimary {
@@ -197,5 +199,8 @@
   }
   .signOutIcon {
     display: block;
+  }
+  .logo {
+    height: 54px;
   }
 }

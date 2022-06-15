@@ -19,12 +19,13 @@ model User {
 }
 
 model Student {
-  uuid  String @id @default(uuid())
+  number  Int @id @default(autoincrement())
   firstName String
   secondName String
   lastName  String
+  nameAlias String
   grade     String
-  @@unique([firstName, secondName, lastName, grade])
+  @@unique([firstName, secondName, lastName, nameAlias, grade])
 }
 
 model Product {

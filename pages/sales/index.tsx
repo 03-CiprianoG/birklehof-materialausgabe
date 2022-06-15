@@ -4,6 +4,7 @@ import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import type { Sale, User, Item, Product } from "@prisma/client"
+import {IoTrashOutline} from "react-icons/io5";
 
 interface SaleItem extends Item {
   product: Product
@@ -99,29 +100,32 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   // If session exists, display sales
   return (
     <Layout title='Verkäufe'>
-      <h1>Sales</h1>
-      
-      <a href="sales/create">Sell</a><a href="sales/export">Export Sales To CSV</a>
-      <br/>
-      <input
-        type="checkbox"
-        checked={showArchived}
-        onChange={() => setShowArchived(!showArchived)}
-      />
-      <label>Show archived sales</label>
-      <table>
-        <thead>
+      <div className={'tableToolbar'}>
+        <a className={'tableToolbarItem'} href="sales/create">Verkaufen</a>
+        <a className={'tableToolbarItem'} href="sales/export">Verkäufe archivieren und als CSV exportieren</a>
+        <br/>
+        <input
+          type="checkbox"
+          checked={showArchived}
+          onChange={() => setShowArchived(!showArchived)}
+        />
+        <label>Archivierte Verkäufe anzeigen</label>
+      </div>
+      <div className={'tableBox'}>
+        <table>
+          <thead>
           <tr>
-            <th>Seller</th>
-            <th>Buyer</th>
+            <th>Verkäufer</th>
+            <th>Käufer</th>
             <th>Items</th>
-            <th>Total price</th>
-            <th>Sold at</th>
-            {showArchived ? <th>Archived at</th> : null}
-            <th>Actions</th>
+            <th>Gesamtpreis</th>
+            <th>Verkauft am</th>
+            {showArchived ? <th>Archiviert am</th> : null}
+            <th>Archivieren</th>
+            <th>Löschen</th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           {sales &&
             sales.filter((sale) => showArchived || !sale.archived).map((sale) => (
               <tr key={sale.uuid}>
@@ -156,20 +160,25 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
                 {showArchived ? (sale.archived ? (sale.archivedAt ? <td>{new Date(sale.archivedAt).toLocaleTimeString('de-DE')}</td> : <td>Not yet loaded</td>) : <td>Not archived</td>) : null}
                 <td>
                   {!sale.archived ? <div>
-                    {/* Delete button */}
-                    <button onClick={() => handleDelete(sale.uuid)}>
-                      Delete
-                    </button>
                     {/* Archive button */}
                     <button onClick={() => handleArchive(sale.uuid)}>
                       Archive
                     </button>
                   </div> : null}
                 </td>
+                <td>
+                  {!sale.archived ? <div>
+                    {/* Delete button */}
+                    <button className={'deleteButton'} onClick={() => handleDelete(sale.uuid)}>
+                      <IoTrashOutline/>
+                    </button>
+                  </div> : null}
+                </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </Layout>
   )
 }

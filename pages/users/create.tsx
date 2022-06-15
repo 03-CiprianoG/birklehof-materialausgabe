@@ -48,7 +48,7 @@ export default function createSalePage() {
   return (
     <Layout title='Benutzer'>
       <div>
-        <h1>Create User</h1>
+        <h1>Benutzer erstellen</h1>
         <form onSubmit={submitData}>
           <input
             autoFocus
@@ -71,15 +71,15 @@ export default function createSalePage() {
             required
           >
             <option value="admin">Admin</option>
-            <option value="seller">Seller</option>
+            <option value="seller">Verkäufer</option>
           </select>
           <input
             disabled={!name || !email || !role}
             type="submit"
-            value="Create"
+            value="Erstellen"
           />
           <a className="back" href="#" onClick={() => Router.push('/sales')}>
-            or Cancel
+            Abbrechen
           </a>
         </form>
       </div>

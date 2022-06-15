@@ -3,6 +3,7 @@ import Layout from "../../components/layout";
 import Router from 'next/router'
 import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
+import styles from "../styles/students.module.css";
 
 export default function ImportStudentsPage() {
   const { data: session, status } = useSession()
@@ -50,18 +51,21 @@ export default function ImportStudentsPage() {
   return (
     <Layout title='Schüler'>
       <div>
-        <h1>Import Students</h1>
+        <h1>Schüler importieren</h1>
         <div>
-          <h4>Select Image</h4>
-          <input type="file" name="docsUpload" onChange={uploadToClient} />
+          {file && <p>{file.name}</p>}
+          <label htmlFor="filePicker" className={styles.chooseFileButton}>
+            Datei auswählen
+          </label>
           <button
-            className="btn btn-primary"
+            className={styles.importButton}
             type="submit"
             onClick={uploadToServer}
           >
-            Send to server
+            Importieren
           </button>
         </div>
+        <input id="filePicker" hidden={true} type="file" name="docsUpload" onChange={uploadToClient}/>
       </div>
     </Layout>
   );

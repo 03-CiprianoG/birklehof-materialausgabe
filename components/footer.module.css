@@ -1,15 +1,18 @@
 .footer {
   background-color: #e0f5dd;
   color: #004F49;
-  position: fixed;
   bottom: 0;
+  position: fixed;
+  display: block;
   width: 100vw;
+  min-width: 500px;
 }
 
 .navItems {
-  margin: 1rem;
-  padding: 0;
+  padding: 1rem;
+  margin: 0;
   list-style: none;
+  min-width: 500px;
 }
 
 .navItem {

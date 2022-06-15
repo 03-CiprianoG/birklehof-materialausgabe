@@ -2,20 +2,20 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../prisma_client'
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  const studentUuid: string = req.query.uuid.toString()
+  const studentNumber: string = req.query.number.toString()
 
   if (req.method === 'DELETE') {
-    await handleDELETE(studentUuid, res)
+    await handleDELETE(studentNumber, res)
   } else {
     res.status(405).end()
   }
 }
 
 // DELETE /api/students/:uuid
-async function handleDELETE(studentUuid: string, res: NextApiResponse) {
+async function handleDELETE(studentNumber: string, res: NextApiResponse) {
   try {
     await prisma.student.delete({
-      where: { uuid: studentUuid },
+      where: { number: parseInt(studentNumber) },
     })
     res.json({ message: 'Student deleted' })
   } catch(e){

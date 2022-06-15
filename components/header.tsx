@@ -5,7 +5,14 @@ import {useEffect, useState} from "react";
 import logo from '../assets/birklehof-logo.png';
 import Image from "next/image";
 import { useRouter } from 'next/router';
-import { IoHomeOutline, IoPeopleOutline, IoCubeOutline, IoBagOutline, IoBusinessOutline, IoLogOutOutline } from "react-icons/io5";
+import {
+  IoHomeOutline,
+  IoPeopleOutline,
+  IoBagOutline,
+  IoBusinessOutline,
+  IoLogOutOutline,
+  IoAlbumsOutline, IoAppsOutline
+} from "react-icons/io5";
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
@@ -47,30 +54,41 @@ export default function Header() {
                 </a>
               </Link>
             </li>
-            {(role == 'admin' || role == 'superadmin') && (
-              <li  className={router.pathname == "/sales" ? styles.activeNavItem : styles.navItem}>
-                <Link href="/sales">
-                  <a className={styles.navLink}>Verkäufe</a>
+            {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
+              <li  className={router.pathname.includes('/sales/create') ? styles.activeNavItem : styles.navItem}>
+                <Link href="/sales/create">
+                  <a className={styles.navLink}>Verkaufen</a>
                 </Link>
-                <Link href="/sales">
+                <Link href="/sales/create">
                   <a>
                     <IoBagOutline className={styles.navIcon} />
                   </a>
                 </Link>
               </li>)}
-            {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
-              <li className={router.pathname == "/products" ? styles.activeNavItem : styles.navItem}>
+            {(role == 'admin' || role == 'superadmin') && (
+              <li  className={router.pathname.includes('/sales') && !router.pathname.includes('/sales/create') ? styles.activeNavItem : styles.navItem}>
+                <Link href="/sales">
+                  <a className={styles.navLink}>Verkäufe</a>
+                </Link>
+                <Link href="/sales">
+                  <a>
+                    <IoAlbumsOutline className={styles.navIcon} />
+                  </a>
+                </Link>
+              </li>)}
+            {(role == 'admin' || role == 'superadmin') && (
+              <li className={router.pathname.includes('/products') ? styles.activeNavItem : styles.navItem}>
                 <Link href="/products">
                   <a className={styles.navLink}>Produkte</a>
                 </Link>
                 <Link href="/products">
                   <a>
-                    <IoCubeOutline className={styles.navIcon} />
+                    <IoAppsOutline className={styles.navIcon} />
                   </a>
                 </Link>
               </li>)}
-            {(role == 'superadmin') && (
-              <li className={router.pathname == "/students" ? styles.activeNavItem : styles.navItem}>
+            {(role == 'admin' || role == 'superadmin') && (
+              <li className={router.pathname.includes('/students') ? styles.activeNavItem : styles.navItem}>
                 <Link href="/students">
                   <a className={styles.navLink}>Schüler</a>
                 </Link>
@@ -81,7 +99,7 @@ export default function Header() {
                 </Link>
               </li>)}
             {(role == 'superadmin') && (
-              <li className={router.pathname == "/users" ? styles.activeNavItem : styles.navItem}>
+              <li className={router.pathname.includes('/users') ? styles.activeNavItem : styles.navItem}>
                 <Link href="/users">
                   <a className={styles.navLink}>Benutzer</a>
                 </Link>
@@ -138,7 +156,7 @@ export default function Header() {
                   }}
                 >
                   <IoLogOutOutline className={styles.signOutIcon} />
-                  <div className={styles.signOutText}>Abmelden</div>
+                  <span className={styles.signOutText}>Abmelden</span>
                 </a>
               </>
             )}

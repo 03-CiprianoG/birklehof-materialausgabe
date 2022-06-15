@@ -68,7 +68,7 @@ export default function createProductPage() {
     <Layout title='Benutzer'>
       <div>
         <form onSubmit={submitData}>
-          <h1>Update User</h1>
+          <h1>Benutzer bearbeiten</h1>
           <input
             autoFocus
             onChange={e => setName(e.target.value)}
@@ -90,15 +90,15 @@ export default function createProductPage() {
             required
           >
             <option value="admin">Admin</option>
-            <option value="seller">Seller</option>
+            <option value="seller">Verkäufer</option>
           </select>
           <input
             disabled={!name || !email || !role}
             type="submit"
-            value="Update"
+            value="Speichern"
           />
           <a className="back" href="#" onClick={() => Router.push('/users')}>
-            or Cancel
+            Abbrechen
           </a>
         </form>
       </div>

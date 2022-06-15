@@ -4,6 +4,7 @@ import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import { User } from "@prisma/client"
+import {IoTrashOutline} from "react-icons/io5";
 
 export async function getServerSideProps(context: any) {
   const users = await prisma.user.findMany()
@@ -63,35 +64,41 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
   // If session exists, display users
   return (
     <Layout title='Benutzer'>
-      <h1>User</h1>
-      <a href="users/create">Create a user</a>
-      <table>
-        <thead>
+      <div className={'tableToolbar'}>
+        <a className={'tableToolbarItem'} href="users/create">Benutzer erstellen</a>
+        <a className={'tableToolbarItem'} href="students/import">
+          Tabelle leeren
+        </a>
+      </div>
+      <div className={'tableBox'}>
+        <table>
+          <thead>
           <tr>
             <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>E-Mail</th>
+            <th>Rolle</th>
+            <th>Bearbeiten</th>
+            <th>Löschen</th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           {users &&
             users.map((user) => (
               <tr key={user.uuid}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.role}</td>
-                <td><a href={'users/' + user.uuid}>Edit</a></td>
+                <td><a href={'users/' + user.uuid}>Bearbeiten</a></td>
                 <td>
-                  <button onClick={() => handleDelete(user.uuid)}>
-                    Delete
+                  <button className={'deleteButton'} onClick={() => handleDelete(user.uuid)}>
+                    <IoTrashOutline/>
                   </button>
                 </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </Layout>
   )
 }

@@ -1,6 +1,19 @@
 .main {
   width: calc(100vw - 203px);
   margin-left: 203px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-width: 500px;
+}
+
+.mainBox {
+  width: 100%;
+  height: calc(100vh - 64px - 54px);
+  overflow: hidden;
+  min-width: 500px;
 }
 
 .sideLabelContainer {
