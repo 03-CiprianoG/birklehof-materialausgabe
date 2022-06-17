@@ -64,14 +64,6 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
   // If session exists, display students
   return (
     <Layout title='Schüler'>
-      <div className={'tableToolbar'}>
-        <a className={'tableToolbarItem'} href="students/import">
-          Schüler importieren
-        </a>
-        <a className={'tableToolbarItem'} href="students/import">
-          Tabelle leeren
-        </a>
-      </div>
       <div className={'tableBox'}>
         <table>
           <thead>

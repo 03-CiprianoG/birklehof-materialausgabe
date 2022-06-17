@@ -4,6 +4,7 @@ import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import type { Product } from '@prisma/client'
+import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 
 export async function getServerSideProps(context: any) {
   const products = await prisma.product.findMany()
@@ -59,21 +60,15 @@ export default function ProductsPage({ init_products }: { init_products: Product
   // If session exists, display products
   return (
     <Layout title='Produkte'>
-      <div className={'tableToolbar'}>
-        <a className={'tableToolbarItem'} href="products/create">Produkt hinzufügen</a>
-        <a className={'tableToolbarItem'} href="students/import">
-          Tabelle leeren
-        </a>
-      </div>
       <div className={'tableBox'}>
         <table>
           <thead>
           <tr>
             <th>Barcode</th>
             <th>Name</th>
-            <th>Price</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Preis</th>
+            <th>Bearbeiten</th>
+            <th>Löschen</th>
           </tr>
           </thead>
           <tbody>
@@ -82,8 +77,10 @@ export default function ProductsPage({ init_products }: { init_products: Product
               <tr key={product.uuid}>
                 <td>{product.barcode}</td>
                 <td>{product.name}</td>
-                <td>{product.price} €</td>
-                <td><a href={'products/' + product.uuid}>Edit</a></td>
+                <td>
+                  {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price)}
+                </td>
+                <td><a href={'products/' + product.uuid}><IoCreateOutline/></a></td>
                 <td>
                   <button className={'deleteButton'} onClick={() => handleDelete(product.uuid)}>
                     <IoTrashOutline/>

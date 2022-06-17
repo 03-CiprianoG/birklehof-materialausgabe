@@ -1,4 +1,4 @@
-import prisma from "../prisma_client";
+import prisma from "../../prisma_client";
 import {NextApiRequest, NextApiResponse} from "next";
 
 // GET /api/sales
@@ -7,7 +7,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     try {
       const sales = await prisma.sale.findMany({
         where: {
-          archived: false
+          archived: true
         },
         include: {
           seller: true,

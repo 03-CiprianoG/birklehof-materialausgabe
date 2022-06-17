@@ -4,6 +4,7 @@ import Router from 'next/router'
 import {useSession} from "next-auth/react";
 import AccessDenied from "../../components/access-denied";
 import Html5QrcodePlugin from "../../src/Html5QrcodePlugin.jsx";
+import styles from '../styles/user.module.css'
 
 export default function createSalePage() {
   const { data: session, status } = useSession()
@@ -47,40 +48,50 @@ export default function createSalePage() {
 
   return (
     <Layout title='Benutzer'>
-      <div>
-        <h1>Benutzer erstellen</h1>
+      <div className={'form-style-2'} >
+        <h1 className={'form-style-2-heading'}>Benutzer erstellen</h1>
         <form onSubmit={submitData}>
-          <input
-            autoFocus
-            onChange={e => setName(e.target.value)}
-            placeholder="Name"
-            type="text"
-            value={name}
-            required
-          />
-          <input
-            onChange={e => setEmail(e.target.value)}
-            placeholder="E-Mail"
-            type="text"
-            value={email}
-            required
-          />
-          <select
-            onChange={e => setRole(e.target.value)}
-            value={role}
-            required
-          >
-            <option value="admin">Admin</option>
-            <option value="seller">Verkäufer</option>
-          </select>
-          <input
-            disabled={!name || !email || !role}
-            type="submit"
-            value="Erstellen"
-          />
-          <a className="back" href="#" onClick={() => Router.push('/sales')}>
-            Abbrechen
-          </a>
+          <label htmlFor="name"><span>Name <span className="required">*</span></span>
+            <input
+              name={'name'}
+              className={'input-field'}
+              autoFocus
+              onChange={e => setName(e.target.value)}
+              type="text"
+              value={name}
+              required
+            />
+          </label>
+          <label htmlFor="email"><span>E-Mail <span className="required">*</span></span>
+            <input
+              name={'email'}
+              className={'input-field'}
+              onChange={e => setEmail(e.target.value)}
+              placeholder=""
+              type="text"
+              value={email}
+              required
+            />
+          </label>
+          <label htmlFor="role"><span>Rolle <span className="required">*</span></span>
+            <select
+              name={'role'}
+              className="select-field"
+              onChange={e => setRole(e.target.value)}
+              value={role}
+              required>
+              <option value="admin">Admin</option>
+              <option value="seller">Verkäufer</option>
+            </select>
+          </label>
+          <label>
+            <input type="submit" value="Erstellen" disabled={!name || !email || !role}/>
+          </label>
+          <label>
+            <a className={'back'} href="#" onClick={() => Router.push('/users')}>
+              Abbrechen
+            </a>
+          </label>
         </form>
       </div>
     </Layout>

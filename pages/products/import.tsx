@@ -3,7 +3,7 @@ import Layout from "../../components/layout";
 import Router from 'next/router'
 import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
-import styles from "../styles/students.module.css";
+import styles from "../styles/products.module.css";
 
 export default function ImportStudentsPage() {
   const { data: session, status } = useSession()
@@ -28,12 +28,12 @@ export default function ImportStudentsPage() {
   const uploadToServer = async (_event: any) => {
     const body = new FormData();
     body.append("file", file);
-    const response = await fetch("/api/students/import", {
+    const response = await fetch("/api/products/import", {
       method: "POST",
       body
     });
     if (response.status === 200) {
-      Router.push("/students");
+      Router.push("/products");
     } else {
       console.log("An unknown error occurred");
     }
@@ -42,28 +42,25 @@ export default function ImportStudentsPage() {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout title='Schüler'>
+      <Layout title='Produkte'>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout title='Schüler'>
+    <Layout title='Produkte'>
       <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Schüler importieren</h1>
+        <h1 className={'form-style-2-heading'}>Produkte importieren</h1>
         <div>
           {file && <p>{file.name}</p>}
-          <label
-            htmlFor="filePicker"
-            className={styles.chooseFileButton}
-          >
+          <label htmlFor="filePicker" className={styles.chooseFileButton}>
             Datei auswählen
           </label>
           <input
             type="submit"
-            value={'Importieren'}
             onClick={uploadToServer}
+            value={'Importieren'}
           />
         </div>
         <input id="filePicker" hidden={true} type="file" name="docsUpload" onChange={uploadToClient}/>

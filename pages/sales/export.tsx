@@ -10,11 +10,7 @@ export async function getServerSideProps(_context: any) {
   let sales = await prisma.sale.findMany({
     include: {
       seller: true,
-      itemsSold: {
-        include: {
-          product: true
-        }
-      },
+      itemsSold: true
     }
   })
   sales = JSON.parse(JSON.stringify(sales))
@@ -27,11 +23,12 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
   const loading = status === "loading"
   const timestamp = new Date().toISOString().replace(/:/g, '-');
   const headers = [
-    { label: "Seller", key: "seller" },
-    { label: "Buyer", key: "buyer" },
-    { label: "Items", key: "items" },
-    { label: "Price", key: "price" },
-    { label: "Sold at", key: "soldAt" },
+    { label: "Verkäufer", key: "seller" },
+    { label: "Käufer", key: "buyer" },
+    { label: "Produkte", key: "items" },
+    { label: "Einzelpreise", key: "price" },
+    { label: "Gesamtpreis", key: "totalPrice" },
+    { label: "Verkauft am", key: "soldAt" },
   ];
   const csvReport = {
     data: data,
@@ -45,17 +42,17 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
       const totalPrice = sale.itemsSold.reduce((acc, item) => {
         return acc + item.pricePerUnit * item.quantity
       }, 0);
-      console.log(totalPrice)
       return {
         seller: sale.seller.name,
         buyer: sale.buyerName,
         items: sale.itemsSold.map((item) => {
-          return `${item.product.name} x ${item.quantity}`
-        }).join(", "),
+          return `${item.productName} x ${item.quantity}`
+        }).join("; "),
         price: sale.itemsSold.map((item) => {
-          return `${item.product.price}€ x ${item.quantity}`
-        }).join(" + ") + " = " + totalPrice + "€",
-        soldAt: sale.soldAt,
+          return `${new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(item.pricePerUnit)} € x ${item.quantity}`
+        }).join("; "),
+        totalPrice: new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(totalPrice),
+        soldAt: new Date(sale.soldAt).toLocaleDateString('de-DE') + ', ' + new Date(sale.soldAt).toLocaleTimeString('de-DE')
     }});
     console.log(data)
     setData(data)
@@ -80,11 +77,12 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
       <table>
         <thead>
         <tr>
-          <th>Seller</th>
-          <th>Buyer</th>
-          <th>Items</th>
-          <th>Price</th>
-          <th>Sold at</th>
+          <th>Verkäufer</th>
+          <th>Käufer</th>
+          <th>Produkte</th>
+          <th>Einzelpreise</th>
+          <th>Gesamtpreis</th>
+          <th>Verkauft am</th>
         </tr>
         </thead>
         <tbody>
@@ -94,6 +92,7 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
             <td>{sale.buyer}</td>
             <td>{sale.items}</td>
             <td>{sale.price}</td>
+            <td>{sale.totalPrice}</td>
             <td>{sale.soldAt}</td>
           </tr>
         ))}

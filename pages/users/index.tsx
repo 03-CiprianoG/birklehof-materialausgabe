@@ -64,12 +64,6 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
   // If session exists, display users
   return (
     <Layout title='Benutzer'>
-      <div className={'tableToolbar'}>
-        <a className={'tableToolbarItem'} href="users/create">Benutzer erstellen</a>
-        <a className={'tableToolbarItem'} href="students/import">
-          Tabelle leeren
-        </a>
-      </div>
       <div className={'tableBox'}>
         <table>
           <thead>

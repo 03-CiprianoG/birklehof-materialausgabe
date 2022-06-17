@@ -38,7 +38,11 @@ export default function createSalePage({ students }: { students: Student[] }) {
       })
 
       if (res.status === 200) {
-        Router.push('/sales')
+        // Reset form
+        setItemsSold([])
+        setBuyerName('')
+        setNewBarCode('')
+        setNewQuantity('')
       } else {
         const json = await res.json()
         console.log(json.error)
@@ -92,96 +96,121 @@ export default function createSalePage({ students }: { students: Student[] }) {
   // If no session exists, display access denied message
   if (!session) {
     return (
-      <Layout title='Verkäufe'>
+      <Layout title='Verkaufen'>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout title='Verkäufe'>
-      <div>
-        <h1>Create Sale</h1>
+    <Layout title='Verkaufen'>
+      <div className={'form-style-2'}>
+        <h1 className={'form-style-2-heading'}>Produkt hinzufügen</h1>
         <Html5QrcodePlugin
           fps={10}
           qrbox={250}
           disableFlip={false}
           qrCodeSuccessCallback={onNewScanResult}/>
+        <br />
         <form onSubmit={addToItemsSold}>
-          <input
-            autoFocus
-            onChange={e => setNewBarCode(e.target.value)}
-            placeholder="Bar Code"
-            type="text"
-            value={newBarCode}
-            required
-          />
-          <input
-            onChange={e => setNewQuantity(e.target.value)}
-            placeholder="Quantity"
-            type="number"
-            step="1"
-            min="1"
-            value={newQuantity}
-            required
-          />
-          <button type="submit">Add Item</button>
+          <label htmlFor="barcode"><span>Barcode <span className="required">*</span></span>
+            <input
+              name={'barcode'}
+              className={'input-field'}
+              autoFocus
+              onChange={e => setNewBarCode(e.target.value)}
+              type="text"
+              value={newBarCode}
+              required
+            />
+          </label>
+          <label htmlFor="quantity"><span>Anzahl <span className="required">*</span></span>
+            <input
+              name={'quantity'}
+              className={'input-field'}
+              onChange={e => setNewQuantity(e.target.value)}
+              type="number"
+              step="1"
+              min="1"
+              value={newQuantity}
+              required
+            />
+          </label>
+          <label>
+            <input type="submit" value="Hinzufügen"/>
+          </label>
         </form>
+      </div>
+      <div className={'form-style-2'}>
+        <h1 className={'form-style-2-heading'}>Verkauf abschließen</h1>
         <table>
           <thead>
-            <tr>
-              <th>Barcode</th>
-              <th>Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
-              <th>Remove</th>
-            </tr>
+          <tr>
+            <th>Barcode</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th>Remove</th>
+          </tr>
           </thead>
           <tbody>
-            {itemsSold.map((item, index) => (
-              <tr key={index}>
-                <td>{item.barcode}</td>
-                <td>{item.name}</td>
-                <td>
-                  <input
-                    onChange={e => setItemsSold([...itemsSold.slice(0, index), { ...item, quantity: +e.target.value }, ...itemsSold.slice(index + 1)])}
-                    type="number"
-                    step="1"
-                    min="1"
-                    value={item.quantity}
-                    required
-                  />
-                </td>
-                <td>{new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'EUR'}).format(item.price)}</td>
-                <td>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(+item.quantity * +item.price)}</td>
-                <td><button onClick={() => setItemsSold(itemsSold.filter((_, i) => i !== index))}>Remove</button></td>
-              </tr>
-            ))}
+          {itemsSold.map((item, index) => (
+            <tr key={index}>
+              <td>{item.barcode}</td>
+              <td>{item.name}</td>
+              <td>
+                <input
+                  onChange={e => setItemsSold([...itemsSold.slice(0, index), { ...item, quantity: +e.target.value }, ...itemsSold.slice(index + 1)])}
+                  type="number"
+                  step="1"
+                  min="1"
+                  value={item.quantity}
+                  required
+                />
+              </td>
+              <td>{new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'EUR'}).format(item.price)}</td>
+              <td>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(+item.quantity * +item.price)}</td>
+              <td><button onClick={() => setItemsSold(itemsSold.filter((_, i) => i !== index))}>Remove</button></td>
+            </tr>
+          ))}
           </tbody>
         </table>
-        <p>Total</p>
-        <p>{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(itemsSold.reduce((acc, item) => acc + item.quantity * item.price, 0))}</p>
-        <form onSubmit={submitData}>
+        <br/>
+        <label htmlFor="total"><span>Gesamtpreis</span>
           <input
-            onChange={e => setBuyerName(e.target.value)}
-            placeholder="Buyer Name"
+            className={'input-field'}
+            name={'total'}
             type="text"
-            value={buyerName}
+            value={new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(itemsSold.reduce((acc, item) => acc + item.quantity * item.price, 0))}
             required
-            list="students"
+            readOnly
           />
-          <datalist id="students">
-            {students.map(student => <option key={student.firstName + '-' + student.lastName + '-' + student.grade} value={student.firstName + ' ' + student.lastName + ', ' + student.grade} />)}
-          </datalist>
-          <input
-            disabled={!session.user?.email || !buyerName || !itemsSold || itemsSold.length === 0}
-            type="submit"
-            value="Create"
-          />
-          <a className="back" href="#" onClick={() => Router.push('/sales')}>
-            or Cancel
-          </a>
+        </label>
+        <form onSubmit={submitData}>
+          <label htmlFor="buyer"><span>Käufer <span className="required">*</span></span>
+            <input
+              className={'input-field'}
+              name={'buyer'}
+              onChange={e => setBuyerName(e.target.value)}
+              placeholder="Buyer Name"
+              type="text"
+              value={buyerName}
+              required
+              list="students"
+            />
+            <datalist id="students">
+              {students.map(student => <option key={student.firstName + '-' + student.lastName + '-' + student.grade} value={student.firstName + ' ' + student.lastName + ', ' + student.grade} />)}
+            </datalist>
+          </label>
+          <label>
+            <input type="submit" value="Erstellen" disabled={!session.user?.email || !buyerName || !itemsSold || itemsSold.length === 0}/>
+          </label>
+          <label>
+            <a className={'back'} href="#" onClick={() => Router.push('/home')}>
+              Abbrechen
+            </a>
+          </label>
         </form>
       </div>
     </Layout>

@@ -33,13 +33,11 @@ model Product {
   barcode String @unique
   name    String @unique
   price   Float
-  items   Item[]
 }
 
 model Item {
   uuid        String  @id @default(uuid())
-  product     Product @relation(fields: [productUuid], references: [uuid])
-  productUuid String  
+  productName String
   quantity    Int     @default(1)
   sale        Sale    @relation(fields: [saleUuid], references: [uuid])
   saleUuid    String

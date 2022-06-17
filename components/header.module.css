@@ -1,206 +1,116 @@
-.head {
-  height: 64px;
-  min-width: 500px;
-}
-
-.logo {
-  position: absolute;
-  height: 12vh;
-  width: 20%;
-  max-width: 200px;
-  object-fit: contain;
-}
-
-.nav {
+/* Add a black background color to the top navigation */
+.topnav {
   background-color: #e0f5dd;
-  width: 100vw;
-  display: flex;
-  min-height: 4rem;
-  min-width: 500px;
-}
-
-.navItemsContainer {
-  top: 0;
-  margin: 0 0 0 min(20%, 200px);
-  width: calc(100vw - min(20%, 200px) - min(30%, 450px));
-  display: flex;
-}
-
-.navItems {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-
-.navItem {
-  display: inline-block;
-  margin-right: 1rem;
-  padding-bottom:13px;
-  position:relative;
-}
-
-.activeNavItem {
-  display: inline-block;
-  margin-right: 1rem;
-  padding-bottom:13px;
-  position:relative;
-}
-
-.activeNavItem:after {
-  content:'';
-  position:absolute;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  right:0;
-  background: #004F49;
-  opacity: 50%;
-  height:6px;
-  width: 0;
-  animation-name: underline;
-  animation-fill-mode: forwards;
-  -webkit-animation-fill-mode: forwards;
-  animation-duration: 1s;
-  border-radius: 10px;
-}
-
-@keyframes underline {
-  from {width: 6px;}
-  to {width: 100%;}
-}
-
-.navLink {
-  color: #004F49;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-.navIcon {
-  color: #004F49;
-  display: none;
-  width: 23px;
-  height: 23px;
-  padding: 5px;
-}
-
-/* Set min-height to avoid page reflow while session loading */
-.signedInStatus {
-  width: 30%;
-  max-width: 450px;
-  display: inline-block;
-  color: #004F49;
-  height: 64px;
-}
-
-.loading,
-.loaded {
-  position: relative;
-  top: 0;
-  opacity: 1;
   overflow: hidden;
-  padding: 0.6rem 1rem;
-  margin: 0;
-  background-color: #d8e5ed;
-  /*transition: all 0.2s ease-in;*/
+  z-index: 100;
 }
 
-.loading {
-  top: -2rem;
-  opacity: 0;
-}
-
-.signedInText,
-.notSignedInText {
-  position: absolute;
-  padding-top: 0.8rem;
-  left: 1rem;
-  right: 6.5rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: inherit;
-  z-index: 1;
-  line-height: 1.3rem;
-}
-
-.signedInText {
-  padding-top: 0;
-  left: 4.6rem;
-}
-
-.avatar {
-  border-radius: 2rem;
-  margin: auto;
+/* Style the links inside the navigation bar */
+.topnav a {
   float: left;
-  height: 2.8rem;
-  width: 2.8rem;
-  background-color: white;
-  background-size: cover;
-  background-repeat: no-repeat;
-  display: flex;
-  align-items: center;
+  display: block;
+  color: #009879;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
 }
 
-.button,
-.buttonPrimary {
-  float: right;
-  margin-right: -0.4rem;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1.4rem;
-  padding: 0.7rem 0.8rem;
-  position: relative;
-  z-index: 10;
-  background-color: transparent;
+/* Add an active class to highlight the current page */
+.active {
+  background-color: #009879 !important;
+  color: white !important;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+  display: none;
+}
+
+/* Dropdown container - needed to position the dropdown content */
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+/* Style the dropdown button to fit inside the topnav */
+.dropdownButton {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: #009879;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+/* Style the dropdown content (hidden by default) */
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #d8e5ed;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Style the links inside the dropdown */
+.dropdownContent a {
+  float: none;
+  color: #004F49;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a dark background on topnav links and the dropdown button on hover */
+.topnav a:hover, .dropdown:hover .dropdownButton {
+  background-color: #009879 !important;
+  color: white;
+}
+
+/* Add a grey background to dropdown links on hover */
+.dropdownContent a:hover {
+  background-color: #e9f2f5 !important;
   color: #004F49;
 }
 
-.buttonPrimary {
-  background-color: #004F49;
-  border-color: #004F49;
-  color: #fff;
-  border-radius: 0.2rem;
-  text-decoration: none;
-  padding: 0.7rem 1.4rem;
+/* Show the dropdown menu when the user moves the mouse over the dropdown button */
+.dropdown:hover .dropdownContent {
+  display: block;
 }
 
-.buttonPrimary:hover {
-  box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.2);
-}
-
-.signOutIcon {
-  display: none;
-  width: 1.3rem;
-  height: 1.3rem;
-}
-
-@media (max-width: 900px) {
-  .signedInText,
-  .notSignedInText {
+/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 1100px) {
+  .topnav a:not(:first-child), .dropdown .dropdownButton {
     display: none;
   }
-  .signedInStatus {
-    width: 145px;
-  }
-  .navItemsContainer {
-    width: calc(100vw - min(20%, 200px) - 145px);
-  }
-  .navIcon {
+  .topnav a.icon {
+    float: right;
     display: block;
   }
-  .navLink {
-    display: none;
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 1100px) {
+  .topnavResponsive {position: relative;}
+  .topnavResponsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
-  .signOutText {
-    display: none;
-  }
-  .signOutIcon {
+  .topnavResponsive a {
+    float: none;
     display: block;
+    text-align: left;
   }
-  .logo {
-    height: 54px;
+  .topnavResponsive .dropdown {float: none;}
+  .topnavResponsive .dropdownContent {position: relative;}
+  .topnavResponsive .dropdown .dropdownButton {
+    display: block;
+    width: 100%;
+    text-align: left;
   }
 }

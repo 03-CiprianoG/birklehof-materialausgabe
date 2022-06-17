@@ -49,44 +49,57 @@ export default function createProductPage() {
 
   return (
     <Layout title='Produkte'>
-      <div>
+      <div className={'form-style-2'}>
+        <h1 className={'form-style-2-heading'}>Create Product</h1>
         <Html5QrcodePlugin
           fps={10}
           qrbox={250}
           disableFlip={false}
           qrCodeSuccessCallback={onNewScanResult}/>
+        <br/>
         <form onSubmit={submitData}>
-          <h1>Create Product</h1>
-          <input
-            autoFocus
-            onChange={e => setBarcode(e.target.value)}
-            placeholder="Bar Code"
-            type="text"
-            value={barcode}
-          />
-          <input
-            onChange={e => setName(e.target.value)}
-            placeholder="Name"
-            minLength={5}
-            maxLength={255}
-            type="text"
-            value={name}
-          />
-          <input
-            onChange={e => setPrice(e.target.value)}
-            placeholder="Price (in euro)"
-            type="number"
-            step="0.01"
-            value={price}
-          />
-          <input
-            disabled={!name || !barcode || !price}
-            type="submit"
-            value="Create"
-          />
-          <a className="back" href="#" onClick={() => Router.push('/products')}>
-            or Cancel
-          </a>
+          <label htmlFor="barcode"><span>Barcode <span className="required">*</span></span>
+            <input
+              className={'input-field'}
+              name={'barcode'}
+              autoFocus
+              onChange={e => setBarcode(e.target.value)}
+              type="text"
+              value={barcode}
+              required
+            />
+          </label>
+          <label htmlFor="name"><span>Name <span className="required">*</span></span>
+            <input
+              className={'input-field'}
+              name={'name'}
+              onChange={e => setName(e.target.value)}
+              minLength={5}
+              maxLength={255}
+              type="text"
+              value={name}
+              required
+            />
+          </label>
+          <label htmlFor="price"><span>Preis (in Euro) <span className="required">*</span></span>
+            <input
+              className={'input-field'}
+              name={'price'}
+              onChange={e => setPrice(e.target.value)}
+              type="number"
+              step="0.01"
+              value={price}
+              required
+            />
+          </label>
+          <label>
+            <input type="submit" value="Hinzufügen" disabled={!name || !barcode || !price}/>
+          </label>
+          <label>
+            <a className={'back'} href="#" onClick={() => Router.push('/products')}>
+              Abbrechen
+            </a>
+          </label>
         </form>
       </div>
     </Layout>

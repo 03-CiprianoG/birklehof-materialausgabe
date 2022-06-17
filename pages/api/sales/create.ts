@@ -4,6 +4,7 @@ import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 
 interface Item {
   barcode: string
+  name: string
   quantity: number
   price: number
 }
@@ -37,11 +38,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           },
           itemsSold: {
             create: itemsSold.map((item: Item) => ({
-              product: {
-                connect: {
-                  barcode: item.barcode
-                }
-              },
+              productName: item.name + ' (' + item.barcode + ')',
               quantity: +item.quantity,
               pricePerUnit: +item.price,
             }))

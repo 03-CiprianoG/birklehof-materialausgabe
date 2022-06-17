@@ -5,6 +5,7 @@
   left: 35%;
   width: 30%;
   transform: translate(-50%, -50%);
+  text-align: left;
 }
 
 .image {
