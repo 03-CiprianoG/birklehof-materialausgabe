@@ -7,7 +7,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  min-width: 500px;
+  min-width: 620px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -49,7 +49,6 @@ table {
   border-collapse: collapse;
   font-size: 0.9em;
   font-family: sans-serif;
-  min-width: 400px;
   text-align: left;
   overflow: scroll;
   width: 100%;
@@ -149,6 +148,13 @@ table tbody tr.active-row {
 .form-style-2 .select-field:focus{
   border: 1px solid #009879;
 }
+.form-style-2 .input-field:read-only,
+.form-style-2 .tel-number-field:read-only,
+.form-style-2 .textarea-field:read-only,
+.form-style-2 .select-field:read-only{
+  border: 1px dashed #009879;
+  background: #eef6f4;
+}
 .form-style-2 .textarea-field{
   height:100px;
   width: 55%;
@@ -173,6 +179,19 @@ table tbody tr.active-row {
   background: #009879;
   color: #fff;
 }
+/* sytle for disabled buttons */
+.form-style-2 input[type=submit]:disabled,
+.form-style-2 input[type=button]:disabled{
+  background: #91b9b1;
+  cursor: default;
+  color: #fff;
+}
 .form-style-2 .back{
   color:red;
+}
+@media (max-width: 850px) {
+  .form-style-2{
+    margin: 0px auto auto;
+    padding: 5px;
+  }
 }

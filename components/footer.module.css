@@ -2,17 +2,17 @@
   background-color: #e0f5dd;
   color: #004F49;
   bottom: 0;
-  position: fixed;
+  position: absolute;
   display: block;
   width: 100vw;
-  min-width: 500px;
+  min-width: 620px;
+  height: 52px;
 }
 
 .navItems {
   padding: 1rem;
   margin: 0;
   list-style: none;
-  min-width: 500px;
 }
 
 .navItem {

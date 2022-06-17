@@ -24,7 +24,7 @@ export default function createProductPage() {
       if (res.status === 200) {
         Router.push('/products')
       } else {
-        console.log("An unknown error occurred")
+        console.log('An unknown error occurred')
       }
     } catch (error) {
       console.error(error)
@@ -32,7 +32,7 @@ export default function createProductPage() {
   }
 
   const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
-    setBarcode(decodedText)
+    await setBarcode(decodedText)
   }
 
   // When rendering client side don't display anything until loading is complete

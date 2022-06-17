@@ -49,7 +49,6 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         message: 'Sale created',
       })
     }  catch(e){
-      console.log(e)
       if (e instanceof PrismaClientKnownRequestError) {
         // The .code property can be accessed in a type-safe manner
         if (e.code === 'P2002') {

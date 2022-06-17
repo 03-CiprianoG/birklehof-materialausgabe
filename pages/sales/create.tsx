@@ -44,8 +44,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
         setNewBarCode('')
         setNewQuantity('')
       } else {
-        const json = await res.json()
-        console.log(json.error)
+        console.log('An unknown error occurred')
       }
     } catch (error) {
       console.error(error)
@@ -87,7 +86,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
   }
 
   const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
-    setNewBarCode(decodedText)
+    await setNewBarCode(decodedText)
   }
   
   // When rendering client side don't display anything until loading is complete

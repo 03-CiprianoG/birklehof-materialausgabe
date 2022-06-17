@@ -35,9 +35,6 @@ class App extends React.Component {
   }
 
   onNewScanResult(decodedText, decodedResult) {
-    console.log(
-      "App [result]", decodedResult);
-
     // let decodedResults = this.state.decodedResults;
     // decodedResults.push(decodedResult);
     this.setState((state, props) => {

@@ -53,7 +53,7 @@ export default function createProductPage() {
   }
 
   const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
-    setBarcode(decodedText)
+    await setBarcode(decodedText)
   }
 
   // When rendering client side don't display anything until loading is complete

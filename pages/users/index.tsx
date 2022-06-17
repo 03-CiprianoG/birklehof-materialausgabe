@@ -4,7 +4,7 @@ import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import { User } from "@prisma/client"
-import {IoTrashOutline} from "react-icons/io5";
+import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 
 export async function getServerSideProps(context: any) {
   const users = await prisma.user.findMany()
@@ -81,8 +81,16 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
               <tr key={user.uuid}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td><a href={'users/' + user.uuid}>Bearbeiten</a></td>
+                <td>
+                  {user.role === 'superadmin' ? 'Super-Admin' : (
+                    user.role === 'admin' ? 'Admin' : (
+                        user.role === 'seller' ? 'Verkäufer' : (
+                            user.role
+                          )
+                      )
+                  )}
+                </td>
+                <td><a href={'users/' + user.uuid}><IoCreateOutline/></a></td>
                 <td>
                   <button className={'deleteButton'} onClick={() => handleDelete(user.uuid)}>
                     <IoTrashOutline/>

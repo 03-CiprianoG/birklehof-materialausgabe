@@ -1,13 +1,11 @@
 {
   "name": "birklehof-materialausgabe",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
-  "description": "An example project for NextAuth.js",
-  "repository": "https://github.com/nextauthjs/next-auth-example.git",
-  "bugs": {
-    "url": "https://github.com/nextauthjs/next-auth/issues"
-  },
-  "homepage": "https://next-auth-example.vercel.app",
+  "description": "",
+  "repository": "https://github.com/C0mput3r5c13nt15t/birklehof-materialausgabe.git",
+  "bugs": {},
+  "homepage": "",
   "main": "",
   "scripts": {
     "add-admin": "yarn run ts-node prisma/scripts/add_admin.ts",
@@ -16,11 +14,9 @@
     "start": "next start",
     "types": "tsc --noEmit"
   },
-  "author": "Iain Collins <me@iaincollins.com>",
+  "author": "Louisa Lauser",
   "contributors": [
-    "Balázs Orbán <info@balazsorban.com>",
-    "Nico Domino <yo@ndo.dev>",
-    "Lluis Agusti <hi@llu.lu>"
+    "Paul Maier <pauljustus279@gmail.com>"
   ],
   "license": "ISC",
   "dependencies": {

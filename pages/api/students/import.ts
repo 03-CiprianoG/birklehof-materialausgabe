@@ -28,7 +28,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       const success = await evaluateFile(files.file);
-      console.log(success);
 
       if (success) {
         console.log('Successfully imported students');
@@ -79,7 +78,6 @@ const evaluateFile: (file: any) => Promise<boolean> = async (file: any) => {
     await prisma.student.createMany(batchQuery);
     return true;
   } catch (e) {
-    console.log(e);
     return false;
   }
 }

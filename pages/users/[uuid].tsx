@@ -66,40 +66,68 @@ export default function createProductPage() {
 
   return (
     <Layout title='Benutzer'>
-      <div>
+      <div className={'form-style-2'}>
+        <h1 className={'form-style-2-heading'}>Benutzer bearbeiten</h1>
         <form onSubmit={submitData}>
-          <h1>Benutzer bearbeiten</h1>
-          <input
-            autoFocus
-            onChange={e => setName(e.target.value)}
-            placeholder="Name"
-            type="text"
-            value={name}
-            required
-          />
-          <input
-            onChange={e => setEmail(e.target.value)}
-            placeholder="E-Mail"
-            type="text"
-            value={email}
-            required
-          />
-          <select
-            onChange={e => setRole(e.target.value)}
-            value={role}
-            required
-          >
-            <option value="admin">Admin</option>
-            <option value="seller">Verkäufer</option>
-          </select>
-          <input
-            disabled={!name || !email || !role}
-            type="submit"
-            value="Speichern"
-          />
-          <a className="back" href="#" onClick={() => Router.push('/users')}>
-            Abbrechen
-          </a>
+          <label htmlFor="name"><span>Name <span className="required">*</span></span>
+            <input
+              name={'name'}
+              className={'input-field'}
+              autoFocus
+              onChange={e => setName(e.target.value)}
+              type="text"
+              value={name}
+              readOnly={role === 'superadmin'}
+              required
+            />
+          </label>
+          <label htmlFor="email"><span>E-Mail <span className="required">*</span></span>
+            <input
+              name={'email'}
+              className={'input-field'}
+              onChange={e => setEmail(e.target.value)}
+              placeholder=""
+              type="text"
+              value={email}
+              readOnly={role === 'superadmin'}
+              required
+            />
+          </label>
+          {role !== 'superadmin' ? (
+            <label htmlFor="role"><span>Rolle <span className="required">*</span></span>
+              <select
+                name={'role'}
+                className="select-field"
+                onChange={e => setRole(e.target.value)}
+                value={role}
+                required>
+                <option value="admin">Admin</option>
+                <option value="seller">Verkäufer</option>
+              </select>
+            </label>
+          ) : null}
+          {role === 'superadmin' ? (
+            <label htmlFor="role"><span>Rolle </span>
+              <input
+                name={'role'}
+                className={'input-field'}
+                onChange={e => setRole(e.target.value)}
+                value={'Super-Admin'}
+                type={'text'}
+                required
+                readOnly
+              >
+              </input>
+            </label>
+          ) : null}
+          <label>
+            <input type="submit" value="Speichern" disabled={!name || !email || !role || role === 'superadmin'}/>
+          </label>
+          <label>
+            <a className={'back'} href="#" onClick={() => Router.push('/users')}>
+              Abbrechen
+            </a>
+          </label>
         </form>
       </div>
     </Layout>

@@ -42,25 +42,23 @@ export default function Header() {
     fetchRole()
   }, [session])
 
-  const toggleResponsive = async () => {
-    var x = document.getElementById("myTopnav");
-    if (x.className === styles.topnav) {
-      x.className += ' ' + styles.topnavResponsive;
-    } else {
-      x.className = styles.topnav;
-    }
-  }
-
   return (
     <div>
       <div className={styles.topnav} id="myTopnav">
-        <Link href="/" >
-          <a className={router.pathname == '/' ? ' ' + styles.active : ''}><IoHomeOutline/> Home</a>
+        <Link href="/">
+          <a className={styles.navWithText + (router.pathname == '/' ? ' ' + styles.active : '')}><IoHomeOutline/> Home</a>
+        </Link>
+        <Link href="/">
+          <a className={styles.navOnlyIcon + (router.pathname == '/' ? ' ' + styles.active : '')}><IoHomeOutline/></a>
         </Link>
         {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
         <Link href="/sales/create">
-          <a className={router.pathname == '/sales/create' ? ' ' + styles.active : ''}><IoBagOutline/> Verkaufen</a>
+          <a className={styles.navWithText + (router.pathname == '/sales/create' ? ' ' + styles.active : '')}><IoBagOutline/> Verkaufen</a>
         </Link>)}
+        {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
+          <Link href="/sales/create">
+            <a className={styles.navOnlyIcon + (router.pathname == '/sales/create' ? ' ' + styles.active : '')}><IoBagOutline/></a>
+          </Link>)}
         {(role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>
           <button className={styles.dropdownButton + (router.pathname.includes('/sales') && !router.pathname.includes('/sales/create') ? ' ' + styles.active : '')}>Verkäufe
             <IoChevronDownOutline/>
@@ -91,9 +89,6 @@ export default function Header() {
             <Link href="/products/import">
               <a><IoCloudUploadOutline/> Importieren</a>
             </Link>
-            <Link href="/products/import">
-              <a><IoTrashOutline/> Löschen</a>
-            </Link>
           </div>
         </div>)}
         {(role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>
@@ -106,9 +101,6 @@ export default function Header() {
             </Link>
             <Link href="/students/import">
               <a><IoCloudUploadOutline/> Importieren</a>
-            </Link>
-            <Link href="/students/import">
-              <a><IoTrashOutline/> Löschen</a>
             </Link>
           </div>
         </div>)}
@@ -125,11 +117,9 @@ export default function Header() {
             </Link>
           </div>
         </div>)}
-        <a className={styles.icon} onClick={toggleResponsive}>
-          <IoMenuOutline/>
-        </a>
         {!session && (<a
           href={`/api/auth/signin`}
+          className={styles.navWithText}
           onClick={(e) => {
             e.preventDefault()
             signIn()
@@ -137,8 +127,19 @@ export default function Header() {
         >
           <IoLogOutOutline/> Anmelden
         </a>)}
+        {!session && (<a
+          href={`/api/auth/signin`}
+          className={styles.navOnlyIcon}
+          onClick={(e) => {
+            e.preventDefault()
+            signIn()
+          }}
+        >
+          <IoLogOutOutline/>
+        </a>)}
         {session && (<a
           href={`/api/auth/signout`}
+          className={styles.navWithText}
           onClick={(e) => {
             e.preventDefault()
             signOut().then(() => document.location = "/")
@@ -146,44 +147,17 @@ export default function Header() {
         >
           <IoLogOutOutline /> Abmelden
         </a>)}
-      </div>
-      {/*<div className={styles.signedInStatus}>
-        <p
-          className={`nojs-show ${
-            !session && loading ? styles.loading : styles.loaded
-          }`}
+        {session && (<a
+          href={`/api/auth/signout`}
+          className={styles.navOnlyIcon}
+          onClick={(e) => {
+            e.preventDefault()
+            signOut().then(() => document.location = "/")
+          }}
         >
-          {!session && (
-            <>
-              <a
-                href={`/api/auth/signin`}
-                className={styles.buttonPrimary}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signIn()
-                }}
-              >
-                Anmelden
-              </a>
-            </>
-          )}
-          {session?.user && (
-            <>
-              <a
-                href={`/api/auth/signout`}
-                className={styles.button}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signOut().then(() => document.location = "/")
-                }}
-              >
-                <IoLogOutOutline className={styles.signOutIcon} />
-                <span className={styles.signOutText}>Abmelden</span>
-              </a>
-            </>
-          )}
-        </p>
-      </div>*/}
+          <IoLogOutOutline />
+        </a>)}
+      </div>
     </div>
   )
 }

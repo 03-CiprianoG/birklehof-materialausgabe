@@ -31,7 +31,7 @@ export async function getServerSideProps(_context: any) {
 
 export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtended[] }) {
   const { data: session, status } = useSession()
-  const loading = status === "loading"
+  const loading = status === 'loading'
   const [sales, setSales] = useState(init_sales)
 
   // Fetch sales from protected route
@@ -42,7 +42,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
         const json = await res.json()
         setSales(json.data)
       } else {
-        console.log("An unknown error occurred")
+        console.log('An unknown error occurred')
       }
     }
     fetchData()
@@ -50,24 +50,10 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
 
   const handleDelete = async (uuid: string) => {
     const res = await fetch(`/api/sales/${uuid}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-    })
-    if (res.status === 200) {
-      const newContent = sales.filter((product) => product.uuid !== uuid)
-      setSales(newContent)
-    } else {
-      console.log("An unknown error occurred")
-    }
-  }
-  const handleArchive = async (uuid: string) => {
-    const res = await fetch(`/api/sales/archive/${uuid}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      }
     })
     if (res.status === 200) {
       const newContent = sales.filter((product) => product.uuid !== uuid)
@@ -102,7 +88,6 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
             <th>Einzelpreise</th>
             <th>Gesamtpreis</th>
             <th>Verkauft am</th>
-            <th>Archivieren</th>
             <th>Löschen</th>
           </tr>
           </thead>
@@ -141,12 +126,6 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
                   {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(sale.itemsSold.reduce((acc, item) => acc + +item.quantity * +item.pricePerUnit, 0))}
                 </td>
                 <td>{new Date(sale.soldAt).toLocaleDateString('de-DE')}, {new Date(sale.soldAt).toLocaleTimeString('de-DE')}</td>
-                <td>
-                  {/* Archive button */}
-                  <button onClick={() => handleArchive(sale.uuid)}>
-                    Archive
-                  </button>
-                </td>
                 <td>
                   {/* Delete button */}
                   <button className={'deleteButton'} onClick={() => handleDelete(sale.uuid)}>

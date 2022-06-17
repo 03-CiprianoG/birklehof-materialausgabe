@@ -7,9 +7,6 @@ export default function Footer() {
     <footer className={styles.footer}>
       <ul className={styles.navItems}>
         <li className={styles.navItem}>
-          <a href="https://next-auth.js.org">Dokumentation</a>
-        </li>
-        <li className={styles.navItem}>
           <em>{packageJSON.name}@{packageJSON.version}</em>
         </li>
       </ul>

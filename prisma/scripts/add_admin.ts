@@ -14,14 +14,14 @@ if (email && name) {
       data: {
         email: email,
         name: name,
-        role: "superadmin"
+        role: 'superadmin'
       }
     }).then(() => {
-      console.log("Admin added successfully");
+      console.log('Admin added successfully');
     });
   } catch (e) {
-    console.log(e)
+    console.log('Unknown error occured')
   }
 } else {
-  console.log("Please fill in the admin email and name in the .env file");
+  console.log('Please fill in the admin email and name in the .env file');
 }

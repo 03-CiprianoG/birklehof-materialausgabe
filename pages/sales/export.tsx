@@ -1,34 +1,21 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
-import prisma from "../api/prisma_client";
-import { Sale } from "@prisma/client"
 import { CSVLink } from "react-csv";
 
-export async function getServerSideProps(_context: any) {
-  let sales = await prisma.sale.findMany({
-    include: {
-      seller: true,
-      itemsSold: true
-    }
-  })
-  sales = JSON.parse(JSON.stringify(sales))
-  return { props: { sales } }
-}
-
-export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
+export default function IndexSalesPage() {
   const { data: session, status } = useSession()
   const [data, setData] = useState([])
   const loading = status === "loading"
   const timestamp = new Date().toISOString().replace(/:/g, '-');
   const headers = [
-    { label: "Verkäufer", key: "seller" },
-    { label: "Käufer", key: "buyer" },
-    { label: "Produkte", key: "items" },
-    { label: "Einzelpreise", key: "price" },
-    { label: "Gesamtpreis", key: "totalPrice" },
-    { label: "Verkauft am", key: "soldAt" },
+    { label: 'Verkäufer', key: 'seller' },
+    { label: 'Käufer', key: 'buyer' },
+    { label: 'Produkte', key: 'items' },
+    { label: 'Einzelpreise', key: 'price' },
+    { label: 'Gesamtpreis', key: 'totalPrice' },
+    { label: 'Verkauft am', key: 'soldAt' },
   ];
   const csvReport = {
     data: data,
@@ -36,13 +23,29 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
     filename: timestamp + '_sales_export.csv'
   };
 
-  const generateCSV = (sales) => {
+  const handleArchiveAndExport = async () => {
+    const res = await fetch('/api/sales/archive/all', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (res.status === 200) {
+      const json = await res.json()
+      await generateCSV(json.data)
+    } else {
+      console.log('An unknown error occurred')
+    }
+  }
+
+  const generateCSV = async (sales) => {
     console.log(sales)
     const data = sales.map((sale) => {
       const totalPrice = sale.itemsSold.reduce((acc, item) => {
         return acc + item.pricePerUnit * item.quantity
       }, 0);
       return {
+        uuid: sale.uuid,
         seller: sale.seller.name,
         buyer: sale.buyerName,
         items: sale.itemsSold.map((item) => {
@@ -54,8 +57,13 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
         totalPrice: new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(totalPrice),
         soldAt: new Date(sale.soldAt).toLocaleDateString('de-DE') + ', ' + new Date(sale.soldAt).toLocaleTimeString('de-DE')
     }});
-    console.log(data)
-    setData(data)
+    await setData(data)
+    // Click the download button to download the CSV file
+    if (sales.length > 0){
+      document.getElementById('download-csv').click()
+    } else {
+      console.log('No sales to archive and export')
+    }
   }
 
   // When rendering client side don't display anything until loading is complete
@@ -73,35 +81,45 @@ export default function IndexSalesPage({ sales }: { sales: Sale[] }) {
   // If session exists, display users
   return (
     <Layout title='Verkäufe'>
-      <h1>Export Sales</h1>
-      <table>
-        <thead>
-        <tr>
-          <th>Verkäufer</th>
-          <th>Käufer</th>
-          <th>Produkte</th>
-          <th>Einzelpreise</th>
-          <th>Gesamtpreis</th>
-          <th>Verkauft am</th>
-        </tr>
-        </thead>
-        <tbody>
-        {data.map((sale) => (
-          <tr key={sale.uuid}>
-            <td>{sale.seller}</td>
-            <td>{sale.buyer}</td>
-            <td>{sale.items}</td>
-            <td>{sale.price}</td>
-            <td>{sale.totalPrice}</td>
-            <td>{sale.soldAt}</td>
+      <div className={'form-style-2'}>
+        <h1  className={'form-style-2-heading'}>Verkäufe archivieren und exportieren</h1>
+        <table>
+          <thead>
+          <tr>
+            <th>Verkäufer</th>
+            <th>Käufer</th>
+            <th>Produkte</th>
+            <th>Einzelpreise</th>
+            <th>Gesamtpreis</th>
+            <th>Verkauft am</th>
           </tr>
-        ))}
-        </tbody>
-      </table>
-      <br/>
-      <div>
-        <CSVLink {...csvReport}>Export to CSV</CSVLink>
-        <button onClick={() => generateCSV(sales)}>Generate CSV</button>
+          </thead>
+          <tbody>
+          {data.map((sale) => (
+            <tr key={sale.uuid}>
+              <td>{sale.seller}</td>
+              <td>{sale.buyer}</td>
+              <td>{sale.items}</td>
+              <td>{sale.price}</td>
+              <td>{sale.totalPrice}</td>
+              <td>{sale.soldAt}</td>
+            </tr>
+          ))}
+          </tbody>
+        </table>
+        <br/>
+        <div>
+          <form>
+            <label>
+              <input type={'button'} onClick={handleArchiveAndExport} value={'Archivieren und exportieren'} />
+            </label>
+            {data.length > 0 ? (
+              <label>
+                <CSVLink id={'download-csv'} {...csvReport}>Erneut herunterladen</CSVLink>
+              </label>
+            ) : null}
+          </form>
+        </div>
       </div>
     </Layout>
   );
