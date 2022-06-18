@@ -3,8 +3,8 @@ import Layout from '../../components/layout'
 import Router from 'next/router'
 import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
-import Html5QrcodePlugin from "../../src/Html5QrcodePlugin";
 import { useRouter } from 'next/router'
+import {useToasts} from "react-toast-notifications";
 
 export default function createProductPage() {
   const { data: session, status } = useSession()
@@ -14,6 +14,7 @@ export default function createProductPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [role, setRole] = useState('')
+  const { addToast } = useToasts()
 
   // fetch the user with the uuid
   useEffect(() => {
@@ -25,7 +26,17 @@ export default function createProductPage() {
           setName(json.data.name)
           setEmail(json.data.email)
           setRole(json.data.role)
+        } else if (res.status === 404) {
+          addToast('Benutzer nicht gefunden', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+          Router.push('/users')
         } else {
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
           Router.push('/users')
         }
       }
@@ -43,12 +54,45 @@ export default function createProductPage() {
         body: JSON.stringify(body),
       })
       if (res.status === 200) {
+        addToast('Benutzer erfolgreich aktualisiert', {
+          appearance: 'success',
+          autoDismiss: true,
+        })
         Router.push('/users')
+      } else if (res.status === 400) {
+        const json = await res.json()
+        if (json.message) {
+          addToast(json.message, {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        } else {
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        }
+      } else if (res.status === 403) {
+        addToast('Fehlende Berechtigung', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      } else if (res.status === 404) {
+        addToast('Benutzer nicht gefunden', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       } else {
-        console.log("An unknown error occurred")
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     } catch (error) {
-      console.error(error)
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 

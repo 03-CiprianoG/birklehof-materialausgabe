@@ -19,6 +19,6 @@ async function handleDELETE(studentNumber: string, res: NextApiResponse) {
     })
     res.json({ message: 'Student deleted' })
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }

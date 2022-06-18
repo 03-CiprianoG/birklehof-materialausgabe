@@ -5,6 +5,7 @@ import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
 import Html5QrcodePlugin from "../../src/Html5QrcodePlugin";
 import { useRouter } from 'next/router'
+import {useToasts} from "react-toast-notifications";
 
 export default function createProductPage() {
   const { data: session, status } = useSession()
@@ -14,6 +15,7 @@ export default function createProductPage() {
   const [barcode, setBarcode] = useState('')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
+  const { addToast } = useToasts()
 
   // fetch the product with the id
   useEffect(() => {
@@ -25,7 +27,17 @@ export default function createProductPage() {
           setBarcode(json.data.barcode)
           setName(json.data.name)
           setPrice(json.data.price)
+        } else if (res.status === 404) {
+          addToast('Produkt nicht gefunden', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+          Router.push('/products')
         } else {
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
           Router.push('/products')
         }
       }
@@ -43,12 +55,45 @@ export default function createProductPage() {
         body: JSON.stringify(body),
       })
       if (res.status === 200) {
+        addToast('Produkt erfolgreich aktualisiert', {
+          appearance: 'success',
+          autoDismiss: true,
+        })
         Router.push('/products')
+      } else if (res.status === 400) {
+        const json = await res.json()
+        if (json.message) {
+          addToast(json.message, {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        } else {
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        }
+      } else if (res.status === 403) {
+        addToast('Fehlende Berechtigung', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      } else if (res.status === 404) {
+        addToast('Benutzer nicht gefunden', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       } else {
-        console.log("An unknown error occurred")
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     } catch (error) {
-      console.error(error)
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 

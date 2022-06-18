@@ -40,10 +40,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
       if (e instanceof PrismaClientKnownRequestError) {
         // The .code property can be accessed in a type-safe manner
         if (e.code === 'P2002') {
-          res.status(500).json({ message: 'There is a unique constraint violation' });
+          res.status(400).json({ message: 'Benutzer existiert bereits' });
         }
       }
-      res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+      res.status(500).end();
     }
   } else {
     res.status(405).end()

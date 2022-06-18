@@ -4,11 +4,13 @@ import Router from 'next/router'
 import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
 import styles from "../styles/students.module.css";
+import {useToasts} from "react-toast-notifications";
 
 export default function ImportStudentsPage() {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const [file, setFile] = useState();
-  const [createObjectURL, setCreateObjectURL] = useState('');
+  const [_createObjectURL, setCreateObjectURL] = useState('');
+  const { addToast } = useToasts()
 
   const uploadToClient = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -16,7 +18,10 @@ export default function ImportStudentsPage() {
 
       // Check if file is a CSV
       if (i.name.split(".")[1] !== "csv") {
-        alert("Please upload a CSV file");
+        addToast('Bitte lade eine CSV-Datei hoch', {
+          appearance: 'warning',
+          autoDismiss: true,
+        })
         return;
       }
 
@@ -28,14 +33,34 @@ export default function ImportStudentsPage() {
   const uploadToServer = async (_event: any) => {
     const body = new FormData();
     body.append("file", file);
-    const response = await fetch("/api/students/import", {
+    const res = await fetch("/api/students/import", {
       method: "POST",
       body
     });
-    if (response.status === 200) {
+    if (res.status === 200) {
+      addToast('Datei erfolgreich hochgeladen', {
+        appearance: 'success',
+        autoDismiss: true,
+      })
       Router.push("/students");
+    } else if (res.status === 400) {
+      const json = await res.json();
+      if (json.message) {
+        addToast(json.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      } else {
+        addToast('Datei invalide', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      }
     } else {
-      console.log("An unknown error occurred");
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   };
 

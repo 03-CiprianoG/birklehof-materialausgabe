@@ -30,7 +30,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       const success = await evaluateFile(files.file);
 
       if (success) {
-        console.log('Successfully imported students');
         res.status(200).json({'message': 'File successfully imported'});
       } else {
         res.status(500).json({'message': 'An unknown error occurred while importing the file'});

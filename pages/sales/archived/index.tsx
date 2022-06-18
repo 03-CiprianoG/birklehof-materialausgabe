@@ -4,6 +4,7 @@ import Layout from "../../../components/layout"
 import AccessDenied from "../../../components/access-denied"
 import prisma from "../../api/prisma_client";
 import type { Sale, User, Item, Product } from "@prisma/client"
+import {useToasts} from "react-toast-notifications";
 
 interface SaleItem extends Item {
   product: Product
@@ -32,6 +33,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const [sales, setSales] = useState(init_sales)
+  const { addToast } = useToasts()
 
   // Fetch sales from protected route
   useEffect(() => {
@@ -41,7 +43,10 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
         const json = await res.json()
         setSales(json.data)
       } else {
-        console.log("An unknown error occurred")
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     }
     fetchData()

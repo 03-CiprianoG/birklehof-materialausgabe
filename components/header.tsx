@@ -1,22 +1,16 @@
 import Link from "next/link"
 import { signIn, signOut, useSession } from "next-auth/react"
 import {useEffect, useState} from "react";
-import logo from '../assets/birklehof-logo.png';
-import Image from "next/image";
 import { useRouter } from 'next/router';
 import {
   IoHomeOutline,
-  IoPeopleOutline,
   IoBagOutline,
-  IoBusinessOutline,
   IoLogOutOutline,
   IoAlbumsOutline,
-  IoAppsOutline,
   IoCloudDownloadOutline,
   IoCloudUploadOutline,
   IoPersonAddOutline,
-  IoTrashOutline,
-  IoChevronDownOutline, IoMenuOutline, IoLogInOutline, IoAddOutline, IoArchiveOutline
+  IoChevronDownOutline, IoAddOutline, IoArchiveOutline
 } from "react-icons/io5";
 import styles from './header.module.css';
 
@@ -25,8 +19,7 @@ import styles from './header.module.css';
 // rendering, and avoids any flash incorrect content on initial page load.
 export default function Header() {
   const router = useRouter();
-  const { data: session, status } = useSession()
-  const loading = status === "loading"
+  const { data: session } = useSession()
   const [role, setRole] = useState('guest');
 
   useEffect(() => {
@@ -61,7 +54,7 @@ export default function Header() {
           </Link>)}
         {(role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>
           <button className={styles.dropdownButton + (router.pathname.includes('/sales') && !router.pathname.includes('/sales/create') ? ' ' + styles.active : '')}>Verkäufe
-            <IoChevronDownOutline/>
+             <IoChevronDownOutline/>
           </button>
           <div className={styles.dropdownContent}>
             <Link href="/sales">
@@ -77,7 +70,7 @@ export default function Header() {
         </div>)}
         {(role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>
           <button className={styles.dropdownButton + (router.pathname.includes('/products') ? ' ' + styles.active : '')}>Produkte
-            <IoChevronDownOutline/>
+             <IoChevronDownOutline/>
           </button>
           <div className={styles.dropdownContent}>
             <Link href="/products">
@@ -93,7 +86,7 @@ export default function Header() {
         </div>)}
         {(role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>
           <button className={styles.dropdownButton + (router.pathname.includes('/students') ? ' ' + styles.active : '')}>Schüler
-            <IoChevronDownOutline/>
+             <IoChevronDownOutline/>
           </button>
           <div className={styles.dropdownContent}>
             <Link href="/students">
@@ -106,7 +99,7 @@ export default function Header() {
         </div>)}
         {(role == 'superadmin') && (<div className={styles.dropdown}>
           <button className={styles.dropdownButton + (router.pathname.includes('/users') ? ' ' + styles.active : '')}>Benutzer
-            <IoChevronDownOutline/>
+             <IoChevronDownOutline/>
           </button>
           <div className={styles.dropdownContent}>
             <Link href="/users">

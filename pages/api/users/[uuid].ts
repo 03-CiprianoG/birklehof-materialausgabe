@@ -28,7 +28,7 @@ async function handleGET(userUuid: string, res: NextApiResponse) {
       res.status(200).json({ data: user })
     }
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }
 
@@ -65,14 +65,14 @@ async function handlePATCH(userUuid: string, res: NextApiResponse, req: NextApiR
       } catch(e){
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === 'P2002') {
-            res.status(500).json({ message: 'There is a unique constraint violation' });
+            res.status(400).json({ message: 'There is a unique constraint violation' });
           }
         }
-        res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+        res.status(500).end();
       }
     }
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }
 
@@ -94,6 +94,6 @@ async function handleDELETE(userUuid: string, res: NextApiResponse) {
     })
     res.json({ message: 'User deleted' })
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }

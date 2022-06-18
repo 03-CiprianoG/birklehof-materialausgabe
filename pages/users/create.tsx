@@ -3,15 +3,15 @@ import Layout from '../../components/layout'
 import Router from 'next/router'
 import {useSession} from "next-auth/react";
 import AccessDenied from "../../components/access-denied";
-import Html5QrcodePlugin from "../../src/Html5QrcodePlugin.jsx";
-import styles from '../styles/user.module.css'
+import {useToasts} from "react-toast-notifications";
 
 export default function createSalePage() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [role, setRole] = useState('')
+  const [role, setRole] = useState('seller')
+  const { addToast } = useToasts()
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -24,13 +24,41 @@ export default function createSalePage() {
       })
 
       if (res.status === 200) {
+        addToast('Benutzer erfolgreich erstellt', {
+          appearance: 'success',
+          autoDismiss: true,
+        })
         Router.push('/users')
+      } else if (res.status === 400) {
+        const json = await res.json()
+        if (json.message) {
+          addToast(json.message, {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        } else {
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        }
+      } else if (res.status === 403) {
+        addToast('Fehlende Berechtigung', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       } else {
         const json = await res.json()
-        console.log(json.error)
+        addToast(json.error.toString(), {
+          appearance: 'success',
+          autoDismiss: true,
+        })
       }
     } catch (error) {
-      console.error(error)
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
   

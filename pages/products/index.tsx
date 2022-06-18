@@ -5,8 +5,9 @@ import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import type { Product } from '@prisma/client'
 import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
+import {useToasts} from "react-toast-notifications";
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(_context: any) {
   const products = await prisma.product.findMany()
   return { props: { products } }
 }
@@ -15,6 +16,7 @@ export default function ProductsPage({ init_products }: { init_products: Product
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const [products, setProducts] = useState(init_products)
+  const { addToast } = useToasts()
 
   // Fetch products from protected route
   useEffect(() => {
@@ -24,7 +26,10 @@ export default function ProductsPage({ init_products }: { init_products: Product
         const json = await res.json()
         setProducts(json.data)
       } else {
-        console.log("An unknown error occurred")
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     }
     fetchData()
@@ -40,8 +45,25 @@ export default function ProductsPage({ init_products }: { init_products: Product
     if (res.status === 200) {
       const newContent = products.filter((product) => product.uuid !== uuid)
       setProducts(newContent)
+      addToast('Produkt erfolgreich gelöscht', {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+    } else if (res.status === 403) {
+      addToast('Fehlende Berechtigung', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }  else if (res.status === 404) {
+      addToast('Produkt nicht gefunden', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     } else {
-      console.log("An unknown error occurred")
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 
@@ -59,7 +81,7 @@ export default function ProductsPage({ init_products }: { init_products: Product
 
   // If session exists, display products
   return (
-    <Layout title='Produkte'>
+    <Layout title='Produkte' table={true}>
       <div className={'tableBox'}>
         <table>
           <thead>

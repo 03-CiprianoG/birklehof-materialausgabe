@@ -5,8 +5,9 @@ import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import { User } from "@prisma/client"
 import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
+import {useToasts} from "react-toast-notifications";
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(_context: any) {
   const users = await prisma.user.findMany()
   return { props: { users } }
 }
@@ -15,10 +16,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const [users, setUsers] = useState(init_users)
-  const options = {
-    weekday: "long", year: "numeric", month: "short",
-    day: "numeric", hour: "2-digit", minute: "2-digit"
-  };
+  const { addToast } = useToasts()
   
   // Fetch sales from protected route
   useEffect(() => {
@@ -28,7 +26,10 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
         const json = await res.json()
         setUsers(json.data)
       } else {
-        console.log("An unknown error occurred")
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     }
     fetchData()
@@ -44,8 +45,25 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
     if (res.status === 200) {
       const newContent = users.filter((user) => user.uuid !== uuid)
       setUsers(newContent)
+      addToast('Benutzer erfolgreich gelöscht', {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+    } else if (res.status === 403) {
+      addToast('Fehlende Berechtigung', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }  else if (res.status === 404) {
+      addToast('Benutzer nicht gefunden', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     } else {
-      console.log("An unknown error occurred")
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 
@@ -63,7 +81,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
 
   // If session exists, display users
   return (
-    <Layout title='Benutzer'>
+    <Layout title='Benutzer' table={true}>
       <div className={'tableBox'}>
         <table>
           <thead>

@@ -4,6 +4,7 @@ import Router from 'next/router'
 import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
 import Html5QrcodePlugin from "../../src/Html5QrcodePlugin";
+import {useToasts} from "react-toast-notifications";
 
 export default function createProductPage() {
   const { data: session, status } = useSession()
@@ -11,6 +12,7 @@ export default function createProductPage() {
   const [barcode, setBarcode] = useState('')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
+  const { addToast } = useToasts()
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -22,12 +24,40 @@ export default function createProductPage() {
         body: JSON.stringify(body),
       })
       if (res.status === 200) {
+        addToast('Produkt erfolgreich erstellt', {
+          appearance: 'success',
+          autoDismiss: true,
+        })
         Router.push('/products')
+      } else if (res.status === 400) {
+        const json = await res.json()
+        if (json.message) {
+          addToast(json.message, {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        } else {
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        }
+      } else if (res.status === 403) {
+        addToast('Fehlende Berechtigung', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       } else {
-        console.log('An unknown error occurred')
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     } catch (error) {
-      console.error(error)
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 

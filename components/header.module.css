@@ -1,6 +1,6 @@
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: #e0f5dd;
+  background-color: #e4f1de;
   overflow: hidden;
   z-index: 100;
   height: 49px;
@@ -11,7 +11,7 @@
 .topnav a {
   float: left;
   display: block;
-  color: #009879;
+  color: #004F49;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -33,7 +33,7 @@
 
 /* Add an active class to highlight the current page */
 .active {
-  background-color: #009879 !important;
+  background-color: #004F49 !important;
   color: white !important;
 }
 
@@ -53,7 +53,7 @@
   font-size: 17px;
   border: none;
   outline: none;
-  color: #009879;
+  color: #004F49;
   padding: 14px 16px;
   background-color: inherit;
   font-family: inherit;
@@ -64,9 +64,9 @@
 .dropdownContent {
   display: none;
   position: absolute;
-  background-color: #d8e5ed;
+  background-color: #d9e5ec;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   z-index: 1;
 }
 
@@ -82,13 +82,13 @@
 
 /* Add a dark background on topnav links and the dropdown button on hover */
 .topnav a:hover, .dropdown:hover .dropdownButton {
-  background-color: #009879 !important;
+  background-color: #004F49 !important;
   color: white;
 }
 
 /* Add a grey background to dropdown links on hover */
 .dropdownContent a:hover {
-  background-color: #e9f2f5 !important;
+  background-color: #eaf2f5 !important;
   color: #004F49;
 }
 

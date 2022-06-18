@@ -10,12 +10,22 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     if (!barcode || !name || !price) {
       res.status(400).json({
-        error: 'Missing required fields'
+        error: 'Fehlende Angaben'
       })
       return
-    } else if (typeof barcode !== 'string' || typeof name !== 'string' || isNaN(+price)) {
+    } else if (typeof barcode !== 'string') {
       res.status(400).json({
-        error: 'Invalid type for required fields'
+        error: 'Barcode muss ein String sein'
+      })
+      return
+    } else if (typeof name !== 'string') {
+      res.status(400).json({
+        error: 'Name muss ein String sein'
+      })
+      return
+    } else if (isNaN(+price)) {
+      res.status(400).json({
+        error: 'Preis muss eine Zahl sein'
       })
       return
     }
@@ -28,16 +38,14 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           price: +price
         },
       })
-      res.json({
-        message: 'Product created'
-      })
+      res.status(200).end()
     } catch(e){
       if (e instanceof PrismaClientKnownRequestError) {
         if (e.code === 'P2002') {
-          res.status(500).json({ message: 'There is a unique constraint violation' });
+          res.status(400).json({ message: 'Produkt existiert bereits' });
         }
       }
-      res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+      res.status(500).end();
     }
   } else {
     res.status(405).end()

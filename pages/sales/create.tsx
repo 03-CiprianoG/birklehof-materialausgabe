@@ -6,6 +6,7 @@ import AccessDenied from "../../components/access-denied";
 import Html5QrcodePlugin from "../../src/Html5QrcodePlugin.jsx";
 import prisma from "../api/prisma_client";
 import {Student} from "@prisma/client";
+import { useToasts } from 'react-toast-notifications'
 
 interface Item {
   barcode: string
@@ -14,7 +15,7 @@ interface Item {
   price: number
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(_context: any) {
   const students = await prisma.student.findMany()
   return { props: { students } }
 }
@@ -26,6 +27,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
   const [newBarCode, setNewBarCode] = useState('')
   const [newQuantity, setNewQuantity] = useState('')
   const [buyerName, setBuyerName] = useState('')
+  const { addToast } = useToasts()
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -38,16 +40,38 @@ export default function createSalePage({ students }: { students: Student[] }) {
       })
 
       if (res.status === 200) {
-        // Reset form
+        addToast('Kauf erfolgreich erstellt', {
+          appearance: 'success',
+          autoDismiss: true,
+        })
         setItemsSold([])
         setBuyerName('')
         setNewBarCode('')
         setNewQuantity('')
+      } else if (res.status === 400) {
+        const json = await res.json()
+        if (json.message) {
+          addToast(json.message, {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        } else {
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
+        }
       } else {
-        console.log('An unknown error occurred')
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     } catch (error) {
-      console.error(error)
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 
@@ -62,6 +86,10 @@ export default function createSalePage({ students }: { students: Student[] }) {
       const newItemsSold = [...itemsSold]
       newItemsSold[itemIndex].quantity = +newItemsSold[itemIndex].quantity + +newQuantity
       setItemsSold(newItemsSold)
+      addToast(`Produkt ${newItemsSold[itemIndex].name} ${newQuantity} mal hinzugefügt`, {
+        appearance: 'success',
+        autoDismiss: true,
+      })
     } else {
       try {
         const res = await fetch(`/api/products/barcode/${newBarCode}`)
@@ -74,13 +102,39 @@ export default function createSalePage({ students }: { students: Student[] }) {
             price: json.data.price
           }
           setItemsSold([...itemsSold, newItem])
+          addToast(`Produkt ${json.data.name} ${newQuantity} mal hinzugefügt`, {
+            appearance: 'success',
+            autoDismiss: true,
+          })
+        } else if (res.status === 400) {
+          const json = await res.json()
+          if (json.message) {
+            addToast(json.message, {
+              appearance: 'error',
+              autoDismiss: true,
+            })
+          } else {
+            addToast('Ein Fehler ist aufgeregteren', {
+              appearance: 'error',
+              autoDismiss: true,
+            })
+          }
         } else if (res.status === 404) {
-          console.log("No product with that barcode")
+          addToast('Es gibt kein Produkt mit diesem Barcode', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
         } else {
-          console.log("An unknown error occurred")
+          addToast('Ein Fehler ist aufgeregteren', {
+            appearance: 'error',
+            autoDismiss: true,
+          })
         }
       } catch (error) {
-        console.error(error)
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     }
   }
@@ -140,7 +194,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
           </label>
         </form>
       </div>
-      <div className={'form-style-2'}>
+      <div className={'form-style-2'} style={{maxWidth: "unset"}}>
         <h1 className={'form-style-2-heading'}>Verkauf abschließen</h1>
         <table>
           <thead>
@@ -206,7 +260,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
             <input type="submit" value="Erstellen" disabled={!session.user?.email || !buyerName || !itemsSold || itemsSold.length === 0}/>
           </label>
           <label>
-            <a className={'back'} href="#" onClick={() => Router.push('/home')}>
+            <a className={'back'} href="#" onClick={() => Router.push('/')}>
               Abbrechen
             </a>
           </label>

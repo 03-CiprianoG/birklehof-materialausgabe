@@ -25,7 +25,7 @@ async function handleGET(productUuid: string, res: NextApiResponse) {
       res.status(200).json({ data: product })
     }
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }
 
@@ -35,8 +35,8 @@ async function handleDELETE(productUuid: string, res: NextApiResponse) {
     await prisma.product.delete({
       where: { barcode: productUuid },
     })
-    res.status(200).json({ message: 'Product deleted' })
+    res.status(200).end();
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }

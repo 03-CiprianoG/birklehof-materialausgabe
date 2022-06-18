@@ -5,8 +5,9 @@ import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import type { Student } from '@prisma/client'
 import { IoTrashOutline } from "react-icons/io5";
+import {useToasts} from "react-toast-notifications";
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(_context: any) {
   const students = await prisma.student.findMany()
   return { props: { students } }
 }
@@ -15,10 +16,7 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const [students, setStudents] = useState(init_students)
-  const options = {
-    weekday: "long", year: "numeric", month: "short",
-    day: "numeric", hour: "2-digit", minute: "2-digit"
-  };
+  const { addToast } = useToasts()
   
   // Fetch sales from protected route
   useEffect(() => {
@@ -28,7 +26,10 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
         const json = await res.json()
         setStudents(json.data)
       } else {
-        console.log("An unknown error occurred")
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     }
     fetchData()
@@ -44,8 +45,25 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
     if (res.status === 200) {
       const newContent = students.filter((student) => student.number !== number)
       setStudents(newContent)
-    } else {
-      console.log("An unknown error occurred")
+      addToast('Schüler erfolgreich gelöscht', {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+    } else if (res.status === 403) {
+      addToast('Fehlende Berechtigung', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }  else if (res.status === 404) {
+      addToast('Schüler nicht gefunden', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }  else {
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 
@@ -63,7 +81,7 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
 
   // If session exists, display students
   return (
-    <Layout title='Schüler'>
+    <Layout title='Schüler' table={true}>
       <div className={'tableBox'}>
         <table>
           <thead>

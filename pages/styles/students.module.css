@@ -3,7 +3,7 @@
   width: fit-content;
   border: none;
   padding: 8px 15px 8px 15px;
-  background: #009879;
+  background: #004F49;
   color: #fff;
   box-shadow: 1px 1px 4px #DADADA;
   -moz-box-shadow: 1px 1px 4px #DADADA;
@@ -16,6 +16,6 @@
 }
 
 .chooseFileButton:hover{
-  background: #009879;
+  background: #004F49;
   color: #fff;
 }

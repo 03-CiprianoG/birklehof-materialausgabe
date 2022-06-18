@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
 import AccessDenied from "../../components/access-denied"
 import { CSVLink } from "react-csv";
+import {useToasts} from "react-toast-notifications";
 
 export default function IndexSalesPage() {
   const { data: session, status } = useSession()
@@ -22,6 +23,7 @@ export default function IndexSalesPage() {
     headers: headers,
     filename: timestamp + '_sales_export.csv'
   };
+  const { addToast } = useToasts()
 
   const handleArchiveAndExport = async () => {
     const res = await fetch('/api/sales/archive/all', {
@@ -33,13 +35,28 @@ export default function IndexSalesPage() {
     if (res.status === 200) {
       const json = await res.json()
       await generateCSV(json.data)
+    } else if (res.status === 400) {
+      const json = await res.json()
+      if (json.message) {
+        addToast(json.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      } else {
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      }
     } else {
-      console.log('An unknown error occurred')
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 
   const generateCSV = async (sales) => {
-    console.log(sales)
     const data = sales.map((sale) => {
       const totalPrice = sale.itemsSold.reduce((acc, item) => {
         return acc + item.pricePerUnit * item.quantity
@@ -61,8 +78,22 @@ export default function IndexSalesPage() {
     // Click the download button to download the CSV file
     if (sales.length > 0){
       document.getElementById('download-csv').click()
+      if (sales.length == 1) {
+        addToast(`${sales.length} Kauf archiviert und als CSV heruntergeladen`, {
+          appearance: 'success',
+          autoDismiss: true,
+        })
+      } else {
+        addToast(`${sales.length} Käufe archiviert und als CSV heruntergeladen`, {
+          appearance: 'success',
+          autoDismiss: true,
+        })
+      }
     } else {
-      console.log('No sales to archive and export')
+      addToast('Kein unarchivierten Käufe', {
+        appearance: 'info',
+        autoDismiss: true,
+      })
     }
   }
 

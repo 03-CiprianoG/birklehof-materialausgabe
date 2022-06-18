@@ -5,6 +5,7 @@ import AccessDenied from "../../components/access-denied"
 import prisma from "../api/prisma_client";
 import type { Sale, User, Item, Product } from "@prisma/client"
 import {IoTrashOutline} from "react-icons/io5";
+import {useToasts} from "react-toast-notifications";
 
 interface SaleItem extends Item {
   product: Product
@@ -33,6 +34,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   const { data: session, status } = useSession()
   const loading = status === 'loading'
   const [sales, setSales] = useState(init_sales)
+  const { addToast } = useToasts()
 
   // Fetch sales from protected route
   useEffect(() => {
@@ -42,7 +44,10 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
         const json = await res.json()
         setSales(json.data)
       } else {
-        console.log('An unknown error occurred')
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
       }
     }
     fetchData()
@@ -58,8 +63,38 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
     if (res.status === 200) {
       const newContent = sales.filter((product) => product.uuid !== uuid)
       setSales(newContent)
+      addToast('Kauf erfolgreich gelöscht', {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+    } else if (res.status === 400) {
+      const json = await res.json()
+      if (json.message) {
+        addToast(json.message, {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      } else {
+        addToast('Ein Fehler ist aufgeregteren', {
+          appearance: 'error',
+          autoDismiss: true,
+        })
+      }
+    } else if (res.status === 403) {
+      addToast('Fehlende Berechtigung', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
+    }  else if (res.status === 404) {
+      addToast('Kauf nicht gefunden', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     } else {
-      console.log("An unknown error occurred")
+      addToast('Ein Fehler ist aufgeregteren', {
+        appearance: 'error',
+        autoDismiss: true,
+      })
     }
   }
 
@@ -77,7 +112,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
 
   // If session exists, display sales
   return (
-    <Layout title='Verkäufe'>
+    <Layout title='Verkäufe' table={true}>
       <div className={'tableBox'}>
         <table>
           <thead>

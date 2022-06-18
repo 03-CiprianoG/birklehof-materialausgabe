@@ -25,7 +25,7 @@ async function handleGET(saleUuid: string, res: NextApiResponse) {
       res.status(200).json({ data: sale })
     }
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }
 
@@ -50,6 +50,6 @@ async function handleDELETE(saleUuid: string, res: NextApiResponse) {
     })
     res.json({ message: 'Sale deleted' })
   } catch(e){
-    res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+    res.status(500).end();
   }
 }

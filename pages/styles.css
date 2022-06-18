@@ -33,7 +33,7 @@ h1, h2, h3, h4, h5, h6 {
 /*.tableBox::-webkit-scrollbar {
   width: 10px;
   height: 5px;
-  background-color: #009879;
+  background-color: #004F49;
 }
 .tableBox::-webkit-scrollbar-track {
   background-color: transparent;
@@ -42,7 +42,7 @@ h1, h2, h3, h4, h5, h6 {
 .tableBox::-webkit-scrollbar-thumb {
   background-color: white;
   border-radius: 10px;
-  border: #009879 solid 2px;
+  border: #004F49 solid 2px;
 }*/
 
 table {
@@ -57,7 +57,7 @@ table {
 table thead tr {
   position: sticky;
   top: 0;
-  background-color: #009879;
+  background-color: #004F49;
   color: #ffffff;
   text-align: left;
   width: 100%;
@@ -83,7 +83,7 @@ table tbody tr:nth-of-type(even) {
 
 table tbody tr.active-row {
   font-weight: bold;
-  color: #009879;
+  color: #004F49;
 }
 
 /* Form styles */
@@ -99,7 +99,7 @@ table tbody tr.active-row {
   width: 100%;
   font-weight: bold;
   font-style: italic;
-  border-bottom: 2px solid #009879;
+  border-bottom: 2px solid #004F49;
   margin-bottom: 20px;
   font-size: 15px;
   padding-bottom: 3px;
@@ -146,13 +146,13 @@ table tbody tr.active-row {
 .form-style-2 .tel-number-field:focus,
 .form-style-2 .textarea-field:focus,
 .form-style-2 .select-field:focus{
-  border: 1px solid #009879;
+  border: 1px solid #006761;
 }
 .form-style-2 .input-field:read-only,
 .form-style-2 .tel-number-field:read-only,
 .form-style-2 .textarea-field:read-only,
 .form-style-2 .select-field:read-only{
-  border: 1px dashed #009879;
+  border: 1px dashed #579b98;
   background: #eef6f4;
 }
 .form-style-2 .textarea-field{
@@ -163,7 +163,7 @@ table tbody tr.active-row {
 .form-style-2 input[type=button]{
   border: none;
   padding: 8px 15px 8px 15px;
-  background: #009879;
+  background: #004F49;
   color: #fff;
   box-shadow: 1px 1px 4px #DADADA;
   -moz-box-shadow: 1px 1px 4px #DADADA;
@@ -176,10 +176,10 @@ table tbody tr.active-row {
 }
 .form-style-2 input[type=submit]:hover,
 .form-style-2 input[type=button]:hover{
-  background: #009879;
+  background: #004F49;
   color: #fff;
 }
-/* sytle for disabled buttons */
+/* style for disabled buttons */
 .form-style-2 input[type=submit]:disabled,
 .form-style-2 input[type=button]:disabled{
   background: #91b9b1;
@@ -191,7 +191,7 @@ table tbody tr.active-row {
 }
 @media (max-width: 850px) {
   .form-style-2{
-    margin: 0px auto auto;
+    margin: 0 auto auto;
     padding: 5px;
   }
 }

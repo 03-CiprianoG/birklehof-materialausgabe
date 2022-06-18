@@ -10,7 +10,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         data: products
       })
     } catch(e){
-      res.status(500).json({ message: 'An unknown error occurred while accessing the database' });
+      res.status(500).end();
     }
   } else {
     res.status(405).end()

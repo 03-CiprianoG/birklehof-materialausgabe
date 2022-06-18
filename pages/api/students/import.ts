@@ -22,21 +22,22 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   const form = new formidable.IncomingForm();
   form.parse(req, async function (err, fields, files) {
     if (files.file) {
-      if (await validateFile(files.file)) {
-        res.status(400).json({'message': 'File is not valid'});
+      const valid = await validateFile(files.file);
+      
+      if (!valid) {
+        res.status(400).json({ message: 'Datei invalide' });
         return;
       }
 
       const success = await evaluateFile(files.file);
 
       if (success) {
-        console.log('Successfully imported students');
-        res.status(200).json({'message': 'File successfully imported'});
+        res.status(200).end();
       } else {
-        res.status(500).json({'message': 'An unknown error occurred while importing the file'});
+        res.status(500).end();
       }
     } else {
-      res.status(400).json({ message: 'No file was uploaded' });
+      res.status(400).json({ message: 'Fehler bei der Übertragung' });
     }
   });
 };
