@@ -12,7 +12,14 @@ export default function Layout({ children, title, table=false }: Props) {
   return (
     <>
       <Header />
-      {table ? (<div className={styles.greenBar}/>) : null}
+      {table ? (
+        <table className={styles.table}>
+          <thead>
+          <tr>
+            <th>a</th>
+          </tr>
+          </thead>
+        </table>) : null}
       <div className={styles.sideLabelContainer}>
         <h1 className={styles.sideLabel}>{title != null ? title : 'Birklehof'}</h1>
       </div>

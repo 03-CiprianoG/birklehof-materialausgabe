@@ -89,7 +89,7 @@ table tbody tr.active-row {
 
 .form-style-2{
   display: inline-block;
-  margin: 200px auto auto;
+  margin: auto;
   max-width: 500px;
   padding: 20px 12px 10px 20px;
   font: 13px Arial, Helvetica, sans-serif;
