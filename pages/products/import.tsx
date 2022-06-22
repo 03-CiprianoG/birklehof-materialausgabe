@@ -51,7 +51,7 @@ export default function ImportStudentsPage() {
           autoDismiss: true,
         })
       } else {
-        addToast('Datei invalide', {
+        addToast('Datei ungültig', {
           appearance: 'error',
           autoDismiss: true,
         })

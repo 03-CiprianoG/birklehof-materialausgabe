@@ -43,6 +43,29 @@ async function handlePATCH(productUuid: string, res: NextApiResponse, req: NextA
     } else {
       try {
         const {barcode, name, price} = await req.body
+
+        if (!barcode || !name || !price) {
+          res.status(400).json({
+            error: 'Fehlende Angaben'
+          })
+          return
+        } else if (typeof barcode !== 'string') {
+          res.status(400).json({
+            error: 'Barcode muss ein String sein'
+          })
+          return
+        } else if (typeof name !== 'string') {
+          res.status(400).json({
+            error: 'Name muss ein String sein'
+          })
+          return
+        } else if (isNaN(+price)) {
+          res.status(400).json({
+            error: 'Preis muss eine Zahl sein'
+          })
+          return
+        }
+
         await prisma.product.update({
           where: { uuid: productUuid },
           data: {
@@ -72,7 +95,7 @@ async function handleDELETE(productUuid: string, res: NextApiResponse) {
     await prisma.product.delete({
       where: { uuid: productUuid },
     })
-    res.status(200).json({ message: 'Product deleted' })
+    res.status(200).end()
   } catch(e){
     res.status(500).end();
   }

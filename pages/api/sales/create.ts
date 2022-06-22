@@ -17,12 +17,22 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     if (!sellerEmail || !buyerName || !itemsSold || itemsSold.length === 0) {
       res.status(400).json({
-        error: 'Missing required fields'
+        error: 'Fehlende Angaben'
       })
       return
-    } else if (typeof sellerEmail !== 'string' || typeof buyerName !== 'string' || typeof itemsSold !== 'object') {
+    } else if (typeof sellerEmail !== 'string') {
       res.status(400).json({
-        error: 'Invalid type for required fields'
+        error: 'Verkäufer E-Mail muss ein String sein'
+      })
+      return
+    } else if (typeof buyerName !== 'string') {
+      res.status(400).json({
+        error: 'Käufer Name muss ein String sein'
+      })
+      return
+    } else if (typeof itemsSold !== 'object') {
+      res.status(400).json({
+        error: 'Verkaufte Produkte muss ein Array sein'
       })
       return
     }

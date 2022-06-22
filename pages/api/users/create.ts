@@ -10,17 +10,27 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     if (!name || !email || !role) {
       res.status(400).json({
-        error: 'Missing required fields'
+        error: 'Fehlende Angaben'
       })
       return
-    } else if (typeof name !== 'string' || typeof email !== 'string' || typeof role !== 'string') {
+    } else if (typeof name !== 'string') {
       res.status(400).json({
-        error: 'Invalid type for required fields'
+        error: 'Name muss ein String sein'
+      })
+      return
+    }  else if (typeof email !== 'string') {
+      res.status(400).json({
+        error: 'E-Mail muss ein String sein'
+      })
+      return
+    }  else if (typeof role !== 'string') {
+      res.status(400).json({
+        error: 'Rolle muss ein String sein'
       })
       return
     } else if (role !== 'admin' && role !== 'seller') {
       res.status(400).json({
-        error: 'Invalid role'
+        error: 'Rolle muss Admin oder Verkäufer sein'
       })
       return
     }

@@ -39,7 +39,7 @@ async function handleDELETE(saleUuid: string, res: NextApiResponse) {
     if (!sale) {
       res.status(404).end()
     } else if (sale.archived) {
-      res.status(400).json({ message: 'Sale already archived' })
+      res.status(400).json({ message: 'Verkauf bereits archiviert' })
     }
 
     await prisma.item.deleteMany({
@@ -48,7 +48,7 @@ async function handleDELETE(saleUuid: string, res: NextApiResponse) {
     await prisma.sale.delete({
       where: { uuid: saleUuid },
     })
-    res.json({ message: 'Sale deleted' })
+    res.status(200).end()
   } catch(e){
     res.status(500).end();
   }

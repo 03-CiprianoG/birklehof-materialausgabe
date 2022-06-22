@@ -46,9 +46,29 @@ async function handlePATCH(userUuid: string, res: NextApiResponse, req: NextApiR
       try {
         const {name, email, role} = await req.body
 
-        if (role !== 'admin' && role !== 'seller') {
+        if (!name || !email || !role) {
           res.status(400).json({
-            error: 'Invalid role'
+            error: 'Fehlende Angaben'
+          })
+          return
+        } else if (typeof name !== 'string') {
+          res.status(400).json({
+            error: 'Name muss ein String sein'
+          })
+          return
+        }  else if (typeof email !== 'string') {
+          res.status(400).json({
+            error: 'E-Mail muss ein String sein'
+          })
+          return
+        }  else if (typeof role !== 'string') {
+          res.status(400).json({
+            error: 'Rolle muss ein String sein'
+          })
+          return
+        } else if (role !== 'admin' && role !== 'seller') {
+          res.status(400).json({
+            error: 'Rolle muss Admin oder Verkäufer sein'
           })
           return
         }
@@ -61,11 +81,11 @@ async function handlePATCH(userUuid: string, res: NextApiResponse, req: NextApiR
             role,
           }
         })
-        res.status(200).json({ message: 'User updated' })
+        res.status(200).end();
       } catch(e){
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === 'P2002') {
-            res.status(400).json({ message: 'There is a unique constraint violation' });
+            res.status(400).json({ message: 'Benutzer existiert bereits' });
           }
         }
         res.status(500).end();

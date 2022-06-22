@@ -3,7 +3,7 @@ import Layout from '../../components/layout'
 import Router from 'next/router'
 import {useSession} from "next-auth/react";
 import AccessDenied from "../../components/access-denied";
-import Html5QrcodePlugin from "../../src/Html5QrcodePlugin.jsx";
+import Html5QrcodePlugin from "../../Html5QrcodePlugin/Html5QrcodePlugin.jsx";
 import prisma from "../api/prisma_client";
 import {Student} from "@prisma/client";
 import { useToasts } from 'react-toast-notifications'

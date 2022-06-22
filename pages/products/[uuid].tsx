@@ -3,7 +3,7 @@ import Layout from '../../components/layout'
 import Router from 'next/router'
 import AccessDenied from "../../components/access-denied";
 import {useSession} from "next-auth/react";
-import Html5QrcodePlugin from "../../src/Html5QrcodePlugin";
+import Html5QrcodePlugin from "../../Html5QrcodePlugin/Html5QrcodePlugin";
 import { useRouter } from 'next/router'
 import {useToasts} from "react-toast-notifications";
 

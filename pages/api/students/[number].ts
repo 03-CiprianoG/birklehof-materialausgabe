@@ -17,7 +17,7 @@ async function handleDELETE(studentNumber: string, res: NextApiResponse) {
     await prisma.student.delete({
       where: { number: parseInt(studentNumber) },
     })
-    res.json({ message: 'Student deleted' })
+    res.status(200).end();
   } catch(e){
     res.status(500).end();
   }

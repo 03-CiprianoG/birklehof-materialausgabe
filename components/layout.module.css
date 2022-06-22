@@ -2,18 +2,15 @@
   width: calc(100vw - 203px);
   margin-left: 203px;
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
   min-width: 620px;
 }
 
 .mainBox {
-  width: 100%;
   height: calc(100vh - 49px - 52px);
   overflow: hidden;
   min-width: 620px;
+  display: flex;
+  align-items: center;
 }
 
 .sideLabelContainer {
@@ -39,7 +36,7 @@
 
 .greenBar {
   background-color: #004F49;
-  width: 203px;
+  width: 100vw;
   position: fixed;
   top: 49px;
   left: 0;

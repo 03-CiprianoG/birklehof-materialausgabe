@@ -25,7 +25,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       const valid = await validateFile(files.file);
       
       if (!valid) {
-        res.status(400).json({ message: 'Datei invalide' });
+        res.status(400).json({ message: 'Datei ungültig' });
         return;
       }
 

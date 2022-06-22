@@ -19,6 +19,7 @@
   z-index: -1;
 }
 
+/* When smaller than 1000px overwrite the layout to better fit the dimensions */
 @media (max-width: 1000px) {
   .h1 {
     position: fixed;

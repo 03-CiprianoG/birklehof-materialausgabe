@@ -23,19 +23,19 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   form.parse(req, async function (err, fields, files) {
     if (files.file) {
       if (await validateFile(files.file)) {
-        res.status(400).json({'message': 'File is not valid'});
+        res.status(400).json({'message': 'Datei ungültig'});
         return;
       }
 
       const success = await evaluateFile(files.file);
 
       if (success) {
-        res.status(200).json({'message': 'File successfully imported'});
+        res.status(200).end();
       } else {
-        res.status(500).json({'message': 'An unknown error occurred while importing the file'});
+        res.status(500).end();
       }
     } else {
-      res.status(400).json({ message: 'No file was uploaded' });
+      res.status(400).json({ message: 'EFehler bei der Übertragung' });
     }
   });
 };

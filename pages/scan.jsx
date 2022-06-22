@@ -1,8 +1,8 @@
-// import '../src/App.css';
+// import '../Html5QrcodePlugin/App.css';
 
 import React from 'react';
-import Html5QrcodePlugin from '../src/Html5QrcodePlugin.jsx'
-import ResultContainerPlugin from '../src/ResultContainerPlugin.jsx'
+import Html5QrcodePlugin from '../Html5QrcodePlugin/Html5QrcodePlugin.jsx'
+import ResultContainerPlugin from '../Html5QrcodePlugin/ResultContainerPlugin.jsx'
 
 class App extends React.Component {
   constructor(props) {

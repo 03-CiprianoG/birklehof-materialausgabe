@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;700;900&display=swap');
 
+/* General styles */
+
 body {
   margin: 0;
   padding: 0;
@@ -22,28 +24,25 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 
+/* Selection style */
+::selection {
+  background: rgba(0, 79, 73, 0.8);
+  color: #fff;
+}
+
+::-moz-selection {
+  background: rgba(0, 79, 73, 0.8);
+  color: #fff;
+}
+
 /* Table styles */
 
 .tableBox {
+  width: calc(100vw - 203px);
   height: 100%;
   overflow: auto;
   background-color: white;
 }
-
-/*.tableBox::-webkit-scrollbar {
-  width: 10px;
-  height: 5px;
-  background-color: #004F49;
-}
-.tableBox::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 10px;
-}
-.tableBox::-webkit-scrollbar-thumb {
-  background-color: white;
-  border-radius: 10px;
-  border: #004F49 solid 2px;
-}*/
 
 table {
   border-collapse: collapse;
@@ -94,6 +93,9 @@ table tbody tr.active-row {
   max-width: 500px;
   padding: 20px 12px 10px 20px;
   font: 13px Arial, Helvetica, sans-serif;
+  background: #f2f2f2;
+  border-radius: 15px;
+  border: white solid 10px;
 }
 .form-style-2-heading{
   width: 100%;
