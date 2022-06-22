@@ -22,8 +22,10 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   const form = new formidable.IncomingForm();
   form.parse(req, async function (err, fields, files) {
     if (files.file) {
-      if (await validateFile(files.file)) {
-        res.status(400).json({'message': 'Datei ungültig'});
+      const valid = await validateFile(files.file);
+
+      if (!valid) {
+        res.status(400).json({ message: 'Datei ungültig' });
         return;
       }
 
