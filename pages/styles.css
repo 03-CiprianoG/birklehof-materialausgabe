@@ -152,8 +152,7 @@ table tbody tr.active-row {
 }
 .form-style-2 .input-field:read-only,
 .form-style-2 .tel-number-field:read-only,
-.form-style-2 .textarea-field:read-only,
-.form-style-2 .select-field:read-only{
+.form-style-2 .textarea-field:read-only {
   border: 1px dashed #579b98;
   background: #eef6f4;
 }
