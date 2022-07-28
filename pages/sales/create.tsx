@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import Layout from '../../components/layout'
 import Router from 'next/router'
 import {useSession} from "next-auth/react";
-import AccessDenied from "../../components/access-denied";
+import AccessDenied from "../../components/accessDenied";
 import Html5QrcodePlugin from "../../Html5QrcodePlugin/Html5QrcodePlugin.jsx";
-import prisma from "../api/prisma_client";
+import prisma from "../../prismaClient";
 import {Student} from "@prisma/client";
 import { useToasts } from 'react-toast-notifications'
 
@@ -25,7 +25,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
   const loading = status === "loading"
   const [itemsSold, setItemsSold] = useState<Item[]>([])
   const [newBarCode, setNewBarCode] = useState('')
-  const [newQuantity, setNewQuantity] = useState('')
+  const [newQuantity, setNewQuantity] = useState(1)
   const [buyerName, setBuyerName] = useState('')
   const { addToast } = useToasts()
 
@@ -142,21 +142,21 @@ export default function createSalePage({ students }: { students: Student[] }) {
   const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
     await setNewBarCode(decodedText)
   }
-  
+
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "seller" && session.userRole !== "admin" && session.userRole !== "superadmin")) {
     return (
-      <Layout title='Verkaufen'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout title='Verkaufen'>
+    <Layout>
       <div className={'form-style-2'}>
         <h1 className={'form-style-2-heading'}>Produkt hinzufügen</h1>
         <Html5QrcodePlugin
@@ -194,7 +194,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
           </label>
         </form>
       </div>
-      <div className={'form-style-2'} style={{maxWidth: "unset"}}>
+      <div className={'form-style-2'} style={{width: "50vw", minHeight: "50vh"}}>
         <h1 className={'form-style-2-heading'}>Verkauf abschließen</h1>
         <table>
           <thead>

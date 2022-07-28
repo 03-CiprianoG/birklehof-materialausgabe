@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
-import AccessDenied from "../../components/access-denied"
-import prisma from "../api/prisma_client";
+import AccessDenied from "../../components/accessDenied"
+import prisma from "../../prismaClient";
 import type { Product } from '@prisma/client'
 import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {useToasts} from "react-toast-notifications";
@@ -70,10 +70,10 @@ export default function ProductsPage({ init_products }: { init_products: Product
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "seller" && session.userRole !== "admin" && session.userRole !== "superadmin")) {
     return (
-      <Layout title='Produkte'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
@@ -81,7 +81,7 @@ export default function ProductsPage({ init_products }: { init_products: Product
 
   // If session exists, display products
   return (
-    <Layout title='Produkte' table={true}>
+    <Layout table={true}>
       <div className={'tableBox'}>
         <table>
           <thead>
@@ -89,8 +89,12 @@ export default function ProductsPage({ init_products }: { init_products: Product
             <th>Barcode</th>
             <th>Name</th>
             <th>Preis</th>
-            <th>Bearbeiten</th>
-            <th>Löschen</th>
+            {session.userRole !== "admin" && session.userRole !== "superadmin" ? null : (
+              <>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
+              </>
+            )}
           </tr>
           </thead>
           <tbody>
@@ -102,12 +106,16 @@ export default function ProductsPage({ init_products }: { init_products: Product
                 <td>
                   {new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(product.price)}
                 </td>
-                <td><a href={'products/' + product.uuid}><IoCreateOutline/></a></td>
-                <td>
-                  <button className={'deleteButton'} onClick={() => handleDelete(product.uuid)}>
-                    <IoTrashOutline/>
-                  </button>
-                </td>
+                {session.userRole !== "admin" && session.userRole !== "superadmin" ? null : (
+                  <>
+                    <td><a href={'products/' + product.uuid}><IoCreateOutline/></a></td>
+                    <td>
+                      <button className={'deleteButton'} onClick={() => handleDelete(product.uuid)}>
+                        <IoTrashOutline/>
+                      </button>
+                    </td>
+                  </>
+                )}
               </tr>
             ))}
           </tbody>

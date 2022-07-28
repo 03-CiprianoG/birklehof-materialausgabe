@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import prisma from "../prisma_client";
+import prisma from "../../../prismaClient";
 
 // import FacebookProvider from "next-auth/providers/facebook"
 // import GithubProvider from "next-auth/providers/github"
@@ -75,6 +75,10 @@ export default NextAuth({
 
       token.userRole = user.role
       return token
+    },
+    async session({ session, user, token }) {
+      session.userRole = token.userRole
+      return session
     },
   },
 })

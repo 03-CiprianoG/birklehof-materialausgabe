@@ -1,8 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../prisma_client'
+import prisma from '../../../prismaClient'
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
+import middleware from "../middleware";
+import {getToken} from "next-auth/jwt";
+
+const secret = process.env.NEXTAUTH_SECRET
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+  if (!await middleware(await getToken({ req, secret }), ['superadmin'])) {
+    res.status(403).end();
+  }
+
   const userUuid: string = req.query.uuid.toString()
 
   if (req.method === 'GET') {

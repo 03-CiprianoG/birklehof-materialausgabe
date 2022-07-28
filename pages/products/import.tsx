@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import Layout from "../../components/layout";
 import Router from 'next/router'
-import AccessDenied from "../../components/access-denied";
+import AccessDenied from "../../components/accessDenied";
 import {useSession} from "next-auth/react";
 import styles from "../styles/products.module.css";
 import {useToasts} from "react-toast-notifications";
 
 export default function ImportStudentsPage() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
   const [file, setFile] = useState();
   const [_createObjectURL, setCreateObjectURL] = useState('');
-  const { addToast } = useToasts()
+  const { addToast } = useToasts();
 
   const uploadToClient = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -64,17 +65,20 @@ export default function ImportStudentsPage() {
     }
   };
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // When rendering client side don't display anything until loading is complete
+  if (typeof window !== "undefined" && loading) return null
+
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "admin" && session.userRole !== "superadmin")) {
     return (
-      <Layout title='Produkte'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout title='Produkte'>
+    <Layout>
       <div className={'form-style-2'}>
         <h1 className={'form-style-2-heading'}>Produkte importieren</h1>
         <div>

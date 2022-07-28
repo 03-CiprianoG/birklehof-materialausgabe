@@ -108,3 +108,6 @@ dist
 .env.local
 
 .DS_Store
+
+# JetBrains
+.idea

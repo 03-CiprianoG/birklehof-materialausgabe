@@ -3,7 +3,6 @@ import { signIn, signOut, useSession } from "next-auth/react"
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/router';
 import {
-  IoHomeOutline,
   IoBagOutline,
   IoLogOutOutline,
   IoAlbumsOutline,
@@ -19,7 +18,7 @@ import styles from './header.module.css';
 // rendering, and avoids any flash incorrect content on initial page load.
 export default function Header() {
   const router = useRouter();
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const [role, setRole] = useState('guest');
 
   useEffect(() => {
@@ -38,12 +37,6 @@ export default function Header() {
   return (
     <div>
       <div className={styles.topnav} id="myTopnav">
-        <Link href="/">
-          <a className={styles.navWithText + (router.pathname == '/' ? ' ' + styles.active : '')}><IoHomeOutline/> Home</a>
-        </Link>
-        <Link href="/">
-          <a className={styles.navOnlyIcon + (router.pathname == '/' ? ' ' + styles.active : '')}><IoHomeOutline/></a>
-        </Link>
         {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
         <Link href="/sales/create">
           <a className={styles.navWithText + (router.pathname == '/sales/create' ? ' ' + styles.active : '')}><IoBagOutline/> Verkaufen</a>
@@ -68,7 +61,7 @@ export default function Header() {
             </Link>
           </div>
         </div>)}
-        {(role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>
+        {(role == 'seller' || role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>
           <button className={styles.dropdownButton + (router.pathname.includes('/products') ? ' ' + styles.active : '')}>Produkte
              <IoChevronDownOutline/>
           </button>
@@ -76,12 +69,14 @@ export default function Header() {
             <Link href="/products">
               <a><IoAlbumsOutline/> Einsehen</a>
             </Link>
+            {(role == 'admin' || role == 'superadmin') && (
             <Link href="/products/create">
               <a><IoAddOutline/> Hinzufügen</a>
-            </Link>
+            </Link>)}
+            {(role == 'admin' || role == 'superadmin') && (
             <Link href="/products/import">
               <a><IoCloudUploadOutline/> Importieren</a>
-            </Link>
+            </Link>)}
           </div>
         </div>)}
         {(role == 'admin' || role == 'superadmin') && (<div className={styles.dropdown}>

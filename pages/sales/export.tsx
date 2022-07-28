@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
-import AccessDenied from "../../components/access-denied"
+import AccessDenied from "../../components/accessDenied"
 import { CSVLink } from "react-csv";
 import {useToasts} from "react-toast-notifications";
 
@@ -100,10 +100,10 @@ export default function IndexSalesPage() {
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "superadmin")) {
     return (
-      <Layout title='Verkäufe'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
@@ -111,34 +111,33 @@ export default function IndexSalesPage() {
 
   // If session exists, display users
   return (
-    <Layout title='Verkäufe'>
+    <Layout>
       <div className={'form-style-2'}>
-        <h1  className={'form-style-2-heading'}>Verkäufe archivieren und exportieren</h1>
-        <table>
-          <thead>
-          <tr>
-            <th>Verkäufer</th>
-            <th>Käufer</th>
-            <th>Produkte</th>
-            <th>Einzelpreise</th>
-            <th>Gesamtpreis</th>
-            <th>Verkauft am</th>
-          </tr>
-          </thead>
-          <tbody>
-          {data.map((sale) => (
-            <tr key={sale.uuid}>
-              <td>{sale.seller}</td>
-              <td>{sale.buyer}</td>
-              <td>{sale.items}</td>
-              <td>{sale.price}</td>
-              <td>{sale.totalPrice}</td>
-              <td>{sale.soldAt}</td>
+        <h1 className={'form-style-2-heading'}>Verkäufe archivieren und exportieren</h1>
+        {data.length > 0 && <table>
+            <thead>
+            <tr>
+                <th>Verkäufer</th>
+                <th>Käufer</th>
+                <th>Produkte</th>
+                <th>Einzelpreise</th>
+                <th>Gesamtpreis</th>
+                <th>Verkauft am</th>
             </tr>
-          ))}
-          </tbody>
-        </table>
-        <br/>
+            </thead>
+            <tbody>
+            {data.map((sale) => (
+              <tr key={sale.uuid}>
+                <td>{sale.seller}</td>
+                <td>{sale.buyer}</td>
+                <td>{sale.items}</td>
+                <td>{sale.price}</td>
+                <td>{sale.totalPrice}</td>
+                <td>{sale.soldAt}</td>
+              </tr>
+            ))}
+            </tbody>
+        </table>}
         <div>
           <form>
             <label>

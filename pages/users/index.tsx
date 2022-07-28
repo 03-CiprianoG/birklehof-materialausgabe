@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
-import AccessDenied from "../../components/access-denied"
-import prisma from "../api/prisma_client";
+import AccessDenied from "../../components/accessDenied"
+import prisma from "../../prismaClient";
 import { User } from "@prisma/client"
 import {IoCreateOutline, IoTrashOutline} from "react-icons/io5";
 import {useToasts} from "react-toast-notifications";
@@ -66,14 +66,14 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
       })
     }
   }
-
+  
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "superadmin")) {
     return (
-      <Layout title='Benutzer'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
@@ -81,7 +81,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
 
   // If session exists, display users
   return (
-    <Layout title='Benutzer' table={true}>
+    <Layout table={true}>
       <div className={'tableBox'}>
         <table>
           <thead>

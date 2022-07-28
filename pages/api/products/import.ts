@@ -1,7 +1,11 @@
 import formidable from 'formidable';
 import fs from 'fs';
-import prisma from "../prisma_client";
+import prisma from "../../../prismaClient";
 import {NextApiRequest, NextApiResponse} from "next";
+import middleware from "../middleware";
+import {getToken} from "next-auth/jwt";
+
+const secret = process.env.NEXTAUTH_SECRET
 
 export const config = {
   api: {
@@ -11,6 +15,10 @@ export const config = {
 
 // POST /api/students/import
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+  if (!await middleware(await getToken({ req, secret }), ['admin', 'superadmin'])) {
+    res.status(403).end();
+  }
+
   if (req.method === 'POST') {
     await post(req, res);
   } else {
@@ -37,7 +45,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).end();
       }
     } else {
-      res.status(400).json({ message: 'EFehler bei der Übertragung' });
+      res.status(400).json({ message: 'Fehler bei der Übertragung' });
     }
   });
 };

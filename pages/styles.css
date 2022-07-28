@@ -38,7 +38,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Table styles */
 
 .tableBox {
-  width: calc(100vw - 203px);
+  width: 100vw;
   height: 100%;
   overflow: auto;
   background-color: white;
@@ -90,21 +90,21 @@ table tbody tr.active-row {
 .form-style-2{
   display: inline-block;
   margin: auto;
-  max-width: 500px;
-  padding: 20px 12px 10px 20px;
   font: 13px Arial, Helvetica, sans-serif;
   background: #f2f2f2;
-  border-radius: 15px;
-  border: white solid 10px;
+  border-radius: 3px;
 }
+
 .form-style-2-heading{
   width: 100%;
   font-weight: bold;
   font-style: italic;
   border-bottom: 2px solid #004F49;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-size: 15px;
-  padding-bottom: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-width: 30vw;
 }
 .form-style-2 label{
   display: block;
@@ -138,6 +138,7 @@ table tbody tr.active-row {
   box-shadow: 1px 1px 4px #EBEBEB;
   -moz-box-shadow: 1px 1px 4px #EBEBEB;
   -webkit-box-shadow: 1px 1px 4px #EBEBEB;
+  background-color: white;
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;

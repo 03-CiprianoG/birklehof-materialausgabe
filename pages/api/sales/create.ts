@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../prisma_client'
+import prisma from '../../../prismaClient'
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
+import middleware from "../middleware";
+import {getToken} from "next-auth/jwt";
+
+const secret = process.env.NEXTAUTH_SECRET
 
 interface Item {
   barcode: string
@@ -12,6 +16,10 @@ interface Item {
 // POST /api/sales/create
 // Required fields in body: sellers email, buyers name, items sold
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+  if (!await middleware(await getToken({ req, secret }), ['seller', 'admin', 'superadmin'])) {
+    res.status(403).end();
+  }
+
   if (req.method === 'POST') {
     const { sellerEmail, buyerName, itemsSold } = req.body
 

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Layout from "../../components/layout"
-import AccessDenied from "../../components/access-denied"
-import prisma from "../api/prisma_client";
+import AccessDenied from "../../components/accessDenied"
+import prisma from "../../prismaClient";
 import type { Student } from '@prisma/client'
 import { IoTrashOutline } from "react-icons/io5";
 import {useToasts} from "react-toast-notifications";
@@ -13,10 +13,10 @@ export async function getServerSideProps(_context: any) {
 }
 
 export default function IndexSalesPage({ init_students }: { init_students: Student[] }) {
-  const { data: session, status } = useSession()
-  const loading = status === "loading"
-  const [students, setStudents] = useState(init_students)
-  const { addToast } = useToasts()
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
+  const [students, setStudents] = useState(init_students);
+  const { addToast } = useToasts();
   
   // Fetch sales from protected route
   useEffect(() => {
@@ -70,10 +70,10 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "admin" && session.userRole !== "superadmin")) {
     return (
-      <Layout title='Schüler'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
@@ -81,7 +81,7 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
 
   // If session exists, display students
   return (
-    <Layout title='Schüler' table={true}>
+    <Layout table={true}>
       <div className={'tableBox'}>
         <table>
           <thead>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Layout from '../../components/layout'
 import Router from 'next/router'
-import AccessDenied from "../../components/access-denied";
+import AccessDenied from "../../components/accessDenied";
 import {useSession} from "next-auth/react";
 import Html5QrcodePlugin from "../../Html5QrcodePlugin/Html5QrcodePlugin";
 import {useToasts} from "react-toast-notifications";
@@ -68,19 +68,19 @@ export default function createProductPage() {
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "admin" && session.userRole !== "superadmin")) {
     return (
-      <Layout title='Produkte'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout title='Produkte'>
+    <Layout>
       <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Create Product</h1>
+        <h1 className={'form-style-2-heading'}>Produkt erstellen</h1>
         <Html5QrcodePlugin
           fps={10}
           qrbox={250}

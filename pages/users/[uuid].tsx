@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Layout from '../../components/layout'
 import Router from 'next/router'
-import AccessDenied from "../../components/access-denied";
+import AccessDenied from "../../components/accessDenied";
 import {useSession} from "next-auth/react";
 import { useRouter } from 'next/router'
 import {useToasts} from "react-toast-notifications";
@@ -99,17 +99,17 @@ export default function createProductPage() {
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "superadmin")) {
     return (
-      <Layout title='Benutzer'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
   }
 
   return (
-    <Layout title='Benutzer'>
+    <Layout>
       <div className={'form-style-2'}>
         <h1 className={'form-style-2-heading'}>Benutzer bearbeiten</h1>
         <form onSubmit={submitData}>

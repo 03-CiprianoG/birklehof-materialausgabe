@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Layout from "../../../components/layout"
-import AccessDenied from "../../../components/access-denied"
-import prisma from "../../api/prisma_client";
+import AccessDenied from "../../../components/accessDenied"
+import prisma from "../../../prismaClient";
 import type { Sale, User, Item, Product } from "@prisma/client"
 import {useToasts} from "react-toast-notifications";
 
@@ -55,10 +55,10 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
-  if (!session) {
+  // If the user is not authenticated or does not have the correct role, display access denied message
+  if (!session || (session.userRole !== "admin" && session.userRole !== "superadmin")) {
     return (
-      <Layout title='Verkäufe'>
+      <Layout>
         <AccessDenied />
       </Layout>
     )
@@ -66,7 +66,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
 
   // If session exists, display sales
   return (
-    <Layout title='Verkäufe'>
+    <Layout>
       <div className={'tableBox'}>
         <table>
           <thead>
