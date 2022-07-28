@@ -3,6 +3,5 @@ export default async function middleware(token, allowedRoles) {
     return false;
   }
   const { userRole } = token;
-  console.log(userRole);
   return !!allowedRoles.includes(userRole);
 }

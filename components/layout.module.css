@@ -5,13 +5,3 @@
   display: flex;
   align-items: center;
 }
-
-.table thead tr {
-  background-color: #004F49;
-  width: 100vw;
-  position: fixed;
-  top: 49px;
-  left: 0;
-  color: #004F49;
-  text-align: left;
-}

@@ -191,9 +191,3 @@ table tbody tr.active-row {
 .form-style-2 .back{
   color:red;
 }
-@media (max-width: 850px) {
-  .form-style-2{
-    margin: 0 auto auto;
-    padding: 5px;
-  }
-}

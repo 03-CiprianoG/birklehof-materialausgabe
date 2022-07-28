@@ -20,8 +20,8 @@
   display: none !important;
 }
 
-/* When smaller than 850px only display icons */
-@media (max-width: 850px) {
+/* When smaller than 750px only display icons */
+@media (max-width: 750px) {
   .navWithText {
     display: none !important;
   }
@@ -61,7 +61,7 @@
   background-color: #d9e5ec;
   min-width: 160px;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  z-index: 2;
+  z-index: 1;
 }
 
 .dropdownContent a {

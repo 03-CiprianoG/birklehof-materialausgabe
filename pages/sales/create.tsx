@@ -44,10 +44,11 @@ export default function createSalePage({ students }: { students: Student[] }) {
           appearance: 'success',
           autoDismiss: true,
         })
-        setItemsSold([])
-        setBuyerName('')
-        setNewBarCode('')
-        setNewQuantity('')
+        setItemsSold([]);
+        setBuyerName('');
+        setNewBarCode('');
+        setNewQuantity(1);
+        document.getElementById('newBarCode')?.focus();
       } else if (res.status === 400) {
         const json = await res.json()
         if (json.message) {
@@ -90,6 +91,9 @@ export default function createSalePage({ students }: { students: Student[] }) {
         appearance: 'success',
         autoDismiss: true,
       })
+      setNewBarCode('');
+      setNewQuantity(1);
+      document.getElementById('newBarCode')?.focus();
     } else {
       try {
         const res = await fetch(`/api/products/barcode/${newBarCode}`)
@@ -106,6 +110,9 @@ export default function createSalePage({ students }: { students: Student[] }) {
             appearance: 'success',
             autoDismiss: true,
           })
+          setNewBarCode('');
+          setNewQuantity(1);
+          document.getElementById('newBarCode')?.focus();
         } else if (res.status === 400) {
           const json = await res.json()
           if (json.message) {
@@ -174,6 +181,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
               onChange={e => setNewBarCode(e.target.value)}
               type="text"
               value={newBarCode}
+              id={'newBarCode'}
               required
             />
           </label>
@@ -181,7 +189,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
             <input
               name={'quantity'}
               className={'input-field'}
-              onChange={e => setNewQuantity(e.target.value)}
+              onChange={e => setNewQuantity(+e.target.value)}
               type="number"
               step="1"
               min="1"
