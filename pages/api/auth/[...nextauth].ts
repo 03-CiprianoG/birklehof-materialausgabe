@@ -76,7 +76,7 @@ export default NextAuth({
       token.userRole = user.role
       return token
     },
-    async session({ session, user, token }) {
+    async session({ session, _user, token }) {
       session.userRole = token.userRole
       return session
     },
