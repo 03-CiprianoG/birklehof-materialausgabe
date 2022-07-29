@@ -12,7 +12,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "types": "tsc --noEmit"
+    "types": "tsc --noEmit",
+    "prettier-format": "prettier --config .prettierrc.json 'src/**' --write"
   },
   "author": "Paul Maier",
   "contributors": [
