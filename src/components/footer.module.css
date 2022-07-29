@@ -1,26 +1,15 @@
 .footer {
-  background-color: #e4f1de;
+  background-color: #d9e5ec;
   color: #004f49;
   bottom: 0;
   position: absolute;
-  display: block;
   width: 100vw;
-  min-width: 620px;
-  height: 52px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.navItems {
-  padding: 1rem;
-  margin: 0;
-  list-style: none;
-}
-
-.navItem {
-  display: inline-block;
-  margin-right: 1rem;
-}
-
-.navItem:last-child {
-  position: fixed;
-  right: 0;
+.version {
+  margin: 3px 6px 3px 3px;
 }

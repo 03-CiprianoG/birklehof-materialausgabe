@@ -28,7 +28,10 @@ export default function createProductPage() {
           appearance: 'success',
           autoDismiss: true
         });
-        Router.push('/products');
+        setName('');
+        setPrice('');
+        setBarcode('');
+        document.getElementById('barcode')?.focus();
       } else if (res.status === 400) {
         const json = await res.json();
         if (json.message) {
@@ -79,8 +82,8 @@ export default function createProductPage() {
 
   return (
     <Layout>
-      <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Produkt erstellen</h1>
+      <div className={'form'}>
+        <h1 className={'form-heading'}>Produkt erstellen</h1>
         <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />
         <br />
         <form onSubmit={submitData}>
@@ -91,6 +94,7 @@ export default function createProductPage() {
             <input
               className={'input-field'}
               name={'barcode'}
+              id={'barcode'}
               autoFocus
               onChange={(e) => setBarcode(e.target.value)}
               type="text"
@@ -127,14 +131,10 @@ export default function createProductPage() {
               required
             />
           </label>
-          <label>
-            <input type="submit" value="Hinzufügen" disabled={!name || !barcode || !price} />
-          </label>
-          <label>
-            <a className={'back'} href="#" onClick={() => Router.push('/products')}>
-              Abbrechen
-            </a>
-          </label>
+          <input type="submit" value="Hinzufügen" disabled={!name || !barcode || !price} />
+          <a className={'back'} href="#" onClick={() => Router.push('/products')}>
+            Abbrechen
+          </a>
         </form>
       </div>
     </Layout>

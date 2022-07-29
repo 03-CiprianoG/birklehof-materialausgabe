@@ -113,9 +113,11 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   // If session exists, display sales
   return (
     <Layout table={true}>
-      <div className={'tableBox'}>
-        <table>
-          <thead>
+      <div className={'form table-form'}>
+        <h1 className={'form-heading'}>Verkäufe</h1>
+        <div className={'tableBox'}>
+          <table>
+            <thead>
             <tr>
               <th>Verkäufer</th>
               <th>Käufer</th>
@@ -125,8 +127,8 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
               <th>Verkauft am</th>
               <th>Löschen</th>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             {sales &&
               sales.map((sale) => (
                 <tr key={sale.uuid}>
@@ -182,8 +184,9 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
                   </td>
                 </tr>
               ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );

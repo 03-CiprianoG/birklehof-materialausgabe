@@ -114,8 +114,8 @@ export default function createProductPage() {
 
   return (
     <Layout>
-      <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Update product</h1>
+      <div className={'form'}>
+        <h1 className={'form-heading'}>Update product</h1>
         <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />
         <br />
         <form onSubmit={submitData}>
@@ -162,14 +162,10 @@ export default function createProductPage() {
               required
             />
           </label>
-          <label>
-            <input type="submit" value="Speichern" disabled={!name || !barcode || !price} />
-          </label>
-          <label>
-            <a className={'back'} href="#" onClick={() => Router.push('/products')}>
-              Abbrechen
-            </a>
-          </label>
+          <input type="submit" value="Speichern" disabled={!name || !barcode || !price} />
+          <a className={'back'} href="#" onClick={() => Router.push('/products')}>
+            Abbrechen
+          </a>
         </form>
       </div>
     </Layout>

@@ -76,8 +76,8 @@ export default function createSalePage() {
 
   return (
     <Layout>
-      <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Benutzer erstellen</h1>
+      <div className={'form'}>
+        <h1 className={'form-heading'}>Benutzer erstellen</h1>
         <form onSubmit={submitData}>
           <label htmlFor="name">
             <span>
@@ -122,14 +122,10 @@ export default function createSalePage() {
               <option value="seller">Verkäufer</option>
             </select>
           </label>
-          <label>
-            <input type="submit" value="Erstellen" disabled={!name || !email || !role} />
-          </label>
-          <label>
-            <a className={'back'} href="#" onClick={() => Router.push('/users')}>
-              Abbrechen
-            </a>
-          </label>
+          <input type="submit" value="Erstellen" disabled={!name || !email || !role} />
+          <a className={'back'} href="#" onClick={() => Router.push('/users')}>
+            Abbrechen
+          </a>
         </form>
       </div>
     </Layout>

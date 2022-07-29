@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../../components/layout';
 import AccessDenied from '../../components/accessDenied';
@@ -82,46 +82,49 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
   // If session exists, display users
   return (
     <Layout table={true}>
-      <div className={'tableBox'}>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>E-Mail</th>
-              <th>Rolle</th>
-              <th>Bearbeiten</th>
-              <th>Löschen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users &&
-              users.map((user) => (
-                <tr key={user.uuid}>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    {user.role === 'superadmin'
-                      ? 'Super-Admin'
-                      : user.role === 'admin'
-                      ? 'Admin'
-                      : user.role === 'seller'
-                      ? 'Verkäufer'
-                      : user.role}
-                  </td>
-                  <td>
-                    <a href={'users/' + user.uuid}>
-                      <IoCreateOutline />
-                    </a>
-                  </td>
-                  <td>
-                    <button className={'deleteButton'} onClick={() => handleDelete(user.uuid)}>
-                      <IoTrashOutline />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+      <div className={'form table-form'}>
+        <h1 className={'form-heading'}>Benutzer</h1>
+        <div className={'tableBox'}>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>Rolle</th>
+                <th>Bearbeiten</th>
+                <th>Löschen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users &&
+                users.map((user) => (
+                  <tr key={user.uuid}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      {user.role === 'superadmin'
+                        ? 'Super-Admin'
+                        : user.role === 'admin'
+                        ? 'Admin'
+                        : user.role === 'seller'
+                        ? 'Verkäufer'
+                        : user.role}
+                    </td>
+                    <td>
+                      <a href={'users/' + user.uuid}>
+                        <IoCreateOutline />
+                      </a>
+                    </td>
+                    <td>
+                      <button className={'deleteButton'} onClick={() => handleDelete(user.uuid)}>
+                        <IoTrashOutline />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );

@@ -1,18 +1,15 @@
 import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
-  IoAppsOutline,
   IoAddOutline,
   IoAlbumsOutline,
   IoArchiveOutline,
-  IoBagOutline,
-  IoChevronDownOutline,
   IoCloudDownloadOutline,
   IoCloudUploadOutline,
-  IoLogOutOutline,
-  IoPersonAddOutline
+  IoPersonAddOutline,
+  IoChevronDownOutline
 } from 'react-icons/io5';
 import styles from './header.module.css';
 
@@ -38,188 +35,144 @@ export default function Header() {
   }, [session]);
 
   return (
-    <div>
-      <div className={styles.topnav} id="myTopnav">
-        {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
-          <Link href="/sales/create">
-            <a className={styles.navWithText + (router.pathname == '/sales/create' ? ' ' + styles.active : '')}>
-              <IoBagOutline /> Verkaufen
-            </a>
-          </Link>
-        )}
-        {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
-          <Link href="/sales/create">
-            <a className={styles.navOnlyIcon + (router.pathname == '/sales/create' ? ' ' + styles.active : '')}>
-              <IoBagOutline />
-            </a>
-          </Link>
-        )}
-        {role == 'seller' && (
-          <Link href="/products">
-            <a className={styles.navWithText + (router.pathname == '/products' ? ' ' + styles.active : '')}>
-              <IoAppsOutline /> Produkte
-            </a>
-          </Link>
-        )}
-        {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
-          <Link href="/products">
-            <a className={styles.navOnlyIcon + (router.pathname == '/products' ? ' ' + styles.active : '')}>
-              <IoAppsOutline />
-            </a>
-          </Link>
-        )}
-        {(role == 'admin' || role == 'superadmin') && (
-          <div className={styles.dropdown}>
-            <button
-              className={
-                styles.dropdownButton +
-                (router.pathname.includes('/sales') && !router.pathname.includes('/sales/create')
-                  ? ' ' + styles.active
-                  : '')
-              }
-            >
-              Verkäufe
-              <IoChevronDownOutline />
-            </button>
-            <div className={styles.dropdownContent}>
-              <Link href="/sales">
-                <a>
-                  <IoAlbumsOutline /> Einsehen
-                </a>
+    <div className={styles.topnav} id="myTopnav">
+      <div className={styles.navItem}>
+        <button onClick={(e) => {
+          e.preventDefault();
+          window.open('https://www.birklehof.de/', '_blank');
+        }}>
+          Birklehof
+        </button>
+      </div>
+      {router.pathname !== '/auth/signin' && (
+        <>
+          {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
+            <div className={styles.navItem}>
+              <Link href="/sales/create">
+                <button className={(router.pathname == '/sales/create' ? ' ' + styles.active : '')}>
+                  Verkaufen
+                </button>
               </Link>
-              <Link href="/sales/archived">
-                <a>
-                  <IoArchiveOutline /> Archivierte
-                </a>
-              </Link>
-              {role === 'superadmin' && (
-                <Link href="/sales/export">
+            </div>
+          )}
+          {role == 'seller' && (
+            <Link href="/products">
+              <a className={(router.pathname == '/products' ? ' ' + styles.active : '')}>
+                Produkte
+              </a>
+            </Link>
+          )}
+          {(role == 'admin' || role == 'superadmin') && (
+            <div className={styles.navItem}>
+              <button
+                className={
+                  styles.dropdownButton +
+                  (router.pathname.includes('/sales') && !router.pathname.includes('/sales/create')
+                    ? ' ' + styles.active
+                    : '')
+                }
+              >
+                <IoChevronDownOutline /> Verkäufe
+              </button>
+              <div className={styles.dropdownContent}>
+                <Link href="/sales">
                   <a>
-                    <IoCloudDownloadOutline /> Exportieren
+                    <IoAlbumsOutline /> Einsehen
                   </a>
                 </Link>
-              )}
+                <Link href="/sales/archived">
+                  <a>
+                    <IoArchiveOutline /> Archivierte
+                  </a>
+                </Link>
+                {role === 'superadmin' && (
+                  <Link href="/sales/export">
+                    <a>
+                      <IoCloudDownloadOutline /> Exportieren
+                    </a>
+                  </Link>
+                )}
+              </div>
             </div>
-          </div>
-        )}
-        {(role == 'admin' || role == 'superadmin') && (
-          <div className={styles.dropdown}>
-            <button
-              className={styles.dropdownButton + (router.pathname.includes('/products') ? ' ' + styles.active : '')}
-            >
-              Produkte
-              <IoChevronDownOutline />
-            </button>
-            <div className={styles.dropdownContent}>
-              <Link href="/products">
-                <a>
-                  <IoAlbumsOutline /> Einsehen
-                </a>
-              </Link>
-              <Link href="/products/create">
-                <a>
-                  <IoAddOutline /> Hinzufügen
-                </a>
-              </Link>
-              <Link href="/products/import">
-                <a>
-                  <IoCloudUploadOutline /> Importieren
-                </a>
-              </Link>
+          )}
+          {(role == 'admin' || role == 'superadmin') && (
+            <div className={styles.navItem}>
+              <button
+                className={styles.dropdownButton + (router.pathname.includes('/products') ? ' ' + styles.active : '')}
+              >
+                <IoChevronDownOutline /> Produkte
+              </button>
+              <div className={styles.dropdownContent}>
+                <Link href="/products">
+                  <a>
+                    <IoAlbumsOutline /> Einsehen
+                  </a>
+                </Link>
+                <Link href="/products/create">
+                  <a>
+                    <IoAddOutline /> Hinzufügen
+                  </a>
+                </Link>
+                <Link href="/products/import">
+                  <a>
+                    <IoCloudUploadOutline /> Importieren
+                  </a>
+                </Link>
+              </div>
             </div>
-          </div>
-        )}
-        {(role == 'admin' || role == 'superadmin') && (
-          <div className={styles.dropdown}>
-            <button
-              className={styles.dropdownButton + (router.pathname.includes('/students') ? ' ' + styles.active : '')}
-            >
-              Schüler
-              <IoChevronDownOutline />
-            </button>
-            <div className={styles.dropdownContent}>
-              <Link href="/students">
-                <a>
-                  <IoAlbumsOutline /> Einsehen
-                </a>
-              </Link>
-              <Link href="/students/import">
-                <a>
-                  <IoCloudUploadOutline /> Importieren
-                </a>
-              </Link>
+          )}
+          {(role == 'admin' || role == 'superadmin') && (
+            <div className={styles.navItem}>
+              <button
+                className={styles.dropdownButton + (router.pathname.includes('/students') ? ' ' + styles.active : '')}
+              >
+                <IoChevronDownOutline /> Schüler
+              </button>
+              <div className={styles.dropdownContent}>
+                <Link href="/students">
+                  <a>
+                    <IoAlbumsOutline /> Einsehen
+                  </a>
+                </Link>
+                <Link href="/students/import">
+                  <a>
+                    <IoCloudUploadOutline /> Importieren
+                  </a>
+                </Link>
+              </div>
             </div>
-          </div>
-        )}
-        {role == 'superadmin' && (
-          <div className={styles.dropdown}>
-            <button className={styles.dropdownButton + (router.pathname.includes('/users') ? ' ' + styles.active : '')}>
-              Benutzer
-              <IoChevronDownOutline />
-            </button>
-            <div className={styles.dropdownContent}>
-              <Link href="/users">
-                <a>
-                  <IoAlbumsOutline /> Einsehen
-                </a>
-              </Link>
-              <Link href="/users/create">
-                <a>
-                  <IoPersonAddOutline /> Erstellen
-                </a>
-              </Link>
+          )}
+          {role == 'superadmin' && (
+            <div className={styles.navItem}>
+              <button className={styles.dropdownButton + (router.pathname.includes('/users') ? ' ' + styles.active : '')}>
+                <IoChevronDownOutline /> Benutzer
+              </button>
+              <div className={styles.dropdownContent}>
+                <Link href="/users">
+                  <a>
+                    <IoAlbumsOutline /> Einsehen
+                  </a>
+                </Link>
+                <Link href="/users/create">
+                  <a>
+                    <IoPersonAddOutline /> Erstellen
+                  </a>
+                </Link>
+              </div>
             </div>
-          </div>
-        )}
-        {!session && (
-          <a
-            href={`/api/auth/signin`}
-            className={styles.navWithText}
-            onClick={(e) => {
-              e.preventDefault();
-              signIn();
-            }}
-          >
-            <IoLogOutOutline /> Anmelden
-          </a>
-        )}
-        {!session && (
-          <a
-            href={`/api/auth/signin`}
-            className={styles.navOnlyIcon}
-            onClick={(e) => {
-              e.preventDefault();
-              signIn();
-            }}
-          >
-            <IoLogOutOutline />
-          </a>
-        )}
-        {session && (
-          <a
-            href={`/api/auth/signout`}
-            className={styles.navWithText}
-            onClick={(e) => {
-              e.preventDefault();
-              signOut().then(() => (document.location = '/'));
-            }}
-          >
-            <IoLogOutOutline /> Abmelden
-          </a>
-        )}
-        {session && (
-          <a
-            href={`/api/auth/signout`}
-            className={styles.navOnlyIcon}
-            onClick={(e) => {
-              e.preventDefault();
-              signOut().then(() => (document.location = '/'));
-            }}
-          >
-            <IoLogOutOutline />
-          </a>
-        )}
-      </div>
+          )}
+          {session && (
+            <div className={styles.navItem}>
+              <button onClick={(e) => {
+                e.preventDefault();
+                signOut().then(() => (document.location = '/'));
+              }}>
+                Abmelden
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

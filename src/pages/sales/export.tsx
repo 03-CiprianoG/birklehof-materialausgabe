@@ -124,8 +124,8 @@ export default function IndexSalesPage() {
   // If session exists, display users
   return (
     <Layout>
-      <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Verkäufe archivieren und exportieren</h1>
+      <div className={'form'}>
+        <h1 className={'form-heading'}>Verkäufe archivieren und exportieren</h1>
         {data.length > 0 && (
           <table>
             <thead>
@@ -154,15 +154,11 @@ export default function IndexSalesPage() {
         )}
         <div>
           <form>
-            <label>
-              <input type={'button'} onClick={handleArchiveAndExport} value={'Archivieren und exportieren'} />
-            </label>
-            {data.length > 0 ? (
-              <label>
-                <CSVLink id={'download-csv'} {...csvReport}>
-                  Erneut herunterladen
-                </CSVLink>
-              </label>
+            <input type={'button'} onClick={handleArchiveAndExport} value={'Archivieren und exportieren'} />
+            {data.length >= 0 ? (
+              <CSVLink id={'download-csv'} {...csvReport}>
+                Erneut herunterladen
+              </CSVLink>
             ) : null}
           </form>
         </div>

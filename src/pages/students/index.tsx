@@ -82,38 +82,41 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
   // If session exists, display students
   return (
     <Layout table={true}>
-      <div className={'tableBox'}>
-        <table>
-          <thead>
-            <tr>
-              <th>Schülernummer</th>
-              <th>Nachname</th>
-              <th>Vorname</th>
-              <th>Vorname 2</th>
-              <th>Namenszusatz</th>
-              <th>Klasse</th>
-              <th>Löschen</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students &&
-              students.map((student) => (
-                <tr key={student.number}>
-                  <td>{student.number}</td>
-                  <td>{student.lastName}</td>
-                  <td>{student.firstName}</td>
-                  <td>{student.secondName}</td>
-                  <td>{student.nameAlias}</td>
-                  <td>{student.grade}</td>
-                  <td>
-                    <button className={'deleteButton'} onClick={() => handleDelete(student.number)}>
-                      <IoTrashOutline />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+      <div className={'form table-form'}>
+        <h1 className={'form-heading'}>Schüler</h1>
+        <div className={'tableBox'}>
+          <table>
+            <thead>
+              <tr>
+                <th>Schülernummer</th>
+                <th>Nachname</th>
+                <th>Vorname</th>
+                <th>Vorname 2</th>
+                <th>Namenszusatz</th>
+                <th>Klasse</th>
+                <th>Löschen</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students &&
+                students.map((student) => (
+                  <tr key={student.number}>
+                    <td>{student.number}</td>
+                    <td>{student.lastName}</td>
+                    <td>{student.firstName}</td>
+                    <td>{student.secondName}</td>
+                    <td>{student.nameAlias}</td>
+                    <td>{student.grade}</td>
+                    <td>
+                      <button className={'deleteButton'} onClick={() => handleDelete(student.number)}>
+                        <IoTrashOutline />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );

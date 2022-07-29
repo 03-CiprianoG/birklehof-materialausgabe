@@ -35,6 +35,8 @@ export default function IndexPage() {
   useEffect(() => {
     if (session) {
       redirect();
+    } else {
+      Router.push('/auth/signin');
     }
   }, [session]);
 

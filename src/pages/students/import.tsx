@@ -17,8 +17,8 @@ export default function ImportStudentsPage() {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
 
-      // Check if file is a CSV
-      if (i.name.split('.')[1] !== 'csv') {
+      // Check if file is a CSV file
+      if (i.name.split('.').at(-1) !== 'csv') {
         addToast('Bitte lade eine CSV-Datei hoch', {
           appearance: 'warning',
           autoDismiss: true
@@ -79,14 +79,14 @@ export default function ImportStudentsPage() {
 
   return (
     <Layout>
-      <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Schüler importieren</h1>
+      <div className={'form'}>
+        <h1 className={'form-heading'}>Schüler importieren</h1>
         <div>
           {file && <p>{file.name}</p>}
           <label htmlFor="filePicker" className={styles.chooseFileButton}>
             Datei auswählen
           </label>
-          <input type="submit" value={'Importieren'} onClick={uploadToServer} />
+          <input disabled={!file} type="submit" value={'Importieren'} onClick={uploadToServer} />
         </div>
         <input id="filePicker" hidden={true} type="file" name="docsUpload" onChange={uploadToClient} />
       </div>

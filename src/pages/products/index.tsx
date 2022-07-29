@@ -85,51 +85,54 @@ export default function ProductsPage({ init_products }: { init_products: Product
   // If session exists, display products
   return (
     <Layout table={true}>
-      <div className={'tableBox'}>
-        <table>
-          <thead>
-            <tr>
-              <th>Barcode</th>
-              <th>Name</th>
-              <th>Preis</th>
-              {session.userRole !== 'admin' && session.userRole !== 'superadmin' ? null : (
-                <>
-                  <th>Bearbeiten</th>
-                  <th>Löschen</th>
-                </>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {products &&
-              products.map((product) => (
-                <tr key={product.uuid}>
-                  <td>{product.barcode}</td>
-                  <td>{product.name}</td>
-                  <td>
-                    {new Intl.NumberFormat('de-DE', {
-                      style: 'currency',
-                      currency: 'EUR'
-                    }).format(product.price)}
-                  </td>
-                  {session.userRole !== 'admin' && session.userRole !== 'superadmin' ? null : (
-                    <>
-                      <td>
-                        <a href={'products/' + product.uuid}>
-                          <IoCreateOutline />
-                        </a>
-                      </td>
-                      <td>
-                        <button className={'deleteButton'} onClick={() => handleDelete(product.uuid)}>
-                          <IoTrashOutline />
-                        </button>
-                      </td>
-                    </>
-                  )}
-                </tr>
-              ))}
-          </tbody>
-        </table>
+      <div className={'form table-form'}>
+        <h1 className={'form-heading'}>Produkte</h1>
+        <div className={'tableBox'}>
+          <table>
+            <thead>
+              <tr>
+                <th>Barcode</th>
+                <th>Name</th>
+                <th>Preis</th>
+                {session.userRole !== 'admin' && session.userRole !== 'superadmin' ? null : (
+                  <>
+                    <th>Bearbeiten</th>
+                    <th>Löschen</th>
+                  </>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {products &&
+                products.map((product) => (
+                  <tr key={product.uuid}>
+                    <td>{product.barcode}</td>
+                    <td>{product.name}</td>
+                    <td>
+                      {new Intl.NumberFormat('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR'
+                      }).format(product.price)}
+                    </td>
+                    {session.userRole !== 'admin' && session.userRole !== 'superadmin' ? null : (
+                      <>
+                        <td>
+                          <a href={'products/' + product.uuid}>
+                            <IoCreateOutline />
+                          </a>
+                        </td>
+                        <td>
+                          <button className={'deleteButton'} onClick={() => handleDelete(product.uuid)}>
+                            <IoTrashOutline />
+                          </button>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );

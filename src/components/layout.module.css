@@ -1,7 +1,9 @@
 .main {
+  position: fixed;
   width: 100vw;
-  height: calc(100vh - 49px - 52px);
+  height: calc(100vh - 25px - 42.39px);
   text-align: center;
   display: flex;
   align-items: center;
+  padding-bottom: 25px;
 }

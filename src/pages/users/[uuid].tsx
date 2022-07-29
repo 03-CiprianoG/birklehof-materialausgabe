@@ -109,8 +109,8 @@ export default function createProductPage() {
 
   return (
     <Layout>
-      <div className={'form-style-2'}>
-        <h1 className={'form-style-2-heading'}>Benutzer bearbeiten</h1>
+      <div className={'form'}>
+        <h1 className={'form-heading'}>Benutzer bearbeiten</h1>
         <form onSubmit={submitData}>
           <label htmlFor="name">
             <span>

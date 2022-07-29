@@ -67,75 +67,78 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   // If session exists, display sales
   return (
     <Layout>
-      <div className={'tableBox'}>
-        <table>
-          <thead>
-            <tr>
-              <th>Verkäufer</th>
-              <th>Käufer</th>
-              <th>Items</th>
-              <th>Einzelpreise</th>
-              <th>Gesamtpreis</th>
-              <th>Verkauft am</th>
-              <th>Archiviert am</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sales &&
-              sales.map((sale) => (
-                <tr key={sale.uuid}>
-                  <td>{sale.seller.name}</td>
-                  <td>{sale.buyerName}</td>
-                  <td>
-                    <details>
-                      <summary>{sale.itemsSold.length} Produkte</summary>
-                      {sale.itemsSold.map((item) => (
-                        <div key={item.uuid}>
-                          <div>
-                            {item.productName} x {item.quantity}
+      <div className={'form table-form'}>
+        <h1 className={'form-heading'}>Archivierte Verkäufe</h1>
+        <div className={'tableBox'}>
+          <table>
+            <thead>
+              <tr>
+                <th>Verkäufer</th>
+                <th>Käufer</th>
+                <th>Items</th>
+                <th>Einzelpreise</th>
+                <th>Gesamtpreis</th>
+                <th>Verkauft am</th>
+                <th>Archiviert am</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sales &&
+                sales.map((sale) => (
+                  <tr key={sale.uuid}>
+                    <td>{sale.seller.name}</td>
+                    <td>{sale.buyerName}</td>
+                    <td>
+                      <details>
+                        <summary>{sale.itemsSold.length} Produkte</summary>
+                        {sale.itemsSold.map((item) => (
+                          <div key={item.uuid}>
+                            <div>
+                              {item.productName} x {item.quantity}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </details>
-                  </td>
-                  <td>
-                    <details>
-                      <summary>{sale.itemsSold.length} Produkte</summary>
-                      {sale.itemsSold.map((item) => (
-                        <div key={item.uuid}>
-                          <div>
-                            {new Intl.NumberFormat('de-DE', {
-                              style: 'currency',
-                              currency: 'EUR'
-                            }).format(item.pricePerUnit)}
-                            x {item.quantity} ={' '}
-                            {new Intl.NumberFormat('de-DE', {
-                              style: 'currency',
-                              currency: 'EUR'
-                            }).format(+item.quantity * +item.pricePerUnit)}
+                        ))}
+                      </details>
+                    </td>
+                    <td>
+                      <details>
+                        <summary>{sale.itemsSold.length} Produkte</summary>
+                        {sale.itemsSold.map((item) => (
+                          <div key={item.uuid}>
+                            <div>
+                              {new Intl.NumberFormat('de-DE', {
+                                style: 'currency',
+                                currency: 'EUR'
+                              }).format(item.pricePerUnit)}
+                              x {item.quantity} ={' '}
+                              {new Intl.NumberFormat('de-DE', {
+                                style: 'currency',
+                                currency: 'EUR'
+                              }).format(+item.quantity * +item.pricePerUnit)}
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </details>
-                  </td>
-                  <td>
-                    {new Intl.NumberFormat('de-DE', {
-                      style: 'currency',
-                      currency: 'EUR'
-                    }).format(sale.itemsSold.reduce((acc, item) => acc + +item.quantity * +item.pricePerUnit, 0))}
-                  </td>
-                  <td>
-                    {new Date(sale.soldAt).toLocaleDateString('de-DE')},{' '}
-                    {new Date(sale.soldAt).toLocaleTimeString('de-DE')}
-                  </td>
-                  <td>
-                    {new Date(sale.archivedAt).toLocaleDateString('de-DE')},{' '}
-                    {new Date(sale.archivedAt).toLocaleTimeString('de-DE')}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+                        ))}
+                      </details>
+                    </td>
+                    <td>
+                      {new Intl.NumberFormat('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR'
+                      }).format(sale.itemsSold.reduce((acc, item) => acc + +item.quantity * +item.pricePerUnit, 0))}
+                    </td>
+                    <td>
+                      {new Date(sale.soldAt).toLocaleDateString('de-DE')},{' '}
+                      {new Date(sale.soldAt).toLocaleTimeString('de-DE')}
+                    </td>
+                    <td>
+                      {new Date(sale.archivedAt).toLocaleDateString('de-DE')},{' '}
+                      {new Date(sale.archivedAt).toLocaleTimeString('de-DE')}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );
