@@ -1,14 +1,13 @@
 {
   "name": "birklehof-materialausgabe",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
-  "description": "",
+  "description": "A small application for the school shop of the Birklehof.",
   "repository": "https://github.com/C0mput3r5c13nt15t/birklehof-materialausgabe.git",
   "bugs": {},
   "homepage": "",
   "main": "",
   "scripts": {
-    "add-admin": "yarn run ts-node prisma/scripts/add_admin.ts",
     "dev": "next",
     "build": "next build",
     "start": "next start",
@@ -44,9 +43,6 @@
     "prettier": "2.7.1",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
-  },
-  "prettier": {
-    "semi": false
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/scripts/add_admin.ts"
