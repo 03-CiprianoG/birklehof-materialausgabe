@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import prisma from '../../../../prismaClient';
 
 // import FacebookProvider from "next-auth/providers/facebook"
-import GithubProvider from "next-auth/providers/github";
+import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 // import TwitterProvider from "next-auth/providers/twitter"
 // import Auth0Provider from "next-auth/providers/auth0"
@@ -13,7 +13,7 @@ import GoogleProvider from 'next-auth/providers/google';
 // https://next-auth.js.org/configuration/options
 export default NextAuth({
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/auth/signin'
   },
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
@@ -40,7 +40,7 @@ export default NextAuth({
     }),*/
     GithubProvider({
       clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientSecret: process.env.GITHUB_SECRET
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,

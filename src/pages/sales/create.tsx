@@ -178,9 +178,9 @@ export default function createSalePage({ students }: { students: Student[] }) {
             <br />
             <form onSubmit={addToItemsSold}>
               <label htmlFor="barcode">
-          <span>
-            Barcode <span className="required">*</span>
-          </span>
+                <span>
+                  Barcode <span className="required">*</span>
+                </span>
                 <input
                   name={'barcode'}
                   className={'input-field'}
@@ -193,9 +193,9 @@ export default function createSalePage({ students }: { students: Student[] }) {
                 />
               </label>
               <label htmlFor="quantity">
-          <span>
-            Anzahl <span className="required">*</span>
-          </span>
+                <span>
+                  Anzahl <span className="required">*</span>
+                </span>
                 <input
                   name={'quantity'}
                   className={'input-field'}
@@ -228,9 +228,9 @@ export default function createSalePage({ students }: { students: Student[] }) {
             </label>
             <form onSubmit={submitData}>
               <label htmlFor="buyer">
-          <span>
-            Käufer <span className="required">*</span>
-          </span>
+                <span>
+                  Käufer <span className="required">*</span>
+                </span>
                 <input
                   className={'input-field'}
                   name={'buyer'}
@@ -255,13 +255,17 @@ export default function createSalePage({ students }: { students: Student[] }) {
                 value={'Abschließen'}
                 disabled={!session.user?.email || !buyerName || !itemsSold || itemsSold.length === 0}
               />
-              <a className={'back'} href="#" onClick={() => {
-                setItemsSold([]);
-                setBuyerName('');
-                setNewBarCode('');
-                setNewQuantity(1);
-                document.getElementById('newBarCode')?.focus();
-              }}>
+              <a
+                className={'back'}
+                href="#"
+                onClick={() => {
+                  setItemsSold([]);
+                  setBuyerName('');
+                  setNewBarCode('');
+                  setNewQuantity(1);
+                  document.getElementById('newBarCode')?.focus();
+                }}
+              >
                 Abbrechen
               </a>
             </form>
@@ -272,53 +276,53 @@ export default function createSalePage({ students }: { students: Student[] }) {
           <div className={'tableBox'}>
             <table>
               <thead>
-              <tr>
-                <th>Barcode</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-                <th>Remove</th>
-              </tr>
+                <tr>
+                  <th>Barcode</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                  <th>Remove</th>
+                </tr>
               </thead>
               <tbody>
-              {itemsSold.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.barcode}</td>
-                  <td>{item.name}</td>
-                  <td>
-                    <input
-                      onChange={(e) =>
-                        setItemsSold([
-                          ...itemsSold.slice(0, index),
-                          { ...item, quantity: +e.target.value },
-                          ...itemsSold.slice(index + 1)
-                        ])
-                      }
-                      type="number"
-                      step="1"
-                      min="1"
-                      value={item.quantity}
-                      required
-                    />
-                  </td>
-                  <td>
-                    {new Intl.NumberFormat('de-DE', {
-                      style: 'currency',
-                      currency: 'EUR'
-                    }).format(item.price)}
-                  </td>
-                  <td>
-                    {new Intl.NumberFormat('de-DE', {
-                      style: 'currency',
-                      currency: 'EUR'
-                    }).format(+item.quantity * +item.price)}
-                  </td>
-                  <td>
-                    <button onClick={() => setItemsSold(itemsSold.filter((_, i) => i !== index))}>Remove</button>
-                  </td>
-                </tr>
-              ))}
+                {itemsSold.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.barcode}</td>
+                    <td>{item.name}</td>
+                    <td>
+                      <input
+                        onChange={(e) =>
+                          setItemsSold([
+                            ...itemsSold.slice(0, index),
+                            { ...item, quantity: +e.target.value },
+                            ...itemsSold.slice(index + 1)
+                          ])
+                        }
+                        type="number"
+                        step="1"
+                        min="1"
+                        value={item.quantity}
+                        required
+                      />
+                    </td>
+                    <td>
+                      {new Intl.NumberFormat('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR'
+                      }).format(item.price)}
+                    </td>
+                    <td>
+                      {new Intl.NumberFormat('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR'
+                      }).format(+item.quantity * +item.price)}
+                    </td>
+                    <td>
+                      <button onClick={() => setItemsSold(itemsSold.filter((_, i) => i !== index))}>Remove</button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

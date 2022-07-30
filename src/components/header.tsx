@@ -37,10 +37,12 @@ export default function Header() {
   return (
     <div className={styles.topnav} id="myTopnav">
       <div className={styles.navItem}>
-        <button onClick={(e) => {
-          e.preventDefault();
-          window.open('https://www.birklehof.de/', '_blank');
-        }}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            window.open('https://www.birklehof.de/', '_blank');
+          }}
+        >
           Birklehof
         </button>
       </div>
@@ -49,17 +51,13 @@ export default function Header() {
           {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
             <div className={styles.navItem}>
               <Link href="/sales/create">
-                <button className={(router.pathname == '/sales/create' ? ' ' + styles.active : '')}>
-                  Verkaufen
-                </button>
+                <button className={router.pathname == '/sales/create' ? ' ' + styles.active : ''}>Verkaufen</button>
               </Link>
             </div>
           )}
           {role == 'seller' && (
             <Link href="/products">
-              <a className={(router.pathname == '/products' ? ' ' + styles.active : '')}>
-                Produkte
-              </a>
+              <a className={router.pathname == '/products' ? ' ' + styles.active : ''}>Produkte</a>
             </Link>
           )}
           {(role == 'admin' || role == 'superadmin') && (
@@ -144,7 +142,9 @@ export default function Header() {
           )}
           {role == 'superadmin' && (
             <div className={styles.navItem}>
-              <button className={styles.dropdownButton + (router.pathname.includes('/users') ? ' ' + styles.active : '')}>
+              <button
+                className={styles.dropdownButton + (router.pathname.includes('/users') ? ' ' + styles.active : '')}
+              >
                 <IoChevronDownOutline /> Benutzer
               </button>
               <div className={styles.dropdownContent}>
@@ -163,10 +163,12 @@ export default function Header() {
           )}
           {session && (
             <div className={styles.navItem}>
-              <button onClick={(e) => {
-                e.preventDefault();
-                signOut().then(() => (document.location = '/'));
-              }}>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  signOut().then(() => (document.location = '/'));
+                }}
+              >
                 Abmelden
               </button>
             </div>

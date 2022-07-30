@@ -10,7 +10,8 @@
   -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px -1px, rgba(0, 0, 0, 0.06) 0 2px 4px -1px;
 }
 
-.topnav button, .topnav a {
+.topnav button,
+.topnav a {
   font-size: 0.9rem;
   border: none;
   outline: none;
@@ -23,7 +24,8 @@
   cursor: pointer;
 }
 
-.topnav button:hover, .topnav a:hover {
+.topnav button:hover,
+.topnav a:hover {
   background-color: #004f49 !important;
   border-radius: 1000px;
   color: white;
