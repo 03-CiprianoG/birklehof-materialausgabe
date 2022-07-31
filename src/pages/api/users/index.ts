@@ -1,4 +1,4 @@
-import prisma from '../../../../prismaClient';
+import { prisma } from '../../../../prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import middleware from '../middleware';
 import { getToken } from 'next-auth/jwt';

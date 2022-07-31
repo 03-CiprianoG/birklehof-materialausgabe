@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../prismaClient';
+import { prisma } from '../../../../prisma';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import middleware from '../middleware';
 import { getToken } from 'next-auth/jwt';
@@ -36,9 +36,9 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         error: 'Rolle muss ein String sein'
       });
       return;
-    } else if (role !== 'admin' && role !== 'seller') {
+    } else if (role !== 'superadmin' && role !== 'admin' && role !== 'seller') {
       res.status(400).json({
-        error: 'Rolle muss Admin oder Verkäufer sein'
+        error: 'Ungültige Rolle'
       });
       return;
     }

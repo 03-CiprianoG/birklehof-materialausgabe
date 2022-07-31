@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../../components/layout';
 import AccessDenied from '../../components/accessDenied';
-import prisma from '../../../prismaClient';
+import { prisma } from '../../../prisma';
 import type { Item, Product, Sale, User } from '@prisma/client';
 import { IoTrashOutline } from 'react-icons/io5';
 import { useToasts } from 'react-toast-notifications';
@@ -24,6 +24,9 @@ export async function getServerSideProps(_context: any) {
     include: {
       seller: true,
       itemsSold: true
+    },
+    orderBy: {
+      soldAt: 'desc'
     }
   });
   sales = JSON.parse(JSON.stringify(sales));

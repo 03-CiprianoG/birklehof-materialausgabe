@@ -118,6 +118,7 @@ export default function createSalePage() {
               value={role}
               required
             >
+              <option value="superadmin">Super-Admin</option>
               <option value="admin">Admin</option>
               <option value="seller">Verkäufer</option>
             </select>

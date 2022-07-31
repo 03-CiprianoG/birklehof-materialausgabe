@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../../components/layout';
 import AccessDenied from '../../components/accessDenied';
-import prisma from '../../../prismaClient';
+import { prisma } from '../../../prisma';
 import type { Student } from '@prisma/client';
 import { IoTrashOutline } from 'react-icons/io5';
 import { useToasts } from 'react-toast-notifications';
@@ -35,8 +35,8 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
     fetchData();
   }, [session]);
 
-  const handleDelete = async (number: string) => {
-    const res = await fetch(`/api/students/${number}`, {
+  const handleDelete = async (number: number) => {
+    const res = await fetch(`/api/students/${number.toString()}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'

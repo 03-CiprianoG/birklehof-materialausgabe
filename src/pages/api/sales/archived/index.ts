@@ -1,4 +1,4 @@
-import prisma from '../../../../../prismaClient';
+import { prisma } from '../../../../../prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import middleware from '../../middleware';
 import { getToken } from 'next-auth/jwt';
@@ -20,7 +20,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         include: {
           seller: true,
           itemsSold: true
-        }
+        },
+        orderBy: [
+          { soldAt: 'desc' },
+          { archivedAt: 'desc' }
+        ]
       });
       res.status(200).json({
         data: sales

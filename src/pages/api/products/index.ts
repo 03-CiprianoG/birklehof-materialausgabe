@@ -1,4 +1,4 @@
-import prisma from '../../../../prismaClient';
+import { prisma } from '../../../../prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import middleware from '../middleware';
 import { getToken } from 'next-auth/jwt';
@@ -13,7 +13,8 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
   if (req.method === 'GET') {
     try {
-      const products = await prisma.product.findMany();
+      // Needs to use a custom query because the sort by prisma is case-sensitive
+      const products = await prisma.$queryRaw`SELECT "public"."Product"."uuid", "public"."Product"."barcode", "public"."Product"."name", "public"."Product"."price" FROM "public"."Product" WHERE 1=1 ORDER BY LOWER("public"."Product"."name") ASC`;
       res.json({ data: products });
     } catch (e) {
       res.status(500).end();

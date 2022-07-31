@@ -1,4 +1,4 @@
-import prisma from '../../prismaClient';
+import { prisma } from '../../prisma';
 
 // Get the email and name from the .env.local file
 const name = process.env.ADMIN_NAME;

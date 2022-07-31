@@ -3,6 +3,7 @@ import Router from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useToasts } from 'react-toast-notifications';
 import FullscreenLoadingSpinner from '../components/fullscreenLoadingSpinner';
+import Layout from '../components/layout';
 
 export default function IndexPage() {
   const { data: session } = useSession();
@@ -13,9 +14,9 @@ export default function IndexPage() {
     if (res.status === 200) {
       const role = await res.json();
       if (role === 'seller') {
-        await Router.push('/sales');
+        await Router.push('/sales/create');
       } else if (role === 'admin') {
-        await Router.push('/products');
+        await Router.push('/sales');
       } else if (role === 'superadmin') {
         await Router.push('/users');
       } else {
@@ -41,8 +42,8 @@ export default function IndexPage() {
   }, [session]);
 
   return (
-    <>
+    <Layout>
       <FullscreenLoadingSpinner />
-    </>
+    </Layout>
   );
 }

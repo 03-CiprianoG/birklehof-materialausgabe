@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../../../components/layout';
 import AccessDenied from '../../../components/accessDenied';
-import prisma from '../../../../prismaClient';
+import { prisma } from '../../../../prisma';
 import type { Item, Product, Sale, User } from '@prisma/client';
 import { useToasts } from 'react-toast-notifications';
 
@@ -23,7 +23,11 @@ export async function getServerSideProps(_context: any) {
     include: {
       seller: true,
       itemsSold: true
-    }
+    },
+    orderBy: [
+      { soldAt: 'desc' },
+      { archivedAt: 'desc' }
+    ]
   });
   sales = JSON.parse(JSON.stringify(sales));
   return { props: { sales } };
@@ -127,12 +131,15 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
                       }).format(sale.itemsSold.reduce((acc, item) => acc + +item.quantity * +item.pricePerUnit, 0))}
                     </td>
                     <td>
-                      {new Date(sale.soldAt).toLocaleDateString('de-DE')},{' '}
-                      {new Date(sale.soldAt).toLocaleTimeString('de-DE')}
+                      {new Date(sale.soldAt.toString()).toLocaleDateString('de-DE') +
+                        ' ' +
+                        new Date(sale.soldAt.toString()).toLocaleTimeString('de-DE')}
                     </td>
                     <td>
-                      {new Date(sale.archivedAt).toLocaleDateString('de-DE')},{' '}
-                      {new Date(sale.archivedAt).toLocaleTimeString('de-DE')}
+                      {sale.archivedAt &&
+                        new Date(sale.archivedAt.toString()).toLocaleDateString('de-DE') +
+                          ' ' +
+                          new Date(sale.archivedAt.toString()).toLocaleTimeString('de-DE')}
                     </td>
                   </tr>
                 ))}

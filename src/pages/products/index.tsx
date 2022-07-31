@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../../components/layout';
 import AccessDenied from '../../components/accessDenied';
-import prisma from '../../../prismaClient';
+import { prisma } from '../../../prisma';
 import type { Product } from '@prisma/client';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 import { useToasts } from 'react-toast-notifications';
 
 export async function getServerSideProps(_context: any) {
-  const products = await prisma.product.findMany();
+  // Needs to use a custom query because the sort by prisma is case-sensitive
+  const products = await prisma.$queryRaw`SELECT "public"."Product"."uuid", "public"."Product"."barcode", "public"."Product"."name", "public"."Product"."price" FROM "public"."Product" WHERE 1=1 ORDER BY LOWER("public"."Product"."name") ASC`;
   return { props: { products } };
 }
 

@@ -8,13 +8,14 @@ import Head from 'next/head';
 // Use of the <SessionProvider> is mandatory to allow components that call
 // `useSession()` anywhere in your application to access the `session` object.
 export default function App({ Component, pageProps }: AppProps) {
+  const AppComponent = Component as any;
   return (
     <>
       <Head>
         <title>Materialausgabe</title>
         <meta charSet={'utf-8'} />
         <meta name={'description'} content={'A small application for the school shop of the Birklehof.'} />
-        <meta name={'keywords'} content={'Birklehof, school, shop'} />
+        <meta name={'keywords'} content={'birklehof, school, shop'} />
         <meta name={'author'} content={'Paul Maier'} />
         <meta name={'viewport'} content={'width=device-width, initial-scale=1.0'} />
         <link
@@ -24,8 +25,10 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
+        {/*
+ // @ts-ignore */}
         <ToastProvider>
-          <Component {...pageProps} />
+          <AppComponent {...pageProps} />
         </ToastProvider>
       </SessionProvider>
     </>

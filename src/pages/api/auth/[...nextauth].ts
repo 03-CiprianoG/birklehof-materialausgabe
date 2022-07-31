@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import prisma from '../../../../prismaClient';
+import { prisma } from '../../../../prisma';
 
 // import FacebookProvider from "next-auth/providers/facebook"
 import GithubProvider from 'next-auth/providers/github';
@@ -79,7 +79,7 @@ export default NextAuth({
       token.userRole = user.role;
       return token;
     },
-    async session({ session, _user, token }) {
+    async session({ session, user, token }) {
       session.userRole = token.userRole;
       return session;
     }

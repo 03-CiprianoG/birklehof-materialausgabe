@@ -1,6 +1,6 @@
 import formidable from 'formidable';
 import fs from 'fs';
-import prisma from '../../../../prismaClient';
+import { prisma } from '../../../../prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import middleware from '../middleware';
 import { getToken } from 'next-auth/jwt';
@@ -74,7 +74,7 @@ const evaluateFile: (file: any) => Promise<boolean> = async (file: any) => {
     await prisma.student.deleteMany({});
     // Read the CSV and write every line as student to the database
     // This should be a bulk operation
-    let batchQuery = {
+    let batchQuery: any = {
       data: [],
       skipDuplicates: true
     };

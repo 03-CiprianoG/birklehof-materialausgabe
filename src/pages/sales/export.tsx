@@ -4,10 +4,26 @@ import Layout from '../../components/layout';
 import AccessDenied from '../../components/accessDenied';
 import { CSVLink } from 'react-csv';
 import { useToasts } from 'react-toast-notifications';
+import { Item, Sale, User } from '@prisma/client';
+
+interface CustomSale extends Sale {
+  seller: User;
+  itemsSold: Item[];
+}
+
+interface CSVSale {
+  uuid: string;
+  seller: string;
+  buyer: string;
+  items: string;
+  price: string;
+  totalPrice: string;
+  soldAt: string;
+}
 
 export default function IndexSalesPage() {
   const { data: session, status } = useSession();
-  const [data, setData] = useState([]);
+  const [data, setData]: any = useState();
   const loading = status === 'loading';
   const timestamp = new Date().toISOString().replace(/:/g, '-');
   const headers = [
@@ -21,7 +37,7 @@ export default function IndexSalesPage() {
   const csvReport = {
     data: data,
     headers: headers,
-    filename: timestamp + '_sales_export.csv'
+    filename: 'birklehof-materialausgabe_sales_export_' + timestamp.toString() + '.csv'
   };
   const { addToast } = useToasts();
 
@@ -56,8 +72,8 @@ export default function IndexSalesPage() {
     }
   };
 
-  const generateCSV = async (sales) => {
-    const data = sales.map((sale) => {
+  const generateCSV = async (sales: CustomSale[]) => {
+    const data = sales.map((sale: CustomSale) => {
       const totalPrice = sale.itemsSold.reduce((acc, item) => {
         return acc + item.pricePerUnit * item.quantity;
       }, 0);
@@ -87,16 +103,18 @@ export default function IndexSalesPage() {
       };
     });
     await setData(data);
-    // Click the download button to download the CSV file
+
     if (sales.length > 0) {
-      document.getElementById('download-csv').click();
+      // Click the download button to download the CSV file
+      document.getElementById('download-csv')?.click();
+
       if (sales.length == 1) {
-        addToast(`${sales.length} Kauf archiviert und als CSV heruntergeladen`, {
+        addToast(`${sales.length} Kauf archiviert und als CSV-Datei heruntergeladen`, {
           appearance: 'success',
           autoDismiss: true
         });
       } else {
-        addToast(`${sales.length} Käufe archiviert und als CSV heruntergeladen`, {
+        addToast(`${sales.length} Käufe archiviert und als CSV-Datei heruntergeladen`, {
           appearance: 'success',
           autoDismiss: true
         });
@@ -126,7 +144,7 @@ export default function IndexSalesPage() {
     <Layout>
       <div className={'form'}>
         <h1 className={'formHeading'}>Verkäufe archivieren und exportieren</h1>
-        {data.length > 0 && (
+        {data?.length > 0 && (
           <table>
             <thead>
               <tr>
@@ -139,7 +157,7 @@ export default function IndexSalesPage() {
               </tr>
             </thead>
             <tbody>
-              {data.map((sale) => (
+              {data.map((sale: CSVSale) => (
                 <tr key={sale.uuid}>
                   <td>{sale.seller}</td>
                   <td>{sale.buyer}</td>
@@ -154,8 +172,13 @@ export default function IndexSalesPage() {
         )}
         <div>
           <form>
-            <input type={'button'} onClick={handleArchiveAndExport} value={'Archivieren und exportieren'} />
-            {data.length >= 0 ? (
+            <input
+              type={'button'}
+              onClick={handleArchiveAndExport}
+              value={'Archivieren und exportieren'}
+              style={{ marginTop: '15px' }}
+            />
+            {data?.length > 0 ? (
               <CSVLink id={'download-csv'} {...csvReport}>
                 Erneut herunterladen
               </CSVLink>

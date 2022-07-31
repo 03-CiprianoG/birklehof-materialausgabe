@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start",
     "types": "tsc --noEmit",
-    "prettier-format": "prettier --config .prettierrc.json 'src/**' 'prisma/scripts/**' --write",
+    "prettier-format": "prettier --config .prettierrc.json 'src/**' 'prisma/scripts/**' './*.ts' --write",
     "migrate:fresh": "yarn dotenv -e .env.local yarn prisma migrate reset"
   },
   "author": "Paul Maier",

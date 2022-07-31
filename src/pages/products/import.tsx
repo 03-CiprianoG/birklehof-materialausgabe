@@ -10,7 +10,7 @@ import { IoDocumentAttachOutline } from 'react-icons/io5';
 export default function ImportStudentsPage() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
-  const [file, setFile] = useState();
+  const [file, setFile]: any = useState();
   const [_createObjectURL, setCreateObjectURL] = useState('');
   const { addToast } = useToasts();
 
@@ -34,7 +34,15 @@ export default function ImportStudentsPage() {
 
   const uploadToServer = async (_event: any) => {
     const body = new FormData();
-    body.append('file', file);
+    if (file) {
+      body.append('file', file);
+    } else {
+      addToast('Bitte lade eine CSV-Datei hoch', {
+        appearance: 'warning',
+        autoDismiss: true
+      });
+      return;
+    }
     const res = await fetch('/api/products/import', {
       method: 'POST',
       body
