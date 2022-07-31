@@ -125,7 +125,7 @@ export default function IndexSalesPage() {
   return (
     <Layout>
       <div className={'form'}>
-        <h1 className={'form-heading'}>Verkäufe archivieren und exportieren</h1>
+        <h1 className={'formHeading'}>Verkäufe archivieren und exportieren</h1>
         {data.length > 0 && (
           <table>
             <thead>

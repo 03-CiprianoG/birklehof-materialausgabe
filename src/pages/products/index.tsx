@@ -84,10 +84,10 @@ export default function ProductsPage({ init_products }: { init_products: Product
 
   // If session exists, display products
   return (
-    <Layout table={true}>
+    <Layout>
       <div className={'form table-form'}>
-        <h1 className={'form-heading'}>Produkte</h1>
-        <div className={'tableBox'}>
+        <h1 className={'formHeading'}>Produkte</h1>
+        <div className={'tableWrapper'}>
           <table>
             <thead>
               <tr>
@@ -96,8 +96,8 @@ export default function ProductsPage({ init_products }: { init_products: Product
                 <th>Preis</th>
                 {session.userRole !== 'admin' && session.userRole !== 'superadmin' ? null : (
                   <>
-                    <th>Bearbeiten</th>
-                    <th>Löschen</th>
+                    <th></th>
+                    <th></th>
                   </>
                 )}
               </tr>
@@ -117,7 +117,7 @@ export default function ProductsPage({ init_products }: { init_products: Product
                     {session.userRole !== 'admin' && session.userRole !== 'superadmin' ? null : (
                       <>
                         <td>
-                          <a href={'products/' + product.uuid}>
+                          <a className={'editButton'} href={'products/' + product.uuid}>
                             <IoCreateOutline />
                           </a>
                         </td>

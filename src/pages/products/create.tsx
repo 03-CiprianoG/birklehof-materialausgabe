@@ -83,7 +83,7 @@ export default function createProductPage() {
   return (
     <Layout>
       <div className={'form'}>
-        <h1 className={'form-heading'}>Produkt erstellen</h1>
+        <h1 className={'formHeading'}>Produkt erstellen</h1>
         <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />
         <br />
         <form onSubmit={submitData}>

@@ -81,10 +81,10 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
 
   // If session exists, display students
   return (
-    <Layout table={true}>
+    <Layout>
       <div className={'form table-form'}>
-        <h1 className={'form-heading'}>Schüler</h1>
-        <div className={'tableBox'}>
+        <h1 className={'formHeading'}>Schüler</h1>
+        <div className={'tableWrapper'}>
           <table>
             <thead>
               <tr>
@@ -94,7 +94,7 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
                 <th>Vorname 2</th>
                 <th>Namenszusatz</th>
                 <th>Klasse</th>
-                <th>Löschen</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>

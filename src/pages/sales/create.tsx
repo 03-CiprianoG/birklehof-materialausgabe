@@ -6,6 +6,7 @@ import Html5QrcodePlugin from '../../plugins/Html5QrcodePlugin/Html5QrcodePlugin
 import prisma from '../../../prismaClient';
 import { Student } from '@prisma/client';
 import { useToasts } from 'react-toast-notifications';
+import { IoTrashOutline } from 'react-icons/io5';
 
 interface Item {
   barcode: string;
@@ -173,7 +174,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
       <div className={'form-horizontal-container'}>
         <div className={'form-vertical-container'}>
           <div className={'form'}>
-            <h1 className={'form-heading'}>Produkt hinzufügen</h1>
+            <h1 className={'formHeading'}>Produkt hinzufügen</h1>
             <Html5QrcodePlugin fps={10} qrbox={250} disableFlip={false} qrCodeSuccessCallback={onNewScanResult} />
             <br />
             <form onSubmit={addToItemsSold}>
@@ -211,7 +212,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
             </form>
           </div>
           <div className={'form'}>
-            <h1 className={'form-heading'}>Verkauf abschließen</h1>
+            <h1 className={'formHeading'}>Verkauf abschließen</h1>
             <label htmlFor="total">
               <span>Gesamtpreis</span>
               <input
@@ -272,17 +273,17 @@ export default function createSalePage({ students }: { students: Student[] }) {
           </div>
         </div>
         <div className={'form'}>
-          <h1 className={'form-heading'}>Produkte</h1>
-          <div className={'tableBox'}>
+          <h1 className={'formHeading'}>Produkte</h1>
+          <div className={'tableWrapper'}>
             <table>
               <thead>
                 <tr>
                   <th>Barcode</th>
                   <th>Name</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                  <th>Remove</th>
+                  <th>Anzahl</th>
+                  <th>Einzelpreis</th>
+                  <th>Gesamtpreis</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -292,6 +293,7 @@ export default function createSalePage({ students }: { students: Student[] }) {
                     <td>{item.name}</td>
                     <td>
                       <input
+                        className={'createSaleQuantity'}
                         onChange={(e) =>
                           setItemsSold([
                             ...itemsSold.slice(0, index),
@@ -319,7 +321,12 @@ export default function createSalePage({ students }: { students: Student[] }) {
                       }).format(+item.quantity * +item.price)}
                     </td>
                     <td>
-                      <button onClick={() => setItemsSold(itemsSold.filter((_, i) => i !== index))}>Remove</button>
+                      <button
+                        className={'deleteButton'}
+                        onClick={() => setItemsSold(itemsSold.filter((_, i) => i !== index))}
+                      >
+                        <IoTrashOutline />
+                      </button>
                     </td>
                   </tr>
                 ))}

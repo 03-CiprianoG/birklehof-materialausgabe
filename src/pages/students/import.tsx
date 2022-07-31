@@ -3,8 +3,9 @@ import Layout from '../../components/layout';
 import Router from 'next/router';
 import AccessDenied from '../../components/accessDenied';
 import { useSession } from 'next-auth/react';
-import styles from '../../styles/students.module.css';
+import chooseFileStyle from '../../styles/chooseFile.module.css';
 import { useToasts } from 'react-toast-notifications';
+import { IoDocumentAttachOutline } from 'react-icons/io5';
 
 export default function ImportStudentsPage() {
   const { data: session, status } = useSession();
@@ -80,11 +81,11 @@ export default function ImportStudentsPage() {
   return (
     <Layout>
       <div className={'form'}>
-        <h1 className={'form-heading'}>Schüler importieren</h1>
+        <h1 className={'formHeading'}>Schüler importieren</h1>
         <div>
           {file && <p>{file.name}</p>}
-          <label htmlFor="filePicker" className={styles.chooseFileButton}>
-            Datei auswählen
+          <label htmlFor="filePicker" className={chooseFileStyle.chooseFileButton}>
+            <IoDocumentAttachOutline /> Datei auswählen
           </label>
           <input disabled={!file} type="submit" value={'Importieren'} onClick={uploadToServer} />
         </div>

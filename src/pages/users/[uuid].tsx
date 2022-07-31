@@ -110,7 +110,7 @@ export default function createProductPage() {
   return (
     <Layout>
       <div className={'form'}>
-        <h1 className={'form-heading'}>Benutzer bearbeiten</h1>
+        <h1 className={'formHeading'}>Benutzer bearbeiten</h1>
         <form onSubmit={submitData}>
           <label htmlFor="name">
             <span>

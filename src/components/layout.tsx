@@ -1,20 +1,18 @@
 import Header from './header';
-import Footer from './footer';
+import Main from './main';
 import styles from './layout.module.css';
 
 interface Props {
   children: React.ReactNode;
-  table?: boolean;
 }
 
 // TODO: Use table attribute to display a table layout
 
-export default function Layout({ children, _table = false }: Props) {
+export default function Layout({ children }: Props) {
   return (
-    <>
+    <div className={styles.layout}>
       <Header />
-      <main className={styles.main}>{children}</main>
-      <Footer />
-    </>
+      <Main>{children}</Main>
+    </div>
   );
 }

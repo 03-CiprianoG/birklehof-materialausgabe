@@ -1,6 +1,5 @@
 .chooseFileButton {
   display: inline-block !important;
-  width: fit-content;
   padding: 8px 15px 8px 15px;
   background: white;
   border: 1px solid #004f49;
@@ -14,9 +13,16 @@
   cursor: pointer;
   margin: 2px;
   transition: all 0.2s ease-in-out;
+  width: calc(100% - 30px);
 }
 
 .chooseFileButton:hover {
   background: #004f49;
   color: #fff;
+}
+
+.chosenFileText {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #004f49;
 }

@@ -1,20 +1,15 @@
-import { signIn } from 'next-auth/react';
+import styles from './accessDenied.module.css';
+import Link from 'next/link';
 
 export default function AccessDenied() {
   return (
-    <>
-      <h1>Access Denied</h1>
-      <p>
-        <a
-          href="/api/auth/signin"
-          onClick={(e) => {
-            e.preventDefault();
-            signIn();
-          }}
-        >
-          You must be signed in to view this page
-        </a>
-      </p>
-    </>
+    <div className={styles.background}>
+      <div className={styles.textContainer}>
+        <h1 className={styles.h1}>Zugriff verweigert</h1>
+        <Link href={'/auth/signin'}>
+          <a className={styles.link}>Zurück zur Anmeldung</a>
+        </Link>
+      </div>
+    </div>
   );
 }

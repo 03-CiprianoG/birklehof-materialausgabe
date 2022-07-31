@@ -35,7 +35,7 @@ export default function Header() {
   }, [session]);
 
   return (
-    <div className={styles.topnav} id="myTopnav">
+    <div className={styles.topnav} id={'myTopnav'}>
       <div className={styles.navItem}>
         <button
           onClick={(e) => {
@@ -50,13 +50,13 @@ export default function Header() {
         <>
           {(role == 'seller' || role == 'admin' || role == 'superadmin') && (
             <div className={styles.navItem}>
-              <Link href="/sales/create">
+              <Link href={'/sales/create'}>
                 <button className={router.pathname == '/sales/create' ? ' ' + styles.active : ''}>Verkaufen</button>
               </Link>
             </div>
           )}
           {role == 'seller' && (
-            <Link href="/products">
+            <Link href={'/products'}>
               <a className={router.pathname == '/products' ? ' ' + styles.active : ''}>Produkte</a>
             </Link>
           )}
@@ -73,18 +73,18 @@ export default function Header() {
                 <IoChevronDownOutline /> Verkäufe
               </button>
               <div className={styles.dropdownContent}>
-                <Link href="/sales">
+                <Link href={'/sales'}>
                   <a>
                     <IoAlbumsOutline /> Einsehen
                   </a>
                 </Link>
-                <Link href="/sales/archived">
+                <Link href={'/sales/archived'}>
                   <a>
                     <IoArchiveOutline /> Archivierte
                   </a>
                 </Link>
                 {role === 'superadmin' && (
-                  <Link href="/sales/export">
+                  <Link href={'/sales/export'}>
                     <a>
                       <IoCloudDownloadOutline /> Exportieren
                     </a>
@@ -101,17 +101,17 @@ export default function Header() {
                 <IoChevronDownOutline /> Produkte
               </button>
               <div className={styles.dropdownContent}>
-                <Link href="/products">
+                <Link href={'/products'}>
                   <a>
                     <IoAlbumsOutline /> Einsehen
                   </a>
                 </Link>
-                <Link href="/products/create">
+                <Link href={'/products/create'}>
                   <a>
                     <IoAddOutline /> Hinzufügen
                   </a>
                 </Link>
-                <Link href="/products/import">
+                <Link href={'/products/import'}>
                   <a>
                     <IoCloudUploadOutline /> Importieren
                   </a>
@@ -127,12 +127,12 @@ export default function Header() {
                 <IoChevronDownOutline /> Schüler
               </button>
               <div className={styles.dropdownContent}>
-                <Link href="/students">
+                <Link href={'/students'}>
                   <a>
                     <IoAlbumsOutline /> Einsehen
                   </a>
                 </Link>
-                <Link href="/students/import">
+                <Link href={'/students/import'}>
                   <a>
                     <IoCloudUploadOutline /> Importieren
                   </a>
@@ -148,12 +148,12 @@ export default function Header() {
                 <IoChevronDownOutline /> Benutzer
               </button>
               <div className={styles.dropdownContent}>
-                <Link href="/users">
+                <Link href={'/users'}>
                   <a>
                     <IoAlbumsOutline /> Einsehen
                   </a>
                 </Link>
-                <Link href="/users/create">
+                <Link href={'/users/create'}>
                   <a>
                     <IoPersonAddOutline /> Erstellen
                   </a>

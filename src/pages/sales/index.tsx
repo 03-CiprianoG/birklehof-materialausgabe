@@ -112,10 +112,10 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
 
   // If session exists, display sales
   return (
-    <Layout table={true}>
+    <Layout>
       <div className={'form table-form'}>
-        <h1 className={'form-heading'}>Verkäufe</h1>
-        <div className={'tableBox'}>
+        <h1 className={'formHeading'}>Verkäufe</h1>
+        <div className={'tableWrapper'}>
           <table>
             <thead>
               <tr>
@@ -125,7 +125,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
                 <th>Einzelpreise</th>
                 <th>Gesamtpreis</th>
                 <th>Verkauft am</th>
-                <th>Löschen</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>

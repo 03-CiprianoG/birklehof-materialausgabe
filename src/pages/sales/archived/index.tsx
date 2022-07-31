@@ -68,8 +68,8 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   return (
     <Layout>
       <div className={'form table-form'}>
-        <h1 className={'form-heading'}>Archivierte Verkäufe</h1>
-        <div className={'tableBox'}>
+        <h1 className={'formHeading'}>Archivierte Verkäufe</h1>
+        <div className={'tableWrapper'}>
           <table>
             <thead>
               <tr>

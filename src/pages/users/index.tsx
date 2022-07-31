@@ -81,18 +81,18 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
 
   // If session exists, display users
   return (
-    <Layout table={true}>
+    <Layout>
       <div className={'form table-form'}>
-        <h1 className={'form-heading'}>Benutzer</h1>
-        <div className={'tableBox'}>
+        <h1 className={'formHeading'}>Benutzer</h1>
+        <div className={'tableWrapper'}>
           <table>
             <thead>
               <tr>
                 <th>Name</th>
                 <th>E-Mail</th>
                 <th>Rolle</th>
-                <th>Bearbeiten</th>
-                <th>Löschen</th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -111,7 +111,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
                         : user.role}
                     </td>
                     <td>
-                      <a href={'users/' + user.uuid}>
+                      <a className={'editButton'} href={'users/' + user.uuid}>
                         <IoCreateOutline />
                       </a>
                     </td>
