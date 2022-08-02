@@ -7,7 +7,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (!(await middleware(await getToken({ req, secret }), ['admin', 'superadmin']))) {
-    res.status(403).end();
+    return res.status(403).end();
   }
 
   const studentNumber: string = req.query.number.toString();
@@ -15,7 +15,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   if (req.method === 'DELETE') {
     await handleDELETE(studentNumber, res);
   } else {
-    res.status(405).end();
+    return res.status(405).end();
   }
 }
 
@@ -25,8 +25,8 @@ async function handleDELETE(studentNumber: string, res: NextApiResponse) {
     await prisma.student.delete({
       where: { number: parseInt(studentNumber) }
     });
-    res.status(200).end();
+    return res.status(200).end();
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }

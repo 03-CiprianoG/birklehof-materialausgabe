@@ -7,7 +7,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (!(await middleware(await getToken({ req, secret }), ['admin', 'superadmin']))) {
-    res.status(403).end();
+    return res.status(403).end();
   }
 
   const saleUuid: string = req.query.uuid.toString();
@@ -17,7 +17,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   } else if (req.method === 'DELETE') {
     await handleDELETE(saleUuid, res);
   } else {
-    res.status(405).end();
+    return res.status(405).end();
   }
 }
 
@@ -28,12 +28,12 @@ async function handleGET(saleUuid: string, res: NextApiResponse) {
       where: { uuid: saleUuid }
     });
     if (!sale) {
-      res.status(404).end();
+      return res.status(404).end();
     } else {
-      res.status(200).json({ data: sale });
+      return res.status(200).json({ data: sale });
     }
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }
 
@@ -45,9 +45,9 @@ async function handleDELETE(saleUuid: string, res: NextApiResponse) {
     });
 
     if (!sale) {
-      res.status(404).end();
+      return res.status(404).end();
     } else if (sale.archived) {
-      res.status(400).json({ message: 'Verkauf bereits archiviert' });
+      return res.status(400).json({ message: 'Verkauf bereits archiviert' });
     }
 
     await prisma.item.deleteMany({
@@ -56,8 +56,8 @@ async function handleDELETE(saleUuid: string, res: NextApiResponse) {
     await prisma.sale.delete({
       where: { uuid: saleUuid }
     });
-    res.status(200).end();
+    return res.status(200).end();
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }

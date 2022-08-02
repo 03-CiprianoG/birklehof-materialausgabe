@@ -16,13 +16,13 @@ export const config = {
 // POST /api/students/import
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (!(await middleware(await getToken({ req, secret }), ['admin', 'superadmin']))) {
-    res.status(403).end();
+    return res.status(403).end();
   }
 
   if (req.method === 'POST') {
     await post(req, res);
   } else {
-    res.status(405).end();
+    return res.status(405).end();
   }
 }
 
@@ -33,19 +33,18 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       const valid = await validateFile(files.file);
 
       if (!valid) {
-        res.status(400).json({ message: 'Datei ungültig' });
-        return;
+        return res.status(400).json({ message: 'Datei ungültig' });
       }
 
       const success = await evaluateFile(files.file);
 
       if (success) {
-        res.status(200).end();
+        return res.status(200).end();
       } else {
-        res.status(500).end();
+        return res.status(500).end();
       }
     } else {
-      res.status(400).json({ message: 'Fehler bei der Übertragung' });
+      return res.status(400).json({ message: 'Fehler bei der Übertragung' });
     }
   });
 };

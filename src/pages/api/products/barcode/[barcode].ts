@@ -7,7 +7,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (!(await middleware(await getToken({ req, secret }), ['seller', 'admin', 'superadmin']))) {
-    res.status(403).end();
+    return res.status(403).end();
   }
 
   const productBarcode = req.query.barcode as string;
@@ -17,7 +17,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   } else if (req.method === 'DELETE') {
     await handleDELETE(productBarcode, res);
   } else {
-    res.status(405).end();
+    return res.status(405).end();
   }
 }
 
@@ -29,12 +29,12 @@ async function handleGET(productUuid: string, res: NextApiResponse) {
     });
 
     if (!product) {
-      res.status(404).end();
+      return res.status(404).end();
     } else {
-      res.status(200).json({ data: product });
+      return res.status(200).json({ data: product });
     }
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }
 
@@ -45,8 +45,8 @@ async function handleDELETE(productUuid: string, res: NextApiResponse) {
       where: { barcode: productUuid }
     });
 
-    res.status(200).end();
+    return res.status(200).end();
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }

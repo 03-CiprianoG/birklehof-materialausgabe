@@ -12,6 +12,7 @@ import {
   IoChevronDownOutline
 } from 'react-icons/io5';
 import styles from './header.module.css';
+import { useToasts } from 'react-toast-notifications';
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
@@ -20,6 +21,7 @@ export default function Header() {
   const router = useRouter();
   const { data: session } = useSession();
   const [role, setRole] = useState('guest');
+  const { addToast } = useToasts();
 
   useEffect(() => {
     const fetchRole = async () => {
@@ -28,7 +30,10 @@ export default function Header() {
         const json = await res.json();
         setRole(json);
       } else {
-        console.log('An unknown error occurred');
+        addToast('Fehler bei der Autentifizierung', {
+          appearance: 'error',
+          autoDismiss: true
+        });
       }
     };
     fetchRole();

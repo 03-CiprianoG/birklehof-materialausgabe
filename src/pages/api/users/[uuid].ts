@@ -2,13 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../prisma';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import middleware from '../middleware';
-import { getToken } from 'next-auth/jwt';
+import {getToken} from 'next-auth/jwt';
+import {signOut} from "next-auth/react";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (!(await middleware(await getToken({ req, secret }), ['superadmin']))) {
-    res.status(403).end();
+    return res.status(403).end();
   }
 
   const userUuid: string = req.query.uuid.toString();
@@ -21,7 +22,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   if (req.method === 'DELETE') {
     await handleDELETE(userUuid, res);
   } else {
-    res.status(405).end();
+    return res.status(405).end();
   }
 }
 
@@ -32,12 +33,12 @@ async function handleGET(userUuid: string, res: NextApiResponse) {
       where: { uuid: userUuid }
     });
     if (!user) {
-      res.status(404).end();
+      return res.status(404).end();
     } else {
-      res.status(200).json({ data: user });
+      return res.status(200).json({ data: user });
     }
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }
 
@@ -48,38 +49,33 @@ async function handlePATCH(userUuid: string, res: NextApiResponse, req: NextApiR
       where: { uuid: userUuid }
     });
     if (!user) {
-      res.status(404).end();
+      return res.status(404).end();
     } else if (user.role == 'superadmin') {
-      res.status(403).end();
+      return res.status(403).end();
     } else {
       try {
         const { name, email, role } = await req.body;
 
         if (!name || !email || !role) {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Fehlende Angaben'
           });
-          return;
         } else if (typeof name !== 'string') {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Name muss ein String sein'
           });
-          return;
         } else if (typeof email !== 'string') {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'E-Mail muss ein String sein'
           });
-          return;
         } else if (typeof role !== 'string') {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Rolle muss ein String sein'
           });
-          return;
         } else if (role !== 'admin' && role !== 'seller') {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Rolle muss Admin oder Verkäufer sein'
           });
-          return;
         }
 
         await prisma.user.update({
@@ -90,18 +86,18 @@ async function handlePATCH(userUuid: string, res: NextApiResponse, req: NextApiR
             role
           }
         });
-        res.status(200).end();
+        return res.status(200).end();
       } catch (e) {
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === 'P2002') {
             res.status(400).json({ message: 'Benutzer existiert bereits' });
           }
         }
-        res.status(500).end();
+        return res.status(500).end();
       }
     }
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }
 
@@ -113,16 +109,17 @@ async function handleDELETE(userUuid: string, res: NextApiResponse) {
     });
 
     if (!user) {
-      res.status(404).end();
-    } else if (user.role == 'superadmin') {
-      res.status(403).end();
+      return res.status(404).end();
+    } else if (user.role === 'superadmin') {
+      return res.status(403).end();
     }
-
+    console.log('Deleting user');
     await prisma.user.delete({
       where: { uuid: userUuid }
     });
-    res.json({ message: 'User deleted' });
+    await signOut();
+    return res.status(200).end();
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }

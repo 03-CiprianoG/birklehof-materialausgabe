@@ -8,7 +8,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 // GET /api/sales
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (!(await middleware(await getToken({ req, secret }), ['admin', 'superadmin']))) {
-    res.status(403).end();
+    return res.status(403).end();
   }
 
   if (req.method === 'GET') {
@@ -23,13 +23,13 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         },
         orderBy: [{ soldAt: 'desc' }, { archivedAt: 'desc' }]
       });
-      res.status(200).json({
+      return res.status(200).json({
         data: sales
       });
     } catch (e) {
-      res.status(500).end();
+      return res.status(500).end();
     }
   } else {
-    res.status(405).end();
+    return res.status(405).end();
   }
 }

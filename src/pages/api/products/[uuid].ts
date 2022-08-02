@@ -8,7 +8,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   if (!(await middleware(await getToken({ req, secret }), ['admin', 'superadmin']))) {
-    res.status(403).end();
+    return res.status(403).end();
   }
 
   const productUuid: string = req.query.uuid.toString();
@@ -20,7 +20,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
   } else if (req.method === 'DELETE') {
     await handleDELETE(productUuid, res);
   } else {
-    res.status(405).end();
+    return res.status(405).end();
   }
 }
 
@@ -31,12 +31,12 @@ async function handleGET(productUuid: string, res: NextApiResponse) {
       where: { uuid: productUuid }
     });
     if (!product) {
-      res.status(404).end();
+      return res.status(404).end();
     } else {
-      res.status(200).json({ data: product });
+      return res.status(200).json({ data: product });
     }
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }
 
@@ -47,31 +47,27 @@ async function handlePATCH(productUuid: string, res: NextApiResponse, req: NextA
       where: { uuid: productUuid }
     });
     if (!product) {
-      res.status(404).end();
+      return res.status(404).end();
     } else {
       try {
         const { barcode, name, price } = await req.body;
 
         if (!barcode || !name || !price) {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Fehlende Angaben'
           });
-          return;
         } else if (typeof barcode !== 'string') {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Barcode muss ein String sein'
           });
-          return;
         } else if (typeof name !== 'string') {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Name muss ein String sein'
           });
-          return;
         } else if (isNaN(+price)) {
-          res.status(400).json({
+          return res.status(400).json({
             error: 'Preis muss eine Zahl sein'
           });
-          return;
         }
 
         await prisma.product.update({
@@ -82,18 +78,18 @@ async function handlePATCH(productUuid: string, res: NextApiResponse, req: NextA
             price: +price
           }
         });
-        res.status(200).json({ message: 'Product updated' });
+        return res.status(200).json({ message: 'Product updated' });
       } catch (e) {
         if (e instanceof PrismaClientKnownRequestError) {
           if (e.code === 'P2002') {
-            res.status(400).json({ message: 'Produkt existiert bereits' });
+            return res.status(400).json({ message: 'Produkt existiert bereits' });
           }
         }
-        res.status(500).end();
+        return res.status(500).end();
       }
     }
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }
 
@@ -103,8 +99,8 @@ async function handleDELETE(productUuid: string, res: NextApiResponse) {
     await prisma.product.delete({
       where: { uuid: productUuid }
     });
-    res.status(200).end();
+    return res.status(200).end();
   } catch (e) {
-    res.status(500).end();
+    return res.status(500).end();
   }
 }
