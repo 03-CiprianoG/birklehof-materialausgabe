@@ -144,30 +144,32 @@ export default function IndexSalesPage() {
       <div className={'form'}>
         <h1 className={'formHeading'}>Verkäufe archivieren und exportieren</h1>
         {data?.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>Verkäufer</th>
-                <th>Käufer</th>
-                <th>Produkte</th>
-                <th>Einzelpreise</th>
-                <th>Gesamtpreis</th>
-                <th>Verkauft am</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((sale: CSVSale) => (
-                <tr key={sale.uuid}>
-                  <td>{sale.seller}</td>
-                  <td>{sale.buyer}</td>
-                  <td>{sale.items}</td>
-                  <td>{sale.price}</td>
-                  <td>{sale.totalPrice}</td>
-                  <td>{sale.soldAt}</td>
+          <div className={'tableWrapper'} style={{ height: '60vh', minWidth: '50vw' }}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Verkäufer</th>
+                  <th>Käufer</th>
+                  <th>Produkte</th>
+                  <th>Einzelpreise</th>
+                  <th>Gesamtpreis</th>
+                  <th>Verkauft am</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.map((sale: CSVSale) => (
+                  <tr key={sale.uuid}>
+                    <td>{sale.seller}</td>
+                    <td>{sale.buyer}</td>
+                    <td>{sale.items}</td>
+                    <td>{sale.price}</td>
+                    <td>{sale.totalPrice}</td>
+                    <td>{sale.soldAt}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
         <div>
           <form>

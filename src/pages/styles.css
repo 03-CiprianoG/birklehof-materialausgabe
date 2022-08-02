@@ -114,6 +114,7 @@ table tbody tr.active-row {
   padding-top: 20px;
   margin: auto;
   box-shadow: rgba(17, 17, 26, 0.1) 0 0 16px;
+  max-width: calc(100% - 50px - 30px);
 }
 
 #itemsTable {
