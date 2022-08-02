@@ -18,7 +18,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
   const [users, setUsers] = useState(init_users);
   const { addToast } = useToasts();
 
-  // Fetch sales from protected route
+  // Fetch users from protected route
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch('/api/users');
@@ -79,7 +79,6 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
     );
   }
 
-  // If session exists, display users
   return (
     <Layout>
       <div className={'form table-form'}>

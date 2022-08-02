@@ -48,9 +48,7 @@ table {
   border-collapse: collapse;
   font-size: 1em;
   text-align: left;
-  overflow: scroll;
   width: 100%;
-  min-width: 600px;
 }
 
 table thead tr {
@@ -112,9 +110,15 @@ table tbody tr.active-row {
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
-  padding: 15px 25px 25px;
+  padding: 25px;
+  padding-top: 20px;
   margin: auto;
   box-shadow: rgba(17, 17, 26, 0.1) 0 0 16px;
+}
+
+#itemsTable {
+  height: calc(666px - 45px);
+  max-width: calc(100vw - 366.7px - 60px - 50px);
 }
 
 .table-form {
@@ -155,7 +159,7 @@ table tbody tr.active-row {
 }
 
 .form-horizontal-container .form table {
-  min-width: 40vw;
+  min-width: 50vw;
   min-height: unset;
 }
 

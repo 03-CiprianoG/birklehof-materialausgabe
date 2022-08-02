@@ -272,9 +272,9 @@ export default function createSalePage({ students }: { students: Student[] }) {
             </form>
           </div>
         </div>
-        <div className={'form'}>
+        <div className={'form'} id={'itemsTable'}>
           <h1 className={'formHeading'}>Produkte</h1>
-          <div className={'tableWrapper'}>
+          <div className={'tableWrapper'} style={{ height: 'calc(100% - 45px)' }}>
             <table>
               <thead>
                 <tr>

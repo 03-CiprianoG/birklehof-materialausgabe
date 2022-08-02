@@ -139,7 +139,6 @@ export default function IndexSalesPage() {
     );
   }
 
-  // If session exists, display users
   return (
     <Layout>
       <div className={'form'}>

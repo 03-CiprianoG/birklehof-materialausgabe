@@ -84,7 +84,6 @@ export default function ProductsPage({ init_products }: { init_products: Product
     );
   }
 
-  // If session exists, display products
   return (
     <Layout>
       <div className={'form table-form'}>

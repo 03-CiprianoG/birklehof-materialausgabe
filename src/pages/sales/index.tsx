@@ -113,7 +113,6 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
     );
   }
 
-  // If session exists, display sales
   return (
     <Layout>
       <div className={'form table-form'}>

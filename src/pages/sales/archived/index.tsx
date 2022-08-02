@@ -36,7 +36,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
   const [sales, setSales] = useState(init_sales);
   const { addToast } = useToasts();
 
-  // Fetch sales from protected route
+  // Fetch archived sales from protected route
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch('/api/sales/archived');
@@ -65,7 +65,6 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
     );
   }
 
-  // If session exists, display sales
   return (
     <Layout>
       <div className={'form table-form'}>

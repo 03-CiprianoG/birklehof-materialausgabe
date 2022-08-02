@@ -6,8 +6,6 @@ interface Props {
   children: React.ReactNode;
 }
 
-// TODO: Use table attribute to display a table layout
-
 export default function Layout({ children }: Props) {
   return (
     <div className={styles.layout}>

@@ -16,7 +16,7 @@ export default function createProductPage() {
   const [price, setPrice] = useState('');
   const { addToast } = useToasts();
 
-  // fetch the product with the id
+  // Fetch the product with the uuid
   useEffect(() => {
     if (uuid) {
       const fetchData = async () => {
