@@ -9,7 +9,8 @@ import { useToasts } from 'react-toast-notifications';
 
 export async function getServerSideProps(_context: any) {
   // Needs to use a custom query because the sort by prisma is case-sensitive
-  const products = await prisma.$queryRaw`SELECT "public"."Product"."uuid", "public"."Product"."barcode", "public"."Product"."name", "public"."Product"."price" FROM "public"."Product" WHERE 1=1 ORDER BY LOWER("public"."Product"."name") ASC`;
+  const products =
+    await prisma.$queryRaw`SELECT "public"."Product"."uuid", "public"."Product"."barcode", "public"."Product"."name", "public"."Product"."price" FROM "public"."Product" WHERE 1=1 ORDER BY LOWER("public"."Product"."name") ASC`;
   return { props: { products } };
 }
 

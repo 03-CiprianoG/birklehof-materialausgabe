@@ -24,10 +24,7 @@ export async function getServerSideProps(_context: any) {
       seller: true,
       itemsSold: true
     },
-    orderBy: [
-      { soldAt: 'desc' },
-      { archivedAt: 'desc' }
-    ]
+    orderBy: [{ soldAt: 'desc' }, { archivedAt: 'desc' }]
   });
   sales = JSON.parse(JSON.stringify(sales));
   return { props: { sales } };

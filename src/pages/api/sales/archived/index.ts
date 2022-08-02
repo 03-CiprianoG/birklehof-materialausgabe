@@ -21,10 +21,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           seller: true,
           itemsSold: true
         },
-        orderBy: [
-          { soldAt: 'desc' },
-          { archivedAt: 'desc' }
-        ]
+        orderBy: [{ soldAt: 'desc' }, { archivedAt: 'desc' }]
       });
       res.status(200).json({
         data: sales
