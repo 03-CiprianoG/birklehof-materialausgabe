@@ -19,6 +19,8 @@ export default function IndexPage() {
         await Router.push('/sales');
       } else if (role === 'superadmin') {
         await Router.push('/users');
+      } else if (role === 'guest') {
+        await Router.push('/auth/signin');
       } else {
         addToast('Fehler bei der Autentifizierung', {
           appearance: 'error',

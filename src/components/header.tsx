@@ -20,7 +20,7 @@ import { useToasts } from 'react-toast-notifications';
 export default function Header() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [role, setRole] = useState('guest');
+  const [role, setRole] = useState('');
   const { addToast } = useToasts();
 
   useEffect(() => {

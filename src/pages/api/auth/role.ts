@@ -8,6 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const token = await getToken({ req, secret });
   if (token) {
     return res.send(JSON.stringify(token.userRole, null, 2));
+  } else {
+    return res.send(JSON.stringify('guest', null, 2));
   }
-  return res.status(401).end();
 };
