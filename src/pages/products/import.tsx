@@ -52,7 +52,7 @@ export default function ImportStudentsPage() {
         appearance: 'success',
         autoDismiss: true
       });
-      Router.push('/students');
+      Router.push('/products');
     } else if (res.status === 400) {
       const json = await res.json();
       if (json.message) {

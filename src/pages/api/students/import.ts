@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import middleware from '../middleware';
 import { getToken } from 'next-auth/jwt';
 
+const sanitize = require('sanitize-filename');
 const secret = process.env.NEXTAUTH_SECRET;
 
 export const config = {
@@ -51,7 +52,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const validateFile: (file: any) => Promise<boolean> = async (file: any) => {
   // Before evaluating the file, we need to make sure that the file is valid
-  const data = fs.readFileSync(file.filepath);
+  const data = fs.readFileSync('/tmp/' + sanitize(file.newFilename));
   const lines = data.toString().split('\n');
   const headers = lines[0].split(',');
   // Check if the headers are correct
@@ -67,7 +68,7 @@ const validateFile: (file: any) => Promise<boolean> = async (file: any) => {
 
 const evaluateFile: (file: any) => Promise<boolean> = async (file: any) => {
   try {
-    const data = fs.readFileSync(file.filepath);
+    const data = fs.readFileSync('/tmp/' + sanitize(file.newFilename));
     const lines = data.toString().split('\n');
     // const headers = lines[0].split(',');
     await prisma.student.deleteMany({});

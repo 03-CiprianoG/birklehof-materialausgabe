@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../prisma';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import middleware from '../middleware';
-import {getToken} from 'next-auth/jwt';
-import {signOut} from "next-auth/react";
+import { getToken } from 'next-auth/jwt';
+import { signOut } from 'next-auth/react';
 
 const secret = process.env.NEXTAUTH_SECRET;
 

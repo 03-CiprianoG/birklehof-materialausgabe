@@ -59,7 +59,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
           }
         }
       });
-      return res.status(200).end()
+      return res.status(200).end();
     } catch (e) {
       if (e instanceof PrismaClientKnownRequestError) {
         // The .code property can be accessed in a type-safe manner

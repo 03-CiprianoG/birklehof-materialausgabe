@@ -91,7 +91,7 @@ export default function ImportStudentsPage() {
       <div className={'form'}>
         <h1 className={'formHeading'}>Schüler importieren</h1>
         <div>
-          {file && <p>{file.name}</p>}
+          {file && <p className={chooseFileStyle.chosenFileText}>{file.name}</p>}
           <label htmlFor="filePicker" className={chooseFileStyle.chooseFileButton}>
             <IoDocumentAttachOutline /> Datei auswählen
           </label>
