@@ -77,7 +77,7 @@ export default function createSalePage() {
   return (
     <Layout>
       <div className={'form'}>
-        <h1 className={'formHeading'}>Benutzer erstellen</h1>
+        <h1 className={'formHeading'}>Benutzer hinzufügen</h1>
         <form onSubmit={submitData}>
           <label htmlFor="name">
             <span>

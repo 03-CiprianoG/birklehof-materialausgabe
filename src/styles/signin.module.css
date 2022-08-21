@@ -14,6 +14,16 @@
   -webkit-box-shadow: rgba(50, 50, 93, 0.25) 0 2px 5px -1px, rgba(0, 0, 0, 0.3) 0 1px 3px -1px;
 }
 
+@media (max-width: 1000px) {
+  .form {
+    padding: 0;
+    max-width: calc(100% - 30px);
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+}
+
 .formHeading {
   font-weight: bold;
   font-size: 20px;

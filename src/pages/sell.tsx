@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Layout from '../../components/layout';
+import Layout from '../components/layout';
 import { useSession } from 'next-auth/react';
-import AccessDenied from '../../components/accessDenied';
-import Html5QrcodePlugin from '../../plugins/Html5QrcodePlugin/Html5QrcodePlugin.jsx';
-import { prisma } from '../../../prisma';
+import AccessDenied from '../components/accessDenied';
+import Html5QrcodePlugin from '../plugins/Html5QrcodePlugin/Html5QrcodePlugin.jsx';
+import { prisma } from '../../prisma';
 import { Student } from '@prisma/client';
 import { useToasts } from 'react-toast-notifications';
 import { IoTrashOutline } from 'react-icons/io5';

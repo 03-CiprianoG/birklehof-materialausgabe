@@ -2,7 +2,7 @@ import React from 'react';
 
 function filterResults(results) {
   let filteredResults = [];
-  for (var i = 0; i < results.length; ++i) {
+  for (let i = 0; i < results.length; ++i) {
     if (i === 0) {
       filteredResults.push(results[i]);
       continue;
@@ -17,7 +17,7 @@ function filterResults(results) {
 
 class ResultContainerTable extends React.Component {
   render() {
-    var results = filterResults(this.props.data);
+    const results = filterResults(this.props.data);
     return (
       <table className={'Qrcode-result-table'}>
         <thead>

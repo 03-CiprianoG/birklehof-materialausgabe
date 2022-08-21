@@ -9,6 +9,7 @@ import Head from 'next/head';
 // `useSession()` anywhere in your application to access the `session` object.
 export default function App({ Component, pageProps }: AppProps) {
   const AppComponent = Component as any;
+
   return (
     <>
       <Head>

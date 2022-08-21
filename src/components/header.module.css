@@ -1,4 +1,4 @@
-.topnav {
+.topNav {
   background-color: #e4f1de;
   overflow: hidden;
   z-index: 100;
@@ -10,86 +10,24 @@
   -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px -1px, rgba(0, 0, 0, 0.06) 0 2px 4px -1px;
 }
 
-.topnav button,
-.topnav a {
-  font-size: 0.9rem;
-  border: none;
-  outline: none;
-  color: #004f49;
-  padding: 5px;
-  padding-inline: 8px;
-  margin: 7px;
-  background-color: inherit;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.topnav button:hover,
-.topnav a:hover {
-  background-color: #004f49 !important;
-  border-radius: 1000px;
-  color: white;
-}
-
-.active {
-  background-color: #004f49 !important;
-  border-radius: 1000px;
-  color: white !important;
-}
-
-.topnav .icon {
-  display: none;
-}
-
-.navItem {
-  float: left;
-  overflow: hidden;
-}
-
-.dropdownButton {
-  font-size: 1.1rem;
-  border: none;
-  outline: none;
-  color: #004f49;
-  padding: 5px;
-  margin: 5px;
-  background-color: inherit;
-  font-family: inherit;
-}
-
-.dropdownContent {
-  display: none;
+.topNavMobile {
   position: absolute;
-  background-color: #d9e5ec;
-  min-width: 160px;
+  justify-content: center;
+  display: none;
+  background-color: #e4f1de;
+  overflow: hidden;
+  z-index: 100;
+  width: 100%;
   box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px -1px, rgba(0, 0, 0, 0.06) 0 2px 4px -1px;
   -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px -1px, rgba(0, 0, 0, 0.06) 0 2px 4px -1px;
   -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 4px 6px -1px, rgba(0, 0, 0, 0.06) 0 2px 4px -1px;
-  z-index: 2;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
 }
 
-.dropdownContent a {
-  float: none;
-  color: #004f49;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-
-.dropdownContent a:hover {
-  background-color: #eaf2f5 !important;
-  color: #004f49;
-}
-
-/* Show the dropdown menu when the user moves the mouse over the dropdown button */
-.navItem:hover .dropdownContent {
-  display: block;
-}
-
-.navItem:hover .dropdownButton {
-  background-color: #004f49 !important;
-  border-radius: 1000px;
-  color: white;
+@media (max-width: 1000px) {
+  .topNav {
+    display: none;
+  }
+  .topNavMobile {
+    display: flex;
+  }
 }

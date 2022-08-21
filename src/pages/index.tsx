@@ -14,19 +14,31 @@ export default function IndexPage() {
     if (res.status === 200) {
       const role = await res.json();
       if (role === 'seller') {
-        await Router.push('/sales/create');
+        await Router.push('/sell');
+        addToast('Willkommen zurück' + (session?.user?.name ? session?.user?.name + ' ' : '') + '!', {
+          appearance: 'info',
+          autoDismiss: true
+        });
       } else if (role === 'admin') {
         await Router.push('/sales');
+        addToast('Willkommen zurück' + (session?.user?.name ? session?.user?.name + ' ' : '') + '!', {
+          appearance: 'info',
+          autoDismiss: true
+        });
       } else if (role === 'superadmin') {
         await Router.push('/users');
+        addToast('Willkommen zurück' + (session?.user?.name ? ' ' + session?.user?.name : '') + '!', {
+          appearance: 'info',
+          autoDismiss: true
+        });
       } else {
-        addToast('Fehler bei der Autentifizierung', {
+        addToast('Deine E-Mail ist für diese Applikation nicht freigegeben', {
           appearance: 'error',
           autoDismiss: true
         });
       }
     } else {
-      addToast('Fehler bei der Autentifizierung', {
+      addToast('Fehler bei der Authentifizierung', {
         appearance: 'error',
         autoDismiss: true
       });

@@ -120,7 +120,7 @@ export default function IndexSalesPage() {
         });
       }
     } else {
-      addToast('Kein unarchivierten Käufe', {
+      addToast('Kein nicht archivierten Käufe', {
         appearance: 'info',
         autoDismiss: true
       });
@@ -144,7 +144,7 @@ export default function IndexSalesPage() {
       <div className={'form'}>
         <h1 className={'formHeading'}>Verkäufe archivieren und exportieren</h1>
         {data?.length > 0 && (
-          <div className={'tableWrapper'} style={{ height: '60vh', minWidth: '50vw' }}>
+          <div className={'tableWrapper'} style={{ minWidth: '50vw' }}>
             <table>
               <thead>
                 <tr>

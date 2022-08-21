@@ -8,10 +8,13 @@ body {
   padding: 0;
   font-family: 'Montserrat', sans-serif;
   width: 100vw;
-  min-width: 770px;
   height: 100vh;
   overflow-y: hidden;
   overflow-x: auto;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 h1,
@@ -110,10 +113,11 @@ table tbody tr.active-row {
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
-  padding: 25px;
-  padding-top: 20px;
+  padding: 20px 25px 25px;
   margin: auto;
   box-shadow: rgba(17, 17, 26, 0.1) 0 0 16px;
+  -moz-box-shadow: rgba(17, 17, 26, 0.1) 0 0 16px;
+  -webkit-box-shadow: rgba(17, 17, 26, 0.1) 0 0 16px;
   max-width: calc(100% - 50px - 30px);
 }
 
@@ -171,6 +175,44 @@ table tbody tr.active-row {
 
 .form-horizontal-container .form-vertical-container:last-child {
   margin-right: 0;
+}
+
+@media (max-width: 1000px) {
+  body {
+    overflow-y: scroll;
+  }
+  .form {
+    padding: 10px 15px 15px;
+    max-width: calc(100% - 30px);
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+  .table-form {
+    height: 100%;
+  }
+  .form-horizontal-container {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .form-horizontal-container .form {
+    margin-top: unset;
+    margin-left: 0;
+    margin-right: 0;
+    width: calc(100% - 30px);
+  }
+  .form-horizontal-container .form-vertical-container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  #itemsTable {
+    height: 100%;
+    width: calc(100% - 30px);
+    max-width: calc(100vw - 30px);
+  }
+  .form-vertical-container .form:last-child {
+    margin-bottom: 30px;
+  }
 }
 
 .formHeading {
