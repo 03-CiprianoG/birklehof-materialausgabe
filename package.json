@@ -13,6 +13,7 @@
     "start": "next start",
     "types": "tsc --noEmit",
     "prettier-format": "prettier --config .prettierrc.json 'src/**' 'prisma/scripts/**' './*.ts' --write",
+    "migrate:dev": "yarn dotenv -e .env.local yarn prisma migrate dev",
     "migrate:reset": "yarn dotenv -e .env.local yarn prisma migrate reset",
     "migrate:deploy": "yarn dotenv -e .env.local yarn prisma migrate deploy"
   },
