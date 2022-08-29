@@ -113,11 +113,9 @@ async function handleDELETE(userUuid: string, res: NextApiResponse) {
     } else if (user.role === 'superadmin') {
       return res.status(403).end();
     }
-    console.log('Deleting user');
     await prisma.user.delete({
       where: { uuid: userUuid }
     });
-    await signOut();
     return res.status(200).end();
   } catch (e) {
     return res.status(500).end();
