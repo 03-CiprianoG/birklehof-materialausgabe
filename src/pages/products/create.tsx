@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layout';
-import Router from 'next/router';
 import AccessDenied from '../../components/accessDenied';
 import { useSession } from 'next-auth/react';
 import Html5QrcodePlugin from '../../plugins/Html5QrcodePlugin/Html5QrcodePlugin';
 import { useToasts } from 'react-toast-notifications';
+import Link from 'next/link';
 
 export default function CreateProductPage() {
   const { data: session, status } = useSession();
@@ -132,9 +132,9 @@ export default function CreateProductPage() {
             />
           </label>
           <input type="submit" value="Hinzufügen" disabled={!name || !barcode || !price} />
-          <a className={'back'} href="#" onClick={() => Router.push('/products')}>
-            Abbrechen
-          </a>
+          <Link href={'/products'}>
+            <a className={'back'}>Abbrechen</a>
+          </Link>
         </form>
       </div>
     </Layout>

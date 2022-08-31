@@ -23,10 +23,7 @@ export default function HeaderItem({ href, target = '_self', action, text, icon,
       {href && !children && (
         <Link target={target} href={href}>
           <div className={`${styles.headerLink} ${router.pathname === href ? styles.active : ''}`}>
-            {icon}{' '}
-            <a target={target} href={href}>
-              {text}
-            </a>
+            {icon} <a>{text}</a>
           </div>
         </Link>
       )}
@@ -38,10 +35,7 @@ export default function HeaderItem({ href, target = '_self', action, text, icon,
                 router.pathname === href || pathnameWithoutLastElement === href ? styles.active : ''
               }`}
             >
-              {icon}{' '}
-              <a target={target} href={href}>
-                {text}
-              </a>
+              {icon} <a>{text}</a>
             </div>
           </Link>
           <div className={styles.dropdownContent}>

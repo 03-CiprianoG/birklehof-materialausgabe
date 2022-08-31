@@ -5,6 +5,7 @@ import AccessDenied from '../../components/accessDenied';
 import { useSession } from 'next-auth/react';
 import Html5QrcodePlugin from '../../plugins/Html5QrcodePlugin/Html5QrcodePlugin';
 import { useToasts } from 'react-toast-notifications';
+import Link from 'next/link';
 
 export default function UpdateProductPage() {
   const { data: session, status } = useSession();
@@ -41,12 +42,6 @@ export default function UpdateProductPage() {
         }
       };
       fetchData();
-    } else {
-      addToast('Ein Fehler ist aufgeregteren', {
-        appearance: 'error',
-        autoDismiss: true
-      });
-      Router.push('/products');
     }
   }, [addToast, uuid]);
 
@@ -103,7 +98,7 @@ export default function UpdateProductPage() {
   };
 
   const onNewScanResult = async (decodedText: string, _decodedResult: any) => {
-    await setBarcode(decodedText);
+    setBarcode(decodedText);
   };
 
   // When rendering client side don't display anything until loading is complete
@@ -169,9 +164,9 @@ export default function UpdateProductPage() {
             />
           </label>
           <input type="submit" value="Speichern" disabled={!name || !barcode || !price} />
-          <a className={'back'} href="#" onClick={() => Router.push('/products')}>
-            Abbrechen
-          </a>
+          <Link href={'/products'}>
+            <a className={'back'}>Abbrechen</a>
+          </Link>
         </form>
       </div>
     </Layout>

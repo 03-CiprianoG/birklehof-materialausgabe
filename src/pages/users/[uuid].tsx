@@ -4,6 +4,7 @@ import Router, { useRouter } from 'next/router';
 import AccessDenied from '../../components/accessDenied';
 import { useSession } from 'next-auth/react';
 import { useToasts } from 'react-toast-notifications';
+import Link from 'next/link';
 
 export default function UpdateUserPage() {
   const { data: session, status } = useSession();
@@ -173,14 +174,10 @@ export default function UpdateUserPage() {
               ></input>
             </label>
           ) : null}
-          <label>
-            <input type="submit" value="Speichern" disabled={!name || !email || !role || role === 'superadmin'} />
-          </label>
-          <label>
-            <a className={'back'} href="#" onClick={() => Router.push('/users')}>
-              Abbrechen
-            </a>
-          </label>
+          <input type="submit" value="Speichern" disabled={!name || !email || !role || role === 'superadmin'} />
+          <Link href={'/users'}>
+            <a className={'back'}>Abbrechen</a>
+          </Link>
         </form>
       </div>
     </Layout>

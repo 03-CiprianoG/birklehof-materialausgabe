@@ -6,6 +6,7 @@ import { prisma } from '../../../prisma';
 import type { Product } from '@prisma/client';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 import { useToasts } from 'react-toast-notifications';
+import Link from 'next/link';
 
 export async function getServerSideProps(_context: any) {
   // Needs to use a custom query because the sort by prisma is case-sensitive
@@ -118,9 +119,11 @@ export default function IndexProductsPage({ init_products }: { init_products: Pr
                     {session.userRole !== 'admin' && session.userRole !== 'superadmin' ? null : (
                       <>
                         <td>
-                          <a className={'editButton'} href={'products/' + product.uuid}>
-                            <IoCreateOutline />
-                          </a>
+                          <Link href={'products/' + product.uuid}>
+                            <a className={'editButton'} href={'products/' + product.uuid}>
+                              <IoCreateOutline />
+                            </a>
+                          </Link>
                         </td>
                         <td>
                           <button className={'deleteButton'} onClick={() => handleDelete(product.uuid)}>
