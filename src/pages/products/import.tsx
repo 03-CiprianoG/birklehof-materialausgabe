@@ -7,7 +7,7 @@ import chooseFileStyle from '../../styles/chooseFile.module.css';
 import { useToasts } from 'react-toast-notifications';
 import { IoDocumentAttachOutline } from 'react-icons/io5';
 
-export default function ImportStudentsPage() {
+export default function ImportProductsPage() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [file, setFile]: any = useState();
@@ -55,8 +55,8 @@ export default function ImportStudentsPage() {
       Router.push('/products');
     } else if (res.status === 400) {
       const json = await res.json();
-      if (json.message) {
-        addToast(json.message, {
+      if (json.error) {
+        addToast(json.error, {
           appearance: 'error',
           autoDismiss: true
         });

@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import Html5QrcodePlugin from '../../plugins/Html5QrcodePlugin/Html5QrcodePlugin';
 import { useToasts } from 'react-toast-notifications';
 
-export default function createProductPage() {
+export default function CreateProductPage() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [barcode, setBarcode] = useState('');
@@ -34,8 +34,8 @@ export default function createProductPage() {
         document.getElementById('barcode')?.focus();
       } else if (res.status === 400) {
         const json = await res.json();
-        if (json.message) {
-          addToast(json.message, {
+        if (json.error) {
+          addToast(json.error, {
             appearance: 'error',
             autoDismiss: true
           });

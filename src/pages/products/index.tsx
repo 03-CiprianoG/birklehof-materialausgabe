@@ -14,7 +14,7 @@ export async function getServerSideProps(_context: any) {
   return { props: { products } };
 }
 
-export default function ProductsPage({ init_products }: { init_products: Product[] }) {
+export default function IndexProductsPage({ init_products }: { init_products: Product[] }) {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [products, setProducts] = useState(init_products);
@@ -35,7 +35,7 @@ export default function ProductsPage({ init_products }: { init_products: Product
       }
     };
     fetchData();
-  }, [session]);
+  }, [addToast, session]);
 
   const handleDelete = async (uuid: string) => {
     const res = await fetch(`/api/products/${uuid}`, {

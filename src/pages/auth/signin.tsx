@@ -5,7 +5,7 @@ import { IoLogoGoogle, IoLogoApple, IoLogoGithub } from 'react-icons/io5';
 import { Provider } from 'next-auth/providers';
 
 // Overwrites the default signing-page by next-auth
-export default function SignIn({ providers }: { providers: Provider[] }) {
+export default function SignInPage({ providers }: { providers: Provider[] }) {
   const { data: session } = useSession();
   if (session) {
     document.location.href = '/';

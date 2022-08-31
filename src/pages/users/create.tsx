@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import AccessDenied from '../../components/accessDenied';
 import { useToasts } from 'react-toast-notifications';
 
-export default function createSalePage() {
+export default function CreateUserPage() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [name, setName] = useState('');
@@ -31,8 +31,8 @@ export default function createSalePage() {
         Router.push('/users');
       } else if (res.status === 400) {
         const json = await res.json();
-        if (json.message) {
-          addToast(json.message, {
+        if (json.error) {
+          addToast(json.error, {
             appearance: 'error',
             autoDismiss: true
           });

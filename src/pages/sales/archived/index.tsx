@@ -30,7 +30,7 @@ export async function getServerSideProps(_context: any) {
   return { props: { sales } };
 }
 
-export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtended[] }) {
+export default function IndexArchivedSalesPage({ init_sales }: { init_sales: SaleExtended[] }) {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [sales, setSales] = useState(init_sales);
@@ -51,7 +51,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
       }
     };
     fetchData();
-  }, [session]);
+  }, [addToast, session]);
 
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== 'undefined' && loading) return null;

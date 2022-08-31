@@ -20,7 +20,7 @@ export async function getServerSideProps(_context: any) {
   return { props: { students } };
 }
 
-export default function createSalePage({ students }: { students: Student[] }) {
+export default function SellPage({ students }: { students: Student[] }) {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [itemsSold, setItemsSold] = useState<Item[]>([]);
@@ -55,8 +55,8 @@ export default function createSalePage({ students }: { students: Student[] }) {
         document.getElementById('newBarCode')?.focus();
       } else if (res.status === 400) {
         const json = await res.json();
-        if (json.message) {
-          addToast(json.message, {
+        if (json.error) {
+          addToast(json.error, {
             appearance: 'error',
             autoDismiss: true
           });
@@ -119,8 +119,8 @@ export default function createSalePage({ students }: { students: Student[] }) {
           document.getElementById('newBarCode')?.focus();
         } else if (res.status === 400) {
           const json = await res.json();
-          if (json.message) {
-            addToast(json.message, {
+          if (json.error) {
+            addToast(json.error, {
               appearance: 'error',
               autoDismiss: true
             });

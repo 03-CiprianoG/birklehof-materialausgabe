@@ -17,7 +17,7 @@ import {
 } from 'react-icons/io5';
 import styles from './header.module.css';
 import { useToasts } from 'react-toast-notifications';
-import HeaderItem from './header/headerItem';
+import HeaderItem from './headerItem';
 
 export default function Header() {
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function Header() {
       }
     };
     fetchRole();
-  }, [session]);
+  }, [addToast, session]);
 
   const handleSignOut = async (e: any) => {
     await signOut();

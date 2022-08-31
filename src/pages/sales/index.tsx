@@ -54,7 +54,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
       }
     };
     fetchData();
-  }, [session]);
+  }, [addToast, session]);
 
   const handleDelete = async (uuid: string) => {
     const res = await fetch(`/api/sales/${uuid}`, {
@@ -72,8 +72,8 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
       });
     } else if (res.status === 400) {
       const json = await res.json();
-      if (json.message) {
-        addToast(json.message, {
+      if (json.error) {
+        addToast(json.error, {
           appearance: 'error',
           autoDismiss: true
         });

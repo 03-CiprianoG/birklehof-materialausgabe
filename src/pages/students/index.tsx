@@ -12,7 +12,7 @@ export async function getServerSideProps(_context: any) {
   return { props: { students } };
 }
 
-export default function IndexSalesPage({ init_students }: { init_students: Student[] }) {
+export default function IndexStudentsPage({ init_students }: { init_students: Student[] }) {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [students, setStudents] = useState(init_students);
@@ -33,7 +33,7 @@ export default function IndexSalesPage({ init_students }: { init_students: Stude
       }
     };
     fetchData();
-  }, [session]);
+  }, [addToast, session]);
 
   const handleDelete = async (number: number) => {
     const res = await fetch(`/api/students/${number.toString()}`, {

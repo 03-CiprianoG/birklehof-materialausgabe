@@ -5,7 +5,7 @@ import AccessDenied from '../../components/accessDenied';
 import { useSession } from 'next-auth/react';
 import { useToasts } from 'react-toast-notifications';
 
-export default function createProductPage() {
+export default function UpdateUserPage() {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function createProductPage() {
       };
       fetchData();
     }
-  }, [uuid]);
+  }, [addToast, uuid]);
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -60,8 +60,8 @@ export default function createProductPage() {
         Router.push('/users');
       } else if (res.status === 400) {
         const json = await res.json();
-        if (json.message) {
-          addToast(json.message, {
+        if (json.error) {
+          addToast(json.error, {
             appearance: 'error',
             autoDismiss: true
           });

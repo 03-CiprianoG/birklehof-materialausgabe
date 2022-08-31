@@ -55,8 +55,8 @@ export default function ImportStudentsPage() {
       Router.push('/students');
     } else if (res.status === 400) {
       const json = await res.json();
-      if (json.message) {
-        addToast(json.message, {
+      if (json.error) {
+        addToast(json.error, {
           appearance: 'error',
           autoDismiss: true
         });

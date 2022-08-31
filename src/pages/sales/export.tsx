@@ -21,7 +21,7 @@ interface CSVSale {
   soldAt: string;
 }
 
-export default function IndexSalesPage() {
+export default function ExportSalesPage() {
   const { data: session, status } = useSession();
   const [data, setData]: any = useState();
   const loading = status === 'loading';
@@ -53,8 +53,8 @@ export default function IndexSalesPage() {
       await generateCSV(json.data);
     } else if (res.status === 400) {
       const json = await res.json();
-      if (json.message) {
-        addToast(json.message, {
+      if (json.error) {
+        addToast(json.error, {
           appearance: 'error',
           autoDismiss: true
         });

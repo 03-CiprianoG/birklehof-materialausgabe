@@ -12,7 +12,7 @@ export async function getServerSideProps(_context: any) {
   return { props: { users } };
 }
 
-export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
+export default function IndexUsersPage({ init_users }: { init_users: User[] }) {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
   const [users, setUsers] = useState(init_users);
@@ -33,7 +33,7 @@ export default function IndexSalesPage({ init_users }: { init_users: User[] }) {
       }
     };
     fetchData();
-  }, [session]);
+  }, [addToast, session]);
 
   const handleDelete = async (uuid: string) => {
     const res = await fetch(`/api/users/${uuid}`, {
