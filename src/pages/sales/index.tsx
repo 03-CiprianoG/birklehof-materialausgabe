@@ -47,7 +47,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
         const json = await res.json();
         setSales(json.data);
       } else {
-        addToast('Ein Fehler ist aufgeregteren', {
+        addToast('Ein Fehler ist aufgetreten', {
           appearance: 'error',
           autoDismiss: true
         });
@@ -78,7 +78,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
           autoDismiss: true
         });
       } else {
-        addToast('Ein Fehler ist aufgeregteren', {
+        addToast('Ein Fehler ist aufgetreten', {
           appearance: 'error',
           autoDismiss: true
         });
@@ -94,7 +94,7 @@ export default function IndexSalesPage({ init_sales }: { init_sales: SaleExtende
         autoDismiss: true
       });
     } else {
-      addToast('Ein Fehler ist aufgeregteren', {
+      addToast('Ein Fehler ist aufgetreten', {
         appearance: 'error',
         autoDismiss: true
       });
